@@ -275,7 +275,7 @@ export const CartPage: React.FC = () => {
               </button>
 
               <div className="text-[11px] text-center text-slate-400">
-                Encrypted 256-bit checkout · Apple Pay, Cards & Cash on Delivery accepted
+                Cash on Delivery (COD) only · Pay upon physical delivery to courier
               </div>
             </div>
           </div>

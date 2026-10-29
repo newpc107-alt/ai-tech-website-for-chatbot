@@ -5,7 +5,6 @@
 
 import React from 'react';
 import { StoreProvider, useStore } from './context/StoreContext';
-import { GoogleSheetsProvider } from './context/GoogleSheetsContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { CartDrawer } from './components/CartDrawer';
@@ -19,7 +18,6 @@ import { CheckoutPage } from './pages/CheckoutPage';
 import { TrackOrderPage } from './pages/TrackOrderPage';
 import { DealsPage } from './pages/DealsPage';
 import { AboutPage } from './pages/AboutPage';
-import { GoogleSheetsPage } from './pages/GoogleSheetsPage';
 
 const AppContent: React.FC = () => {
   const { route } = useStore();
@@ -55,8 +53,6 @@ const AppContent: React.FC = () => {
         return <DealsPage />;
       case 'about':
         return <AboutPage />;
-      case 'sheets':
-        return <GoogleSheetsPage />;
       default:
         return <HomePage />;
     }
@@ -95,9 +91,7 @@ const AppContent: React.FC = () => {
 export default function App() {
   return (
     <StoreProvider>
-      <GoogleSheetsProvider>
-        <AppContent />
-      </GoogleSheetsProvider>
+      <AppContent />
     </StoreProvider>
   );
 }

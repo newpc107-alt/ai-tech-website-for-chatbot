@@ -135,17 +135,6 @@ export const Footer: React.FC = () => {
                 Engineering & Metallurgy
               </button>
             </li>
-            <li className="pt-2 border-t border-slate-800">
-              <button
-                onClick={() => navigateTo({ name: 'sheets' })}
-                className="hover:text-emerald-400 text-emerald-400 font-semibold transition-colors text-xs text-left cursor-pointer flex items-center gap-1.5"
-              >
-                <span>Google Sheets Order Sync</span>
-                <span className="text-[10px] bg-emerald-950 px-1.5 py-0.2 rounded border border-emerald-800">
-                  Tech Store Orders
-                </span>
-              </button>
-            </li>
           </ul>
         </div>
 

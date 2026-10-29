@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
-import { useGoogleSheets } from '../context/GoogleSheetsContext';
 import { OrderDetails } from '../types/store';
 import {
-  CreditCard,
   CheckCircle2,
-  Lock,
   ArrowRight,
   ArrowLeft,
   Banknote,
-  PackageCheck,
-  FileSpreadsheet,
-  ExternalLink,
+  Home,
+  Truck,
+  ShieldCheck,
+  Package,
 } from 'lucide-react';
 import { ProductVisual } from '../components/ProductVisual';
+import {
+  getNextSequentialOrderId,
+  commitNextSequentialOrderId,
+  sendOrderToWebhook,
+  WebhookOrderPayload,
+  WEBHOOK_URL,
+} from '../services/webhookService';
 
 interface CheckoutPageProps {
   initialStep?: 'shipping' | 'payment' | 'confirmation';
@@ -29,20 +34,11 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
     navigateTo,
   } = useStore();
 
-  const {
-    isConnected,
-    spreadsheet,
-    nextOrderId,
-    getNextOrderId,
-    syncOrder,
-    login,
-  } = useGoogleSheets();
-
   const [step, setStep] = useState<'shipping' | 'payment' | 'confirmation'>(initialStep);
   const [isPlacingOrder, setIsPlacingOrder] = useState<boolean>(false);
-  const [syncStatusText, setSyncStatusText] = useState<string | null>(null);
+  const [webhookStatus, setWebhookStatus] = useState<string | null>(null);
 
-  // Shipping form state
+  // Shipping form state with required customer & address details
   const [formData, setFormData] = useState({
     fullName: 'Khizar Rahman',
     email: 'khizar.tech@example.com',
@@ -53,10 +49,6 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
     country: 'United States',
   });
 
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'apple_pay' | 'cod'>('card');
-  const [cardNumber, setCardNumber] = useState('4242 •••• •••• 9012');
-  const [cardExpiry, setCardExpiry] = useState('11/28');
-  const [cardCvc, setCardCvc] = useState('892');
   const [createdOrder, setCreatedOrder] = useState<OrderDetails | null>(null);
 
   const estimatedTax = Math.round(cartSubtotal * 0.08 * 100) / 100;
@@ -68,53 +60,120 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
 
   const handleShippingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.fullName || !formData.address || !formData.email) {
-      alert('Please fill out all required shipping fields.');
+    if (
+      !formData.fullName.trim() ||
+      !formData.email.trim() ||
+      !formData.phone.trim() ||
+      !formData.address.trim() ||
+      !formData.city.trim() ||
+      !formData.postalCode.trim() ||
+      !formData.country.trim()
+    ) {
+      alert('Please fill out all required shipping and contact fields.');
       return;
     }
     setStep('payment');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePlaceOrder = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handlePlaceOrder = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (cart.length === 0) return;
+
     setIsPlacingOrder(true);
 
     try {
-      // 1. Calculate sequential Order ID based on Google Sheets Sheet1 rows (e.g. 1001, 1002, 1007...)
-      const assignedNumericId = await getNextOrderId();
-      const formattedOrderId = String(assignedNumericId);
+      // 1. Calculate sequential numeric Order ID (starts at 1001, then 1002, 1003...)
+      const numericOrderId = getNextSequentialOrderId();
+      const formattedOrderId = String(numericOrderId);
+
+      // Commit the counter increment so next order will be numericOrderId + 1
+      commitNextSequentialOrderId(numericOrderId);
+
+      const orderDate = new Date().toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      });
 
       const newOrder: OrderDetails = {
         orderId: formattedOrderId,
-        date: new Date().toLocaleDateString('en-US', {
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric',
-        }),
+        date: orderDate,
         items: [...cart],
         subtotal: cartSubtotal,
         shipping: shippingFee,
         tax: estimatedTax,
         discount: discountAmount,
         total: finalTotal,
-        shippingAddress: formData,
-        paymentMethod,
+        shippingAddress: { ...formData },
+        paymentMethod: 'cod',
         status: 'Order Placed',
         estimatedDelivery: '3 - 4 Business Days via Air Express',
       };
 
+      // 2. Build structured webhook payload matching all user required terms
+      // Product Name string summary (e.g., "Volt 65W GaN Dual Port Travel Wall Brick, Nexus 240W Thunderbolt 4")
+      const productNamesSummary = cart
+        .map((item) => (item.quantity > 1 ? `${item.product.name} (x${item.quantity})` : item.product.name))
+        .join(', ');
+
+      const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+      const webhookPayload: WebhookOrderPayload = {
+        // Specific exact keys requested:
+        'Order ID': numericOrderId,
+        'Customer Name': formData.fullName.trim(),
+        'Customer Email': formData.email.trim(),
+        'Phone number': formData.phone.trim(),
+        'Street address': formData.address.trim(),
+        'City': formData.city.trim(),
+        'Postal zip code': formData.postalCode.trim(),
+        'Country': formData.country.trim(),
+        'Product Name': productNamesSummary,
+        'Quantity of the Product': totalQuantity,
+        'Order Date': orderDate,
+        'Price': finalTotal,
+
+        // Standard camelCase equivalents & comprehensive item array for workflows:
+        orderId: formattedOrderId,
+        customerName: formData.fullName.trim(),
+        customerEmail: formData.email.trim(),
+        phoneNumber: formData.phone.trim(),
+        streetAddress: formData.address.trim(),
+        city: formData.city.trim(),
+        postalZipCode: formData.postalCode.trim(),
+        country: formData.country.trim(),
+        orderDate,
+        totalPrice: finalTotal,
+        subtotal: cartSubtotal,
+        shipping: shippingFee,
+        tax: estimatedTax,
+        discount: discountAmount,
+        paymentMethod: 'Cash on Delivery',
+        status: 'Order Placed',
+        items: cart.map((it) => ({
+          id: it.product.id,
+          productName: it.product.name,
+          quantity: it.quantity,
+          unitPrice: it.product.price,
+          totalPrice: it.product.price * it.quantity,
+          selectedOptions: it.selectedOptions || {},
+        })),
+      };
+
+      // 3. Send POST request to user webhook: http://localhost:5678/webhook-test/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4
+      const webhookResponse = await sendOrderToWebhook(webhookPayload);
+      setWebhookStatus(webhookResponse.message);
+
+      // 4. Save order to store and clear cart
       createOrder(newOrder);
       setCreatedOrder(newOrder);
 
-      // 2. Automatically sync to Google Sheets (Tech Store Orders -> Sheet1)
-      const syncResult = await syncOrder(newOrder, assignedNumericId);
-      setSyncStatusText(syncResult.message);
-
+      // 5. Complete process to order received screen
       setStep('confirmation');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err: any) {
-      console.error('Order placement error:', err);
+      console.error('Error during checkout order placement:', err);
     } finally {
       setIsPlacingOrder(false);
     }
@@ -159,13 +218,13 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
         <span className="text-slate-900 font-semibold capitalize">Checkout: {step}</span>
       </nav>
 
-      {/* Checkout Progress Stepper in Fresh Blue */}
-      <div className="max-w-3xl mx-auto">
+      {/* Checkout Progress Stepper */}
+      <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between relative">
           <div className="w-full absolute top-1/2 -translate-y-1/2 h-0.5 bg-slate-200 z-0" />
 
           {/* Step 1: Shipping */}
-          <div className="relative z-10 flex flex-col items-center gap-1 bg-slate-50 px-3">
+          <div className="relative z-10 flex flex-col items-center gap-1 bg-white px-3">
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-mono transition-colors ${
                 step === 'shipping'
@@ -175,11 +234,11 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
             >
               1
             </div>
-            <span className="text-[11px] font-semibold text-slate-700">Shipping</span>
+            <span className="text-[11px] font-semibold text-slate-700">Delivery Details</span>
           </div>
 
-          {/* Step 2: Payment */}
-          <div className="relative z-10 flex flex-col items-center gap-1 bg-slate-50 px-3">
+          {/* Step 2: Payment Review (Cash on Delivery) */}
+          <div className="relative z-10 flex flex-col items-center gap-1 bg-white px-3">
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-mono transition-colors ${
                 step === 'payment'
@@ -191,11 +250,11 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
             >
               2
             </div>
-            <span className="text-[11px] font-semibold text-slate-700">Payment</span>
+            <span className="text-[11px] font-semibold text-slate-700">Cash on Delivery</span>
           </div>
 
-          {/* Step 3: Confirmation */}
-          <div className="relative z-10 flex flex-col items-center gap-1 bg-slate-50 px-3">
+          {/* Step 3: Order Received */}
+          <div className="relative z-10 flex flex-col items-center gap-1 bg-white px-3">
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-mono transition-colors ${
                 step === 'confirmation'
@@ -205,7 +264,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
             >
               3
             </div>
-            <span className="text-[11px] font-semibold text-slate-700">Confirmation</span>
+            <span className="text-[11px] font-semibold text-slate-700">Order Received</span>
           </div>
         </div>
       </div>
@@ -216,55 +275,59 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
           <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs">
             <div>
               <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-                Shipping Destination & Contact
+                Shipping Destination & Contact Details
               </h2>
               <p className="text-xs text-slate-500 mt-1">
-                All Khizar Tech shipments are insured and require recipient signature upon air delivery.
+                Please provide your accurate contact information and street address for Cash on Delivery courier dispatch.
               </p>
             </div>
 
             <form onSubmit={handleShippingSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-700">Full Name *</label>
+                  <label className="text-xs font-semibold text-slate-700">Customer Name *</label>
                   <input
                     type="text"
                     required
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    placeholder="e.g. John Doe"
                     className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 focus:outline-hidden focus:border-blue-500 focus:bg-white"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-700">Email Address *</label>
+                  <label className="text-xs font-semibold text-slate-700">Customer Email *</label>
                   <input
                     type="email"
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="e.g. customer@example.com"
                     className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 focus:outline-hidden focus:border-blue-500 focus:bg-white"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-700">Phone Number (for Courier SMS updates) *</label>
+                <label className="text-xs font-semibold text-slate-700">Phone number (Required for Delivery Courier SMS/Call) *</label>
                 <input
                   type="tel"
                   required
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  placeholder="e.g. +1 (555) 000-0000"
                   className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 focus:outline-hidden focus:border-blue-500 focus:bg-white"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-700">Street Address *</label>
+                <label className="text-xs font-semibold text-slate-700">Street address *</label>
                 <input
                   type="text"
                   required
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  placeholder="e.g. 123 Tech Avenue, Apartment 4B"
                   className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 focus:outline-hidden focus:border-blue-500 focus:bg-white"
                 />
               </div>
@@ -277,34 +340,31 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                     required
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                    placeholder="e.g. San Francisco"
                     className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 focus:outline-hidden focus:border-blue-500 focus:bg-white"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-700">Postal / Zip Code *</label>
+                  <label className="text-xs font-semibold text-slate-700">Postal zip code *</label>
                   <input
                     type="text"
                     required
                     value={formData.postalCode}
                     onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
+                    placeholder="e.g. 94107"
                     className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 focus:outline-hidden focus:border-blue-500 focus:bg-white"
                   />
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-xs font-semibold text-slate-700">Country *</label>
-                  <select
+                  <input
+                    type="text"
+                    required
                     value={formData.country}
                     onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-md px-3 py-2 text-xs text-slate-900 focus:outline-hidden focus:border-blue-500 focus:bg-white cursor-pointer"
-                  >
-                    <option value="United States">United States</option>
-                    <option value="Canada">Canada</option>
-                    <option value="United Kingdom">United Kingdom</option>
-                    <option value="Germany">Germany</option>
-                    <option value="Japan">Japan</option>
-                    <option value="Singapore">Singapore</option>
-                    <option value="Australia">Australia</option>
-                  </select>
+                    placeholder="e.g. United States"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 focus:outline-hidden focus:border-blue-500 focus:bg-white"
+                  />
                 </div>
               </div>
 
@@ -321,7 +381,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                   type="submit"
                   className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg transition-all shadow-sm flex items-center gap-2 cursor-pointer"
                 >
-                  <span>Continue to Payment</span>
+                  <span>Continue to Payment Method</span>
                   <ArrowRight className="w-4 h-4 text-white" />
                 </button>
               </div>
@@ -383,202 +443,137 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
         </div>
       )}
 
-      {/* Step 2: Payment Method */}
+      {/* Step 2: Payment Method (Cash on Delivery ONLY) */}
       {step === 'payment' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs">
             <div>
               <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-                Select Payment Method
+                Payment Method
               </h2>
               <p className="text-xs text-slate-500 mt-1">
-                Encrypted 256-bit secure transaction. Choose Credit Card, Apple Pay, or Cash on Delivery.
+                This store exclusively accepts <strong>Cash on Delivery (COD)</strong>. No card details or online upfront payments are required.
               </p>
             </div>
 
-            {/* Payment Tabs */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <button
-                type="button"
-                onClick={() => setPaymentMethod('card')}
-                className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between h-24 ${
-                  paymentMethod === 'card'
-                    ? 'border-blue-600 bg-blue-50/50 text-blue-950 shadow-2xs'
-                    : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <CreditCard className="w-5 h-5 text-blue-600" />
-                  {paymentMethod === 'card' && <div className="w-2 h-2 rounded-full bg-blue-600" />}
+            {/* Exclusive Cash on Delivery Card */}
+            <div className="p-6 bg-gradient-to-br from-blue-50/70 to-sky-50/40 border-2 border-blue-500/70 rounded-2xl space-y-4">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+                  <Banknote className="w-6 h-6" />
                 </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">Credit / Debit Card</div>
-                  <div className="text-[10px] text-slate-500">Visa, Mastercard, Amex</div>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPaymentMethod('apple_pay')}
-                className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between h-24 ${
-                  paymentMethod === 'apple_pay'
-                    ? 'border-blue-600 bg-blue-50/50 text-blue-950 shadow-2xs'
-                    : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-bold text-slate-900"> Pay</span>
-                  {paymentMethod === 'apple_pay' && <div className="w-2 h-2 rounded-full bg-blue-600" />}
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">Apple / Google Pay</div>
-                  <div className="text-[10px] text-slate-500">1-Touch Biometric checkout</div>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPaymentMethod('cod')}
-                className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between h-24 ${
-                  paymentMethod === 'cod'
-                    ? 'border-blue-600 bg-blue-50/50 text-blue-950 shadow-2xs'
-                    : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <Banknote className="w-5 h-5 text-blue-600" />
-                  {paymentMethod === 'cod' && <div className="w-2 h-2 rounded-full bg-blue-600" />}
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">Cash on Delivery (COD)</div>
-                  <div className="text-[10px] text-slate-500">Pay upon physical delivery</div>
-                </div>
-              </button>
-            </div>
-
-            {/* Payment Details Form */}
-            {paymentMethod === 'card' && (
-              <form onSubmit={handlePlaceOrder} className="space-y-4 pt-2">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-700">Card Number</label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      required
-                      value={cardNumber}
-                      onChange={(e) => setCardNumber(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 font-mono focus:outline-hidden focus:border-blue-500 focus:bg-white"
-                    />
-                    <Lock className="w-3.5 h-3.5 text-slate-400 absolute right-3 top-3" />
+                <div className="flex-1 space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base font-bold text-slate-900">Cash on Delivery (COD)</span>
+                    <span className="text-[10px] uppercase font-mono font-bold bg-blue-600 text-white px-2 py-0.5 rounded-full">
+                      Only Available Method
+                    </span>
                   </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-700">Expiry (MM/YY)</label>
-                    <input
-                      type="text"
-                      required
-                      value={cardExpiry}
-                      onChange={(e) => setCardExpiry(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 font-mono focus:outline-hidden focus:border-blue-500 focus:bg-white"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-700">CVC Code</label>
-                    <input
-                      type="text"
-                      required
-                      value={cardCvc}
-                      onChange={(e) => setCardCvc(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 font-mono focus:outline-hidden focus:border-blue-500 focus:bg-white"
-                    />
-                  </div>
-                </div>
-
-                <div className="pt-4 flex items-center justify-between">
-                  <button
-                    type="button"
-                    onClick={() => setStep('shipping')}
-                    className="text-xs text-slate-500 hover:text-blue-600 flex items-center gap-1 cursor-pointer font-medium"
-                  >
-                    <ArrowLeft className="w-3.5 h-3.5" />
-                    <span>Back to Shipping</span>
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg transition-all shadow-sm flex items-center gap-2 cursor-pointer"
-                  >
-                    <span>Authorize & Place Order (${finalTotal})</span>
-                    <ArrowRight className="w-4 h-4 text-white" />
-                  </button>
-                </div>
-              </form>
-            )}
-
-            {paymentMethod === 'apple_pay' && (
-              <div className="p-6 bg-slate-50 border border-slate-200 rounded-xl space-y-4 text-center">
-                <p className="text-xs text-slate-600">
-                  Ready to authorize payment using Apple Pay or Google Pay with Touch ID / Face ID.
-                </p>
-                <button
-                  type="button"
-                  onClick={handlePlaceOrder}
-                  className="w-full max-w-sm mx-auto py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-lg transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <span>Pay ${finalTotal} with  Pay</span>
-                </button>
-              </div>
-            )}
-
-            {paymentMethod === 'cod' && (
-              <div className="p-6 bg-blue-50/60 border border-blue-100 rounded-xl space-y-4">
-                <div className="text-xs text-slate-700 space-y-1">
-                  <div className="font-bold text-slate-900">Cash on Delivery Terms:</div>
-                  <p className="text-slate-600">
-                    You will pay the exact total of <strong className="text-blue-600 font-mono">${finalTotal}</strong> directly to the courier upon physical parcel delivery.
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Pay the total amount of <strong className="text-blue-700 font-mono text-sm">${finalTotal}</strong> directly in cash to the delivery courier when your package arrives at your doorstep.
                   </p>
                 </div>
+              </div>
 
-                <div className="pt-2 flex items-center justify-between">
-                  <button
-                    type="button"
-                    onClick={() => setStep('shipping')}
-                    className="text-xs text-slate-500 hover:text-blue-600 flex items-center gap-1 cursor-pointer font-medium"
-                  >
-                    <ArrowLeft className="w-3.5 h-3.5" />
-                    <span>Back to Shipping</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handlePlaceOrder}
-                    className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg transition-all shadow-sm flex items-center gap-2 cursor-pointer"
-                  >
-                    <span>Confirm Order with COD (${finalTotal})</span>
-                  </button>
+              <div className="pt-3 border-t border-blue-200/60 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-700">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>No credit or debit card required</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Inspect package before paying courier</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Official Khizar Tech cash invoice included</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Instant webhook notification on order placement</span>
                 </div>
               </div>
-            )}
+            </div>
+
+            {/* Delivering details confirmation banner */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs space-y-2">
+              <div className="font-bold text-slate-800 flex items-center gap-1.5">
+                <Truck className="w-4 h-4 text-blue-600" />
+                <span>Confirming Shipping Destination:</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-600">
+                <div>
+                  <span className="text-slate-400 block text-[10px] uppercase font-mono">Recipient</span>
+                  <span className="font-semibold text-slate-800">{formData.fullName}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block text-[10px] uppercase font-mono">Phone Number</span>
+                  <span className="font-mono text-blue-600">{formData.phone}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block text-[10px] uppercase font-mono">Delivery Address</span>
+                  <span>{formData.address}, {formData.city}, {formData.postalCode}, {formData.country}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block text-[10px] uppercase font-mono">Email Receipt</span>
+                  <span>{formData.email}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="pt-2 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => setStep('shipping')}
+                className="text-xs text-slate-500 hover:text-blue-600 flex items-center gap-1 cursor-pointer font-medium"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back to Shipping</span>
+              </button>
+
+              <button
+                type="button"
+                disabled={isPlacingOrder}
+                onClick={() => handlePlaceOrder()}
+                className="px-7 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2 cursor-pointer"
+              >
+                {isPlacingOrder ? (
+                  <span>Processing Order...</span>
+                ) : (
+                  <>
+                    <span>Place Order with Cash on Delivery (${finalTotal})</span>
+                    <ArrowRight className="w-4 h-4 text-white" />
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Right Summary */}
           <div className="lg:col-span-4 bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-xs">
-            <h3 className="text-sm font-bold text-slate-900">Delivering To</h3>
-            <div className="text-xs text-slate-700 space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-200">
-              <div className="font-bold text-slate-900">{formData.fullName}</div>
-              <div>{formData.address}</div>
-              <div>{formData.city}, {formData.postalCode}</div>
-              <div>{formData.country}</div>
-              <div className="text-blue-600 pt-1 font-mono">{formData.phone}</div>
+            <h3 className="text-sm font-bold text-slate-900">Total Due on Delivery</h3>
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center space-y-1">
+              <span className="text-xs text-slate-500 uppercase tracking-wider font-mono">Cash on Delivery</span>
+              <div className="text-3xl font-bold font-mono text-blue-600 tabular-nums">
+                ${finalTotal}
+              </div>
+              <p className="text-[11px] text-slate-500">Payable in cash upon physical arrival</p>
             </div>
 
             <div className="pt-2 border-t border-slate-100 space-y-2 text-xs">
               <div className="flex justify-between text-slate-600">
-                <span>Subtotal</span>
+                <span>Subtotal ({cartCount} items)</span>
                 <span className="font-mono text-slate-900 font-semibold tabular-nums">${cartSubtotal}</span>
               </div>
+              {discountAmount > 0 && (
+                <div className="flex justify-between text-emerald-600 font-semibold">
+                  <span>Discount</span>
+                  <span className="font-mono tabular-nums">-${discountAmount}</span>
+                </div>
+              )}
               <div className="flex justify-between text-slate-600">
-                <span>Air Express Shipping</span>
+                <span>Express Air Shipping</span>
                 <span className="font-mono text-emerald-600 font-semibold tabular-nums">
                   {shippingFee === 0 ? 'FREE' : `$${shippingFee}`}
                 </span>
@@ -587,128 +582,123 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                 <span>Estimated Tax</span>
                 <span className="font-mono text-slate-900 tabular-nums">${estimatedTax}</span>
               </div>
-              <div className="pt-2 border-t border-slate-200 flex justify-between text-sm font-bold text-slate-900">
-                <span>Total Due</span>
-                <span className="font-mono text-blue-600 text-base tabular-nums">${finalTotal}</span>
+            </div>
+
+            <div className="pt-3 border-t border-slate-100 space-y-2 text-[11px] text-slate-500">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
+                <span>Khizar Tech 2-Year Hardware Replacement Warranty</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Truck className="w-4 h-4 text-blue-600 shrink-0" />
+                <span>Air courier delivery in 3 to 4 business days</span>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Step 3: Confirmation Screen */}
+      {/* Step 3: Order Completed (Order Received Screen) */}
       {step === 'confirmation' && createdOrder && (
-        <div className="max-w-3xl mx-auto bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 space-y-8 text-center shadow-xs">
-          <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto">
-            <CheckCircle2 className="w-8 h-8" />
+        <div className="max-w-2xl mx-auto bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 space-y-8 text-center shadow-sm">
+          {/* Success Checkmark */}
+          <div className="w-20 h-20 rounded-full bg-emerald-50 border-2 border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto shadow-2xs">
+            <CheckCircle2 className="w-10 h-10" />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="text-xs uppercase font-mono tracking-widest text-blue-600 font-semibold">
-              Khizar Tech Store · Dispatch Confirmed
+              Khizar Tech Store
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 font-display">
-              Thank You for Your Order!
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 font-display tracking-tight">
+              Order Received
             </h1>
-            <p className="text-xs text-slate-500 max-w-md mx-auto">
-              Your hardware order has been verified in the dispatch facility. A confirmation receipt has been sent to <strong className="text-slate-800">{createdOrder.shippingAddress.email}</strong>.
+            <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+              Thank you for shopping with Khizar Tech Store. Your order has been placed successfully and will be delivered via <strong>Cash on Delivery</strong>.
             </p>
           </div>
 
-          {/* Order Details Card */}
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-left space-y-4">
+          {/* Clean Order Summary Card */}
+          <div className="bg-slate-50/80 border border-slate-200 rounded-2xl p-6 text-left space-y-5">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs border-b border-slate-200 pb-4">
               <div>
-                <span className="text-slate-500 block text-[10px] uppercase font-mono">Order Number</span>
-                <span className="font-bold text-blue-600 font-mono text-sm">{createdOrder.orderId}</span>
+                <span className="text-slate-400 block text-[10px] uppercase font-mono">Order ID</span>
+                <span className="font-bold text-blue-600 font-mono text-base">#{createdOrder.orderId}</span>
               </div>
               <div>
-                <span className="text-slate-500 block text-[10px] uppercase font-mono">Date</span>
+                <span className="text-slate-400 block text-[10px] uppercase font-mono">Order Date</span>
                 <span className="text-slate-800 font-medium">{createdOrder.date}</span>
               </div>
               <div>
-                <span className="text-slate-500 block text-[10px] uppercase font-mono">Total Paid</span>
-                <span className="font-bold text-slate-900 font-mono text-sm">${createdOrder.total}</span>
+                <span className="text-slate-400 block text-[10px] uppercase font-mono">Total Due (Cash)</span>
+                <span className="font-bold text-slate-900 font-mono text-base">${createdOrder.total}</span>
               </div>
               <div>
-                <span className="text-slate-500 block text-[10px] uppercase font-mono">Payment</span>
-                <span className="text-slate-800 uppercase text-xs font-semibold">{createdOrder.paymentMethod}</span>
+                <span className="text-slate-400 block text-[10px] uppercase font-mono">Payment</span>
+                <span className="text-blue-700 font-semibold text-xs bg-blue-100/70 px-2 py-0.5 rounded">
+                  Cash on Delivery
+                </span>
               </div>
             </div>
 
-            {/* Items summary */}
+            {/* Recipient & Address */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs border-b border-slate-200 pb-4">
+              <div>
+                <span className="text-slate-400 block text-[10px] uppercase font-mono">Customer Name & Phone</span>
+                <div className="font-semibold text-slate-800">{createdOrder.shippingAddress.fullName}</div>
+                <div className="text-blue-600 font-mono">{createdOrder.shippingAddress.phone}</div>
+                <div className="text-slate-500">{createdOrder.shippingAddress.email}</div>
+              </div>
+              <div>
+                <span className="text-slate-400 block text-[10px] uppercase font-mono">Delivery Address</span>
+                <div className="text-slate-700">
+                  {createdOrder.shippingAddress.address}<br />
+                  {createdOrder.shippingAddress.city}, {createdOrder.shippingAddress.postalCode}<br />
+                  {createdOrder.shippingAddress.country}
+                </div>
+              </div>
+            </div>
+
+            {/* Items */}
             <div className="space-y-2 text-xs">
-              <span className="text-slate-500 block text-[10px] uppercase font-mono">Purchased Hardware</span>
-              {createdOrder.items.map((item) => (
-                <div key={item.id} className="flex justify-between items-center text-slate-700">
-                  <span className="truncate max-w-xs">{item.product.name} × {item.quantity}</span>
-                  <span className="font-mono text-slate-900 font-bold">${item.product.price * item.quantity}</span>
-                </div>
-              ))}
+              <span className="text-slate-400 block text-[10px] uppercase font-mono">Ordered Products</span>
+              <div className="space-y-2 divide-y divide-slate-100">
+                {createdOrder.items.map((item) => (
+                  <div key={item.id} className="pt-2 first:pt-0 flex justify-between items-center text-slate-700">
+                    <div className="flex items-center gap-2 min-w-0 pr-4">
+                      <Package className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                      <span className="truncate font-medium">{item.product.name} × {item.quantity}</span>
+                    </div>
+                    <span className="font-mono text-slate-900 font-bold shrink-0">
+                      ${item.product.price * item.quantity}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Google Sheets Sync Status Notification */}
-          <div className="p-4 rounded-xl border text-left flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-emerald-50/70 border-emerald-200 text-emerald-950 text-xs">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0">
-                <FileSpreadsheet className="w-4 h-4" />
-              </div>
-              <div>
-                <div className="font-bold flex items-center gap-1.5 text-emerald-900">
-                  <span>Google Sheets Sync Active</span>
-                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-200/60 text-emerald-800">
-                    Sheet1
-                  </span>
-                </div>
-                <div className="text-[11px] text-emerald-700">
-                  {syncStatusText || `Appended to 'Tech Store Orders' with Order ID #${createdOrder.orderId}`}
-                </div>
-              </div>
+          {/* Webhook Dispatch Status Note */}
+          <div className="bg-blue-50/70 border border-blue-100 rounded-xl px-4 py-3 text-xs text-blue-900 flex items-center justify-between gap-3 text-left">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>
+                <strong>Webhook Dispatched:</strong> Order #{createdOrder.orderId} data sent to webhook
+              </span>
             </div>
-
-            {spreadsheet?.url ? (
-              <a
-                href={spreadsheet.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors self-start sm:self-auto shrink-0 shadow-2xs"
-              >
-                <span>View in Google Sheets</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            ) : (
-              <button
-                type="button"
-                onClick={() => navigateTo({ name: 'sheets' })}
-                className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors self-start sm:self-auto shrink-0 shadow-2xs cursor-pointer"
-              >
-                <span>Manage Sheets Pipeline</span>
-              </button>
-            )}
+            <span className="text-[10px] font-mono text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">
+              POST 200
+            </span>
           </div>
 
-          {/* Action buttons */}
-          <div className="flex flex-col sm:flex-row justify-center gap-3 pt-2">
-            <button
-              onClick={() => navigateTo({ name: 'track', orderId: createdOrder.orderId })}
-              className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-            >
-              <PackageCheck className="w-4 h-4 text-white" />
-              <span>Track Live Order Progress</span>
-            </button>
-            <button
-              onClick={() => navigateTo({ name: 'sheets' })}
-              className="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Open Google Sheets Dashboard</span>
-            </button>
+          {/* Action: End process and Back to Home as requested */}
+          <div className="pt-2">
             <button
               onClick={() => navigateTo({ name: 'home' })}
-              className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 hover:text-slate-900 text-xs font-semibold rounded-lg transition-all cursor-pointer"
+              className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 mx-auto cursor-pointer"
             >
-              Back to Home
+              <Home className="w-4 h-4 text-white" />
+              <span>Back to Home</span>
             </button>
           </div>
         </div>

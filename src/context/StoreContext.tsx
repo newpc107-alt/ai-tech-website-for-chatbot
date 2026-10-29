@@ -98,9 +98,6 @@ function parseHash(hash: string): PageRoute {
   if (section === 'about') {
     return { name: 'about' };
   }
-  if (section === 'sheets') {
-    return { name: 'sheets' };
-  }
 
   return { name: 'home' };
 }
@@ -126,8 +123,6 @@ function routeToHash(route: PageRoute): string {
       return 'deals';
     case 'about':
       return 'about';
-    case 'sheets':
-      return 'sheets';
     default:
       return '';
   }

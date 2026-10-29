@@ -85,5 +85,4 @@ export type PageRoute =
   | { name: 'checkout'; step: 'shipping' | 'payment' | 'confirmation'; order?: OrderDetails }
   | { name: 'track'; orderId?: string }
   | { name: 'deals' }
-  | { name: 'about' }
-  | { name: 'sheets' };
+  | { name: 'about' };
