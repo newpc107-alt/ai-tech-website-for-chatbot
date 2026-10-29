@@ -1,0 +1,6 @@
+{
+  "name": "Khizar Tech Store | Audio, GaN Chargers, Cables & Accessories",
+  "description": "Premium e-commerce storefront by Khizar featuring AirPods, acoustic audio gear, GaN multi-port chargers, precision braided cables, and hardware accessories with dedicated sub-page navigation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
