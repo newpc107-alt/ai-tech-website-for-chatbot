@@ -15,7 +15,6 @@ import { AccessoriesPage } from './pages/AccessoriesPage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
 import { CartPage } from './pages/CartPage';
 import { CheckoutPage } from './pages/CheckoutPage';
-import { TrackOrderPage } from './pages/TrackOrderPage';
 import { DealsPage } from './pages/DealsPage';
 import { AboutPage } from './pages/AboutPage';
 
@@ -47,8 +46,6 @@ const AppContent: React.FC = () => {
         return <CartPage />;
       case 'checkout':
         return <CheckoutPage initialStep={route.step} key={route.step} />;
-      case 'track':
-        return <TrackOrderPage initialOrderId={route.orderId} key={route.orderId || 'default'} />;
       case 'deals':
         return <DealsPage />;
       case 'about':

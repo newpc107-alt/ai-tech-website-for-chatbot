@@ -28,9 +28,8 @@ interface StoreContextType {
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
-// Initial demo order for immediate tracking demonstration
+// Initial demo order for customer reference
 const INITIAL_DEMO_ORDER: OrderDetails = {
-  orderId: 'ORD-84920',
   date: 'October 27, 2026',
   items: [
     {
@@ -60,9 +59,9 @@ const INITIAL_DEMO_ORDER: OrderDetails = {
     postalCode: '94107',
     country: 'United States',
   },
-  paymentMethod: 'card',
-  status: 'Processing & Quality Check',
-  estimatedDelivery: 'Oct 30 - Nov 01, 2026',
+  paymentMethod: 'cod',
+  status: 'Order Placed',
+  estimatedDelivery: '3 - 4 Business Days',
 };
 
 // Parse URL hash to route
@@ -89,9 +88,6 @@ function parseHash(hash: string): PageRoute {
     const step = (parts[1] as any) || 'shipping';
     return { name: 'checkout', step };
   }
-  if (section === 'track') {
-    return { name: 'track', orderId: parts[1] };
-  }
   if (section === 'deals') {
     return { name: 'deals' };
   }
@@ -117,8 +113,6 @@ function routeToHash(route: PageRoute): string {
       return 'cart';
     case 'checkout':
       return `checkout/${route.step}`;
-    case 'track':
-      return route.orderId ? `track/${route.orderId}` : 'track';
     case 'deals':
       return 'deals';
     case 'about':

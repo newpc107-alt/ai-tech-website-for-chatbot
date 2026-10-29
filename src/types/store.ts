@@ -54,7 +54,6 @@ export interface CartItem {
 }
 
 export interface OrderDetails {
-  orderId: string;
   date: string;
   items: CartItem[];
   subtotal: number;
@@ -71,8 +70,8 @@ export interface OrderDetails {
     postalCode: string;
     country: string;
   };
-  paymentMethod: 'card' | 'cod' | 'apple_pay';
-  status: 'Order Placed' | 'Processing & Quality Check' | 'Dispatched via Express' | 'Out for Delivery' | 'Delivered';
+  paymentMethod: 'cod';
+  status: 'Order Placed';
   estimatedDelivery: string;
 }
 
@@ -83,6 +82,5 @@ export type PageRoute =
   | { name: 'product'; productId: string }
   | { name: 'cart' }
   | { name: 'checkout'; step: 'shipping' | 'payment' | 'confirmation'; order?: OrderDetails }
-  | { name: 'track'; orderId?: string }
   | { name: 'deals' }
   | { name: 'about' };

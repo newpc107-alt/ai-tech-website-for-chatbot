@@ -121,14 +121,6 @@ export const Footer: React.FC = () => {
             </li>
             <li>
               <button
-                onClick={() => navigateTo({ name: 'track' })}
-                className="hover:text-blue-400 transition-colors text-xs text-left cursor-pointer"
-              >
-                Live Order Dispatch Tracking
-              </button>
-            </li>
-            <li>
-              <button
                 onClick={() => navigateTo({ name: 'about' })}
                 className="hover:text-blue-400 transition-colors text-xs text-left cursor-pointer"
               >
@@ -144,20 +136,13 @@ export const Footer: React.FC = () => {
             Khizar Tech Support
           </div>
           <ul className="space-y-2 text-xs">
-            <li>
-              <button
-                onClick={() => navigateTo({ name: 'track' })}
-                className="hover:text-blue-400 text-blue-300 font-medium transition-colors text-left cursor-pointer flex items-center gap-1"
-              >
-                <span>Track Your Order</span> →
-              </button>
-            </li>
+            <li>Cash on Delivery dispatch available nationwide</li>
             <li>Email: khizar.tech@support.design</li>
             <li>Direct Inquiries: hello@khizar-store.design</li>
             <li>Hotline: +1 (800) KHIZAR-TECH</li>
             <li>Hours: Mon - Fri, 9am - 8pm EST</li>
             <li className="pt-2">
-              <span className="text-[11px] text-blue-400">Secure 256-bit encrypted checkout</span>
+              <span className="text-[11px] text-blue-400">Cash on Delivery · Inspect before paying</span>
             </li>
           </ul>
         </div>

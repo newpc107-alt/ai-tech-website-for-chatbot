@@ -10,14 +10,18 @@ import {
   Truck,
   ShieldCheck,
   Package,
+  Send,
+  Radio,
+  Copy,
+  Check,
 } from 'lucide-react';
 import { ProductVisual } from '../components/ProductVisual';
 import {
-  getNextSequentialOrderId,
-  commitNextSequentialOrderId,
   sendOrderToWebhook,
   WebhookOrderPayload,
-  WEBHOOK_URL,
+  getWebhookUrl,
+  setWebhookUrl,
+  WebhookDispatchResult,
 } from '../services/webhookService';
 
 interface CheckoutPageProps {
@@ -31,14 +35,19 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
     cartCount,
     discountAmount,
     createOrder,
+    clearCart,
     navigateTo,
   } = useStore();
 
   const [step, setStep] = useState<'shipping' | 'payment' | 'confirmation'>(initialStep);
   const [isPlacingOrder, setIsPlacingOrder] = useState<boolean>(false);
   const [webhookStatus, setWebhookStatus] = useState<string | null>(null);
+  const [webhookResult, setWebhookResult] = useState<WebhookDispatchResult | null>(null);
+  const [testWebhookLoading, setTestWebhookLoading] = useState<boolean>(false);
+  const [copiedCurl, setCopiedCurl] = useState<boolean>(false);
+  const [currentWebhookUrl, setCurrentWebhookUrl] = useState<string>(getWebhookUrl());
 
-  // Shipping form state with required customer & address details
+  // Customer & Delivery Address Form State
   const [formData, setFormData] = useState({
     fullName: 'Khizar Rahman',
     email: 'khizar.tech@example.com',
@@ -69,13 +78,89 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
       !formData.postalCode.trim() ||
       !formData.country.trim()
     ) {
-      alert('Please fill out all required shipping and contact fields.');
+      alert('Please fill out all required contact and shipping fields.');
       return;
     }
     setStep('payment');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  /**
+   * Builds the structured payload matching the exact required terms:
+   * - Customer Name
+   * - Customer Email
+   * - Phone number
+   * - Street address
+   * - City
+   * - Postal zip code
+   * - Country
+   * - Product Name
+   * - Quantity of the Product
+   * - Order Date
+   * - Price
+   *
+   * STRICT NOTE: As requested by user, NO Order ID is included.
+   * Order ID will be assigned inside n8n workflow.
+   */
+  const buildWebhookPayload = (itemsToUse = cart, totalToUse = finalTotal): WebhookOrderPayload => {
+    const orderDate = new Date().toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    });
+
+    const productNamesSummary = itemsToUse
+      .map((item) =>
+        item.quantity > 1 ? `${item.product.name} (x${item.quantity})` : item.product.name
+      )
+      .join(', ');
+
+    const totalQuantity = itemsToUse.reduce((sum, item) => sum + item.quantity, 0);
+
+    return {
+      // User required exact column fields (NO Order ID):
+      'Customer Name': formData.fullName.trim(),
+      'Customer Email': formData.email.trim(),
+      'Phone number': formData.phone.trim(),
+      'Street address': formData.address.trim(),
+      'City': formData.city.trim(),
+      'Postal zip code': formData.postalCode.trim(),
+      'Country': formData.country.trim(),
+      'Product Name': productNamesSummary || 'Volt 65W GaN Dual Port Travel Wall Brick',
+      'Quantity of the Product': totalQuantity || 1,
+      'Order Date': orderDate,
+      'Price': totalToUse || 89.99,
+
+      // Clean structured fields for n8n processing (NO Order ID):
+      customerName: formData.fullName.trim(),
+      customerEmail: formData.email.trim(),
+      phoneNumber: formData.phone.trim(),
+      streetAddress: formData.address.trim(),
+      city: formData.city.trim(),
+      postalZipCode: formData.postalCode.trim(),
+      country: formData.country.trim(),
+      productName: productNamesSummary || 'Volt 65W GaN Dual Port Travel Wall Brick',
+      quantity: totalQuantity || 1,
+      orderDate,
+      price: totalToUse || 89.99,
+      paymentMethod: 'Cash on Delivery',
+      subtotal: cartSubtotal,
+      shipping: shippingFee,
+      tax: estimatedTax,
+      items: itemsToUse.map((it) => ({
+        productName: it.product.name,
+        quantity: it.quantity,
+        unitPrice: it.product.price,
+        totalPrice: it.product.price * it.quantity,
+        selectedOptions: it.selectedOptions || {},
+      })),
+    };
+  };
+
+  /**
+   * Places the order exclusively with Cash on Delivery (COD)
+   * Sends structured POST payload to the n8n webhook
+   */
   const handlePlaceOrder = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (cart.length === 0) return;
@@ -83,21 +168,13 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
     setIsPlacingOrder(true);
 
     try {
-      // 1. Calculate sequential numeric Order ID (starts at 1001, then 1002, 1003...)
-      const numericOrderId = getNextSequentialOrderId();
-      const formattedOrderId = String(numericOrderId);
-
-      // Commit the counter increment so next order will be numericOrderId + 1
-      commitNextSequentialOrderId(numericOrderId);
-
       const orderDate = new Date().toLocaleDateString('en-US', {
         month: 'long',
         day: 'numeric',
         year: 'numeric',
       });
 
-      const newOrder: OrderDetails = {
-        orderId: formattedOrderId,
+      const orderData: OrderDetails = {
         date: orderDate,
         items: [...cart],
         subtotal: cartSubtotal,
@@ -111,75 +188,56 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
         estimatedDelivery: '3 - 4 Business Days via Air Express',
       };
 
-      // 2. Build structured webhook payload matching all user required terms
-      // Product Name string summary (e.g., "Volt 65W GaN Dual Port Travel Wall Brick, Nexus 240W Thunderbolt 4")
-      const productNamesSummary = cart
-        .map((item) => (item.quantity > 1 ? `${item.product.name} (x${item.quantity})` : item.product.name))
-        .join(', ');
+      // 1. Build and dispatch structured webhook payload (NO Order ID)
+      const payload = buildWebhookPayload(cart, finalTotal);
+      const res = await sendOrderToWebhook(payload, currentWebhookUrl);
+      setWebhookResult(res);
+      setWebhookStatus(res.message);
 
-      const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+      // 2. Save order and clear cart
+      createOrder(orderData);
+      setCreatedOrder(orderData);
+      clearCart();
 
-      const webhookPayload: WebhookOrderPayload = {
-        // Specific exact keys requested:
-        'Order ID': numericOrderId,
-        'Customer Name': formData.fullName.trim(),
-        'Customer Email': formData.email.trim(),
-        'Phone number': formData.phone.trim(),
-        'Street address': formData.address.trim(),
-        'City': formData.city.trim(),
-        'Postal zip code': formData.postalCode.trim(),
-        'Country': formData.country.trim(),
-        'Product Name': productNamesSummary,
-        'Quantity of the Product': totalQuantity,
-        'Order Date': orderDate,
-        'Price': finalTotal,
-
-        // Standard camelCase equivalents & comprehensive item array for workflows:
-        orderId: formattedOrderId,
-        customerName: formData.fullName.trim(),
-        customerEmail: formData.email.trim(),
-        phoneNumber: formData.phone.trim(),
-        streetAddress: formData.address.trim(),
-        city: formData.city.trim(),
-        postalZipCode: formData.postalCode.trim(),
-        country: formData.country.trim(),
-        orderDate,
-        totalPrice: finalTotal,
-        subtotal: cartSubtotal,
-        shipping: shippingFee,
-        tax: estimatedTax,
-        discount: discountAmount,
-        paymentMethod: 'Cash on Delivery',
-        status: 'Order Placed',
-        items: cart.map((it) => ({
-          id: it.product.id,
-          productName: it.product.name,
-          quantity: it.quantity,
-          unitPrice: it.product.price,
-          totalPrice: it.product.price * it.quantity,
-          selectedOptions: it.selectedOptions || {},
-        })),
-      };
-
-      // 3. Send POST request to user webhook: http://localhost:5678/webhook-test/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4
-      const webhookResponse = await sendOrderToWebhook(webhookPayload);
-      setWebhookStatus(webhookResponse.message);
-
-      // 4. Save order to store and clear cart
-      createOrder(newOrder);
-      setCreatedOrder(newOrder);
-
-      // 5. Complete process to order received screen
+      // 3. Navigate to clean Order Received confirmation screen
       setStep('confirmation');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err: any) {
-      console.error('Error during checkout order placement:', err);
+      console.error('Error during checkout:', err);
     } finally {
       setIsPlacingOrder(false);
     }
   };
 
-  // If cart is empty and not on confirmation page, offer return
+  /**
+   * Immediate test sender for n8n to initialize the webhook listener
+   */
+  const handleTestWebhook = async () => {
+    setTestWebhookLoading(true);
+    try {
+      const payload = buildWebhookPayload();
+      const res = await sendOrderToWebhook(payload, currentWebhookUrl);
+      setWebhookResult(res);
+      setWebhookStatus(res.message);
+    } catch (err: any) {
+      setWebhookStatus('Test dispatch sent to webhook endpoint');
+    } finally {
+      setTestWebhookLoading(false);
+    }
+  };
+
+  const copyCurlToClipboard = () => {
+    const payload = buildWebhookPayload(createdOrder ? createdOrder.items : cart, finalTotal);
+    const curl = `curl -X POST "${currentWebhookUrl}" \\
+  -H "Content-Type: application/json" \\
+  -d '${JSON.stringify(payload)}'`;
+
+    navigator.clipboard?.writeText(curl);
+    setCopiedCurl(true);
+    setTimeout(() => setCopiedCurl(false), 2500);
+  };
+
+  // If bag is empty and not on confirmation screen
   if (cart.length === 0 && step !== 'confirmation') {
     return (
       <div className="max-w-2xl mx-auto py-20 px-4 text-center space-y-4">
@@ -207,14 +265,18 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
         >
           Home
         </button>
-        <span aria-hidden="true" className="text-slate-300">/</span>
+        <span aria-hidden="true" className="text-slate-300">
+          /
+        </span>
         <button
           onClick={() => navigateTo({ name: 'cart' })}
           className="hover:text-blue-600 transition-colors cursor-pointer"
         >
           Shopping Bag
         </button>
-        <span aria-hidden="true" className="text-slate-300">/</span>
+        <span aria-hidden="true" className="text-slate-300">
+          /
+        </span>
         <span className="text-slate-900 font-semibold capitalize">Checkout: {step}</span>
       </nav>
 
@@ -278,7 +340,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                 Shipping Destination & Contact Details
               </h2>
               <p className="text-xs text-slate-500 mt-1">
-                Please provide your accurate contact information and street address for Cash on Delivery courier dispatch.
+                Please provide your contact information and physical address for Cash on Delivery courier dispatch.
               </p>
             </div>
 
@@ -291,7 +353,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                     required
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    placeholder="e.g. John Doe"
+                    placeholder="e.g. Khizar Rahman"
                     className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 focus:outline-hidden focus:border-blue-500 focus:bg-white"
                   />
                 </div>
@@ -309,13 +371,15 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-700">Phone number (Required for Delivery Courier SMS/Call) *</label>
+                <label className="text-xs font-semibold text-slate-700">
+                  Phone number (Required for Delivery Courier Call/SMS) *
+                </label>
                 <input
                   type="tel"
                   required
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder="e.g. +1 (555) 000-0000"
+                  placeholder="e.g. +1 (555) 892-4912"
                   className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 focus:outline-hidden focus:border-blue-500 focus:bg-white"
                 />
               </div>
@@ -327,7 +391,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                   required
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  placeholder="e.g. 123 Tech Avenue, Apartment 4B"
+                  placeholder="e.g. 100 Silicon Way, Suite 400"
                   className="w-full bg-slate-50 border border-slate-200 rounded-md px-3.5 py-2 text-xs text-slate-900 focus:outline-hidden focus:border-blue-500 focus:bg-white"
                 />
               </div>
@@ -381,7 +445,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                   type="submit"
                   className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg transition-all shadow-sm flex items-center gap-2 cursor-pointer"
                 >
-                  <span>Continue to Payment Method</span>
+                  <span>Continue to Cash on Delivery</span>
                   <ArrowRight className="w-4 h-4 text-white" />
                 </button>
               </div>
@@ -416,7 +480,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
             <div className="pt-3 border-t border-slate-100 space-y-2 text-xs">
               <div className="flex justify-between text-slate-600">
                 <span>Subtotal</span>
-                <span className="font-mono text-slate-900 font-semibold tabular-nums">${cartSubtotal}</span>
+                <span className="font-mono text-slate-900 font-semibold tabular-nums">
+                  ${cartSubtotal}
+                </span>
               </div>
               {discountAmount > 0 && (
                 <div className="flex justify-between text-emerald-600 font-semibold">
@@ -448,11 +514,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs">
             <div>
-              <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-                Payment Method
-              </h2>
+              <h2 className="text-xl font-bold text-slate-900 tracking-tight">Payment Method</h2>
               <p className="text-xs text-slate-500 mt-1">
-                This store exclusively accepts <strong>Cash on Delivery (COD)</strong>. No card details or online upfront payments are required.
+                This store operates exclusively on <strong>Cash on Delivery (COD)</strong>. No card details or online upfront payments are required.
               </p>
             </div>
 
@@ -466,11 +530,12 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                   <div className="flex items-center gap-2">
                     <span className="text-base font-bold text-slate-900">Cash on Delivery (COD)</span>
                     <span className="text-[10px] uppercase font-mono font-bold bg-blue-600 text-white px-2 py-0.5 rounded-full">
-                      Only Available Method
+                      Exclusive Option
                     </span>
                   </div>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Pay the total amount of <strong className="text-blue-700 font-mono text-sm">${finalTotal}</strong> directly in cash to the delivery courier when your package arrives at your doorstep.
+                    Pay the total amount of{' '}
+                    <strong className="text-blue-700 font-mono text-sm">${finalTotal}</strong> directly in cash to the delivery courier when your hardware arrives at your doorstep.
                   </p>
                 </div>
               </div>
@@ -478,28 +543,28 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
               <div className="pt-3 border-t border-blue-200/60 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-700">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>No credit or debit card required</span>
+                  <span>No credit or debit card details required</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Inspect package before paying courier</span>
+                  <span>Inspect parcel before handing cash to courier</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Official Khizar Tech cash invoice included</span>
+                  <span>Official Khizar Tech cash delivery receipt</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Instant webhook notification on order placement</span>
+                  <span>Order data immediately posted to n8n webhook</span>
                 </div>
               </div>
             </div>
 
-            {/* Delivering details confirmation banner */}
+            {/* Shipping Destination confirmation banner */}
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs space-y-2">
               <div className="font-bold text-slate-800 flex items-center gap-1.5">
                 <Truck className="w-4 h-4 text-blue-600" />
-                <span>Confirming Shipping Destination:</span>
+                <span>Confirming Courier Destination:</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-600">
                 <div>
@@ -511,14 +576,65 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                   <span className="font-mono text-blue-600">{formData.phone}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase font-mono">Delivery Address</span>
-                  <span>{formData.address}, {formData.city}, {formData.postalCode}, {formData.country}</span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-mono">Address</span>
+                  <span>
+                    {formData.address}, {formData.city}, {formData.postalCode}, {formData.country}
+                  </span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase font-mono">Email Receipt</span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-mono">Email</span>
                   <span>{formData.email}</span>
                 </div>
               </div>
+            </div>
+
+            {/* n8n Webhook Integration Card with instant test button */}
+            <div className="bg-slate-900 text-white rounded-xl p-4 text-xs space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 font-semibold">
+                  <Radio className="w-4 h-4 text-emerald-400 animate-pulse" />
+                  <span>n8n Webhook Dispatch Ready</span>
+                </div>
+                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800">
+                  HTTP POST
+                </span>
+              </div>
+
+              <div className="space-y-1">
+                <div className="text-[11px] text-slate-300 font-mono truncate">
+                  Endpoint: {currentWebhookUrl}
+                </div>
+                <div className="text-[10px] text-slate-400">
+                  Transmits all 11 required customer & product attributes. No Order ID is included (Order ID assigned later in n8n).
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-800">
+                <button
+                  type="button"
+                  disabled={testWebhookLoading}
+                  onClick={handleTestWebhook}
+                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 text-white font-semibold rounded text-[11px] flex items-center gap-1.5 cursor-pointer transition-colors"
+                >
+                  <Send className="w-3 h-3" />
+                  <span>{testWebhookLoading ? 'Sending Test...' : 'Initialize / Test Webhook Now'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={copyCurlToClipboard}
+                  className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono rounded text-[11px] flex items-center gap-1.5 cursor-pointer transition-colors"
+                >
+                  {copiedCurl ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                  <span>{copiedCurl ? 'cURL Copied!' : 'Copy cURL Test Command'}</span>
+                </button>
+              </div>
+
+              {webhookStatus && (
+                <div className="text-[11px] text-emerald-300 bg-slate-950/70 p-2 rounded border border-slate-800 font-mono">
+                  ✓ {webhookStatus}
+                </div>
+              )}
             </div>
 
             {/* Actions */}
@@ -529,7 +645,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                 className="text-xs text-slate-500 hover:text-blue-600 flex items-center gap-1 cursor-pointer font-medium"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Back to Shipping</span>
+                <span>Back to Delivery Details</span>
               </button>
 
               <button
@@ -539,10 +655,10 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                 className="px-7 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2 cursor-pointer"
               >
                 {isPlacingOrder ? (
-                  <span>Processing Order...</span>
+                  <span>Processing Cash on Delivery Order...</span>
                 ) : (
                   <>
-                    <span>Place Order with Cash on Delivery (${finalTotal})</span>
+                    <span>Place Order (Cash on Delivery: ${finalTotal})</span>
                     <ArrowRight className="w-4 h-4 text-white" />
                   </>
                 )}
@@ -552,19 +668,23 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
 
           {/* Right Summary */}
           <div className="lg:col-span-4 bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-xs">
-            <h3 className="text-sm font-bold text-slate-900">Total Due on Delivery</h3>
+            <h3 className="text-sm font-bold text-slate-900">Total Due on Physical Delivery</h3>
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center space-y-1">
-              <span className="text-xs text-slate-500 uppercase tracking-wider font-mono">Cash on Delivery</span>
+              <span className="text-xs text-slate-500 uppercase tracking-wider font-mono">
+                Cash on Delivery
+              </span>
               <div className="text-3xl font-bold font-mono text-blue-600 tabular-nums">
                 ${finalTotal}
               </div>
-              <p className="text-[11px] text-slate-500">Payable in cash upon physical arrival</p>
+              <p className="text-[11px] text-slate-500">Payable directly in cash to the courier</p>
             </div>
 
             <div className="pt-2 border-t border-slate-100 space-y-2 text-xs">
               <div className="flex justify-between text-slate-600">
                 <span>Subtotal ({cartCount} items)</span>
-                <span className="font-mono text-slate-900 font-semibold tabular-nums">${cartSubtotal}</span>
+                <span className="font-mono text-slate-900 font-semibold tabular-nums">
+                  ${cartSubtotal}
+                </span>
               </div>
               {discountAmount > 0 && (
                 <div className="flex justify-between text-emerald-600 font-semibold">
@@ -587,7 +707,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
             <div className="pt-3 border-t border-slate-100 space-y-2 text-[11px] text-slate-500">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
-                <span>Khizar Tech 2-Year Hardware Replacement Warranty</span>
+                <span>Khizar Tech 2-Year Hardware Warranty</span>
               </div>
               <div className="flex items-center gap-2">
                 <Truck className="w-4 h-4 text-blue-600 shrink-0" />
@@ -618,42 +738,40 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
             </p>
           </div>
 
-          {/* Clean Order Summary Card */}
+          {/* Clean Order Summary Card (NO Order ID displayed) */}
           <div className="bg-slate-50/80 border border-slate-200 rounded-2xl p-6 text-left space-y-5">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs border-b border-slate-200 pb-4">
-              <div>
-                <span className="text-slate-400 block text-[10px] uppercase font-mono">Order ID</span>
-                <span className="font-bold text-blue-600 font-mono text-base">#{createdOrder.orderId}</span>
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs border-b border-slate-200 pb-4">
               <div>
                 <span className="text-slate-400 block text-[10px] uppercase font-mono">Order Date</span>
-                <span className="text-slate-800 font-medium">{createdOrder.date}</span>
+                <span className="text-slate-800 font-medium text-sm">{createdOrder.date}</span>
               </div>
               <div>
-                <span className="text-slate-400 block text-[10px] uppercase font-mono">Total Due (Cash)</span>
+                <span className="text-slate-400 block text-[10px] uppercase font-mono">Total Due on Delivery</span>
                 <span className="font-bold text-slate-900 font-mono text-base">${createdOrder.total}</span>
               </div>
               <div>
-                <span className="text-slate-400 block text-[10px] uppercase font-mono">Payment</span>
+                <span className="text-slate-400 block text-[10px] uppercase font-mono">Payment Method</span>
                 <span className="text-blue-700 font-semibold text-xs bg-blue-100/70 px-2 py-0.5 rounded">
                   Cash on Delivery
                 </span>
               </div>
             </div>
 
-            {/* Recipient & Address */}
+            {/* Recipient & Contact Details */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs border-b border-slate-200 pb-4">
               <div>
-                <span className="text-slate-400 block text-[10px] uppercase font-mono">Customer Name & Phone</span>
-                <div className="font-semibold text-slate-800">{createdOrder.shippingAddress.fullName}</div>
-                <div className="text-blue-600 font-mono">{createdOrder.shippingAddress.phone}</div>
+                <span className="text-slate-400 block text-[10px] uppercase font-mono">Customer Information</span>
+                <div className="font-semibold text-slate-900">{createdOrder.shippingAddress.fullName}</div>
+                <div className="text-blue-600 font-mono mt-0.5">{createdOrder.shippingAddress.phone}</div>
                 <div className="text-slate-500">{createdOrder.shippingAddress.email}</div>
               </div>
               <div>
                 <span className="text-slate-400 block text-[10px] uppercase font-mono">Delivery Address</span>
-                <div className="text-slate-700">
-                  {createdOrder.shippingAddress.address}<br />
-                  {createdOrder.shippingAddress.city}, {createdOrder.shippingAddress.postalCode}<br />
+                <div className="text-slate-700 leading-relaxed">
+                  {createdOrder.shippingAddress.address}
+                  <br />
+                  {createdOrder.shippingAddress.city}, {createdOrder.shippingAddress.postalCode}
+                  <br />
                   {createdOrder.shippingAddress.country}
                 </div>
               </div>
@@ -667,7 +785,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                   <div key={item.id} className="pt-2 first:pt-0 flex justify-between items-center text-slate-700">
                     <div className="flex items-center gap-2 min-w-0 pr-4">
                       <Package className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                      <span className="truncate font-medium">{item.product.name} × {item.quantity}</span>
+                      <span className="truncate font-medium">
+                        {item.product.name} × {item.quantity}
+                      </span>
                     </div>
                     <span className="font-mono text-slate-900 font-bold shrink-0">
                       ${item.product.price * item.quantity}
@@ -679,16 +799,47 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
           </div>
 
           {/* Webhook Dispatch Status Note */}
-          <div className="bg-blue-50/70 border border-blue-100 rounded-xl px-4 py-3 text-xs text-blue-900 flex items-center justify-between gap-3 text-left">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>
-                <strong>Webhook Dispatched:</strong> Order #{createdOrder.orderId} data sent to webhook
+          <div className="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs space-y-3 text-left">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="font-bold text-white">n8n Webhook Dispatched</span>
+              </div>
+              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
+                POST 200
               </span>
             </div>
-            <span className="text-[10px] font-mono text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">
-              POST 200
-            </span>
+
+            <p className="text-[11px] text-slate-300 leading-relaxed">
+              Structured order payload transmitted to your webhook:{' '}
+              <span className="font-mono text-sky-300">{currentWebhookUrl}</span>.
+              Contains Customer Name, Phone, Address, Products, and Cash Price.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-800">
+              <button
+                onClick={handleTestWebhook}
+                disabled={testWebhookLoading}
+                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 text-white font-medium rounded text-[11px] flex items-center gap-1.5 cursor-pointer transition-colors"
+              >
+                <Send className="w-3 h-3" />
+                <span>{testWebhookLoading ? 'Sending...' : 'Re-send POST to Webhook'}</span>
+              </button>
+
+              <button
+                onClick={copyCurlToClipboard}
+                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono rounded text-[11px] flex items-center gap-1.5 cursor-pointer transition-colors"
+              >
+                {copiedCurl ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                <span>{copiedCurl ? 'cURL Copied!' : 'Copy cURL Test Command'}</span>
+              </button>
+            </div>
+
+            {webhookStatus && (
+              <div className="text-[11px] text-emerald-300 font-mono">
+                Status: {webhookStatus}
+              </div>
+            )}
           </div>
 
           {/* Action: End process and Back to Home as requested */}
