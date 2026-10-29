@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
-import { useGoogleSheets } from '../context/GoogleSheetsContext';
-import { ShoppingBag, Search, Menu, X, ArrowRight, ShieldCheck, Truck, FileSpreadsheet } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, ArrowRight, ShieldCheck, Truck } from 'lucide-react';
 import { CATEGORIES } from '../data/products';
 
 export const Navbar: React.FC = () => {
   const { route, navigateTo, cartCount, setIsCartDrawerOpen, setIsSearchOpen } = useStore();
-  const { isConnected, nextOrderId } = useGoogleSheets();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isCurrentCategory = (catId: string) =>
@@ -28,28 +26,10 @@ export const Navbar: React.FC = () => {
           </p>
           <div className="hidden sm:flex items-center gap-4 text-blue-200">
             <button
-              onClick={() => navigateTo({ name: 'sheets' })}
-              className="hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 text-sky-300 font-semibold"
-            >
-              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Google Sheets Sync</span>
-              {isConnected && (
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              )}
-            </button>
-            <span aria-hidden="true" className="text-blue-700">|</span>
-            <button
-              onClick={() => navigateTo({ name: 'track' })}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              Track Order
-            </button>
-            <span aria-hidden="true" className="text-blue-700">|</span>
-            <button
               onClick={() => navigateTo({ name: 'about' })}
               className="hover:text-white transition-colors cursor-pointer"
             >
-              Engineering
+              Engineering & Lab
             </button>
           </div>
         </div>
@@ -133,26 +113,8 @@ export const Navbar: React.FC = () => {
             </button>
           </nav>
 
-          {/* Zone 3: 1 Primary Action + Search Trigger + Google Sheets Hook */}
-          <div className="flex items-center gap-2.5 shrink-0">
-            <button
-              onClick={() => navigateTo({ name: 'sheets' })}
-              title="Google Sheets: Tech Store Orders pipeline"
-              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer border ${
-                isConnected
-                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
-                  : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-              }`}
-            >
-              <FileSpreadsheet className={`w-3.5 h-3.5 ${isConnected ? 'text-emerald-600' : 'text-slate-500'}`} />
-              <span className="hidden xl:inline">Tech Store Orders</span>
-              {isConnected && (
-                <span className="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-200/50 px-1 py-0.2 rounded">
-                  #{nextOrderId}
-                </span>
-              )}
-            </button>
-
+          {/* Zone 3: Search + Shopping Bag (Clean e-commerce actions, no clutter) */}
+          <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={() => setIsSearchOpen(true)}
               aria-label="Search catalog"
@@ -233,29 +195,6 @@ export const Navbar: React.FC = () => {
                 className="flex items-center justify-between text-left py-2 text-sm text-slate-700 hover:text-blue-600 border-b border-slate-100"
               >
                 <span>Hardware Bundles & Deals</span>
-                <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-              </button>
-              <button
-                onClick={() => {
-                  navigateTo({ name: 'track' });
-                  setMobileMenuOpen(false);
-                }}
-                className="flex items-center justify-between text-left py-2 text-sm text-slate-700 hover:text-blue-600 border-b border-slate-100"
-              >
-                <span>Track an Existing Order</span>
-                <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-              </button>
-              <button
-                onClick={() => {
-                  navigateTo({ name: 'sheets' });
-                  setMobileMenuOpen(false);
-                }}
-                className="flex items-center justify-between text-left py-2 text-sm text-emerald-800 hover:text-emerald-900 border-b border-slate-100 font-semibold"
-              >
-                <div className="flex items-center gap-2">
-                  <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
-                  <span>Google Sheets (Tech Store Orders)</span>
-                </div>
                 <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
               </button>
               <button

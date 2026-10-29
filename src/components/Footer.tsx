@@ -135,14 +135,14 @@ export const Footer: React.FC = () => {
                 Engineering & Metallurgy
               </button>
             </li>
-            <li>
+            <li className="pt-2 border-t border-slate-800">
               <button
                 onClick={() => navigateTo({ name: 'sheets' })}
                 className="hover:text-emerald-400 text-emerald-400 font-semibold transition-colors text-xs text-left cursor-pointer flex items-center gap-1.5"
               >
-                <span>Google Sheets Order Pipeline</span>
+                <span>Google Sheets Order Sync</span>
                 <span className="text-[10px] bg-emerald-950 px-1.5 py-0.2 rounded border border-emerald-800">
-                  Live
+                  Tech Store Orders
                 </span>
               </button>
             </li>
@@ -155,6 +155,14 @@ export const Footer: React.FC = () => {
             Khizar Tech Support
           </div>
           <ul className="space-y-2 text-xs">
+            <li>
+              <button
+                onClick={() => navigateTo({ name: 'track' })}
+                className="hover:text-blue-400 text-blue-300 font-medium transition-colors text-left cursor-pointer flex items-center gap-1"
+              >
+                <span>Track Your Order</span> →
+              </button>
+            </li>
             <li>Email: khizar.tech@support.design</li>
             <li>Direct Inquiries: hello@khizar-store.design</li>
             <li>Hotline: +1 (800) KHIZAR-TECH</li>

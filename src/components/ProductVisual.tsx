@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PRODUCTS } from '../data/products';
 
 interface ProductVisualProps {
@@ -15,18 +15,27 @@ export const ProductVisual: React.FC<ProductVisualProps> = ({
   className = 'w-full h-full object-cover',
 }) => {
   // Resolve authentic photographic asset from prop or product registry
-  const resolvedSrc = (imageSrc && !imageSrc.startsWith('svg:'))
+  const rawSrc = (imageSrc && !imageSrc.startsWith('svg:'))
     ? imageSrc
     : PRODUCTS.find((p) => p.id === productId)?.image;
 
-  if (resolvedSrc && !resolvedSrc.startsWith('svg:')) {
+  // Normalize legacy /src/assets/images paths to public /images paths
+  const resolvedSrc = rawSrc?.replace(/^\/src\/assets\/images\//, '/images/');
+
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [resolvedSrc]);
+
+  if (resolvedSrc && !resolvedSrc.startsWith('svg:') && !hasError) {
     return (
       <img
         src={resolvedSrc}
         alt={name}
-        referrerPolicy="no-referrer"
         className={className}
         loading="lazy"
+        onError={() => setHasError(true)}
       />
     );
   }

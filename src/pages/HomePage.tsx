@@ -74,7 +74,6 @@ export const HomePage: React.FC = () => {
               <img
                 src={HERO_IMAGE}
                 alt="Khizar Tech Hardware Ecosystem"
-                referrerPolicy="no-referrer"
                 className="w-full h-full object-cover object-center absolute inset-0"
               />
               <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-slate-950/80 via-slate-950/20 to-transparent" />

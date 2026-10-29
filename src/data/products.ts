@@ -1,47 +1,47 @@
 import { CategoryInfo, Product } from '../types/store';
 
-export const HERO_IMAGE = '/src/assets/images/hero_tech_ecosystem_1793216307639.jpg';
-export const EARBUDS_IMAGE = '/src/assets/images/product_earbuds_pro_studio_1793216309274.jpg';
-export const SMARTPHONE_IMAGE = '/src/assets/images/product_smartphone_flagship_1793216309456.jpg';
-export const GAN_CHARGER_IMAGE = '/src/assets/images/product_gan_charger_desktop_1793216309952.jpg';
-export const CABLES_IMAGE = '/src/assets/images/product_braided_cables_dock_1793216310339.jpg';
+export const HERO_IMAGE = '/images/hero_tech_ecosystem_1793216307639.jpg';
+export const EARBUDS_IMAGE = '/images/product_earbuds_pro_studio_1793216309274.jpg';
+export const SMARTPHONE_IMAGE = '/images/product_smartphone_flagship_1793216309456.jpg';
+export const GAN_CHARGER_IMAGE = '/images/product_gan_charger_desktop_1793216309952.jpg';
+export const CABLES_IMAGE = '/images/product_braided_cables_dock_1793216310339.jpg';
 
 // Mobiles & Audio
-export const PHONE_FOLDABLE_IMAGE = '/src/assets/images/foldable_phone_real_1793220658419.jpg';
-export const PHONE_COMPACT_IMAGE = '/src/assets/images/phone_compact_minimal_1793218338599.jpg';
-export const PHONE_CINEMA_IMAGE = '/src/assets/images/phone_cinema_edition_1793219955586.jpg';
-export const HEADPHONES_STUDIO_IMAGE = '/src/assets/images/headphones_overear_studio_1793218339958.jpg';
-export const AIRPODS_PRO_WHITE_IMAGE = '/src/assets/images/airpods_pro_white_case_1793219800813.jpg';
-export const EARTIPS_TUNING_IMAGE = '/src/assets/images/earbud_tuning_silicone_tips_1793219800973.jpg';
-export const AIRPODS_CARBON_CASE_IMAGE = '/src/assets/images/carbon_fiber_airpods_case_1793219801737.jpg';
+export const PHONE_FOLDABLE_IMAGE = '/images/foldable_phone_real_1793220658419.jpg';
+export const PHONE_COMPACT_IMAGE = '/images/phone_compact_minimal_1793218338599.jpg';
+export const PHONE_CINEMA_IMAGE = '/images/phone_cinema_edition_1793219955586.jpg';
+export const HEADPHONES_STUDIO_IMAGE = '/images/headphones_overear_studio_1793218339958.jpg';
+export const AIRPODS_PRO_WHITE_IMAGE = '/images/airpods_pro_white_case_1793219800813.jpg';
+export const EARTIPS_TUNING_IMAGE = '/images/earbud_tuning_silicone_tips_1793219800973.jpg';
+export const AIRPODS_CARBON_CASE_IMAGE = '/images/carbon_fiber_airpods_case_1793219801737.jpg';
 
 // Chargers & Power
-export const CHARGER_MAGSAFE_3IN1_IMAGE = '/src/assets/images/charger_magsafe_3in1_dock_1793218340897.jpg';
-export const POWERBANK_DIGITAL_IMAGE = '/src/assets/images/powerbank_digital_display_1793218340448.jpg';
-export const CHARGER_65W_TRAVEL_IMAGE = '/src/assets/images/charger_65w_gan_travel_1793219802504.jpg';
-export const CHARGER_45W_PUCK_IMAGE = '/src/assets/images/charger_45w_slim_puck_1793219802723.jpg';
-export const CHARGER_CAR_VENT_IMAGE = '/src/assets/images/charger_car_vent_mount_1793219803944.jpg';
+export const CHARGER_MAGSAFE_3IN1_IMAGE = '/images/charger_magsafe_3in1_dock_1793218340897.jpg';
+export const POWERBANK_DIGITAL_IMAGE = '/images/powerbank_digital_display_1793218340448.jpg';
+export const CHARGER_65W_TRAVEL_IMAGE = '/images/charger_65w_gan_travel_1793219802504.jpg';
+export const CHARGER_45W_PUCK_IMAGE = '/images/charger_45w_slim_puck_1793219802723.jpg';
+export const CHARGER_CAR_VENT_IMAGE = '/images/charger_car_vent_mount_1793219803944.jpg';
 
 // Cables & Interconnects
-export const CABLE_100W_BRAIDED_IMAGE = '/src/assets/images/braided_usbc_cable_blue_1793219803382.jpg';
-export const CABLE_90DEG_GAMING_IMAGE = '/src/assets/images/gaming_right_angle_cable_1793219803719.jpg';
-export const CABLE_SILICONE_LIGHTNING_IMAGE = '/src/assets/images/silicone_lightning_cable_1793219804524.jpg';
-export const CABLE_4IN1_UNIVERSAL_IMAGE = '/src/assets/images/universal_4in1_cable_real_1793219825113.jpg';
-export const CABLE_8K_HDMI_IMAGE = '/src/assets/images/hdmi_8k_braided_cable_real_1793219825403.jpg';
-export const CABLE_USBA_10GBPS_IMAGE = '/src/assets/images/usba_to_usbc_10gbps_cable_real_1793219826343.jpg';
+export const CABLE_100W_BRAIDED_IMAGE = '/images/braided_usbc_cable_blue_1793219803382.jpg';
+export const CABLE_90DEG_GAMING_IMAGE = '/images/gaming_right_angle_cable_1793219803719.jpg';
+export const CABLE_SILICONE_LIGHTNING_IMAGE = '/images/silicone_lightning_cable_1793219804524.jpg';
+export const CABLE_4IN1_UNIVERSAL_IMAGE = '/images/universal_4in1_cable_real_1793219825113.jpg';
+export const CABLE_8K_HDMI_IMAGE = '/images/hdmi_8k_braided_cable_real_1793219825403.jpg';
+export const CABLE_USBA_10GBPS_IMAGE = '/images/usba_to_usbc_10gbps_cable_real_1793219826343.jpg';
 
 // Cases & Protection
-export const CASE_ARAMID_IMAGE = '/src/assets/images/phone_case_aramid_carbon_real_1793219826925.jpg';
-export const CASE_RUGGED_ARMOR_IMAGE = '/src/assets/images/rugged_armor_case_1793219909912.jpg';
-export const CASE_FROST_IMAGE = '/src/assets/images/frost_translucent_case_1793219911284.jpg';
-export const SCREEN_PROTECTOR_GLASS_IMAGE = '/src/assets/images/glass_screen_protector_1793219911344.jpg';
-export const CAMERA_LENS_RINGS_IMAGE = '/src/assets/images/camera_lens_rings_1793219912059.jpg';
+export const CASE_ARAMID_IMAGE = '/images/phone_case_aramid_carbon_real_1793219826925.jpg';
+export const CASE_RUGGED_ARMOR_IMAGE = '/images/rugged_armor_case_1793219909912.jpg';
+export const CASE_FROST_IMAGE = '/images/frost_translucent_case_1793219911284.jpg';
+export const SCREEN_PROTECTOR_GLASS_IMAGE = '/images/glass_screen_protector_1793219911344.jpg';
+export const CAMERA_LENS_RINGS_IMAGE = '/images/camera_lens_rings_1793219912059.jpg';
 
 // Mounts, Docks & Workspace
-export const STAND_MAGSAFE_ALUMINUM_IMAGE = '/src/assets/images/aluminum_magsafe_stand_real_1793219826893.jpg';
-export const HUB_THUNDERBOLT_10IN1_IMAGE = '/src/assets/images/thunderbolt_hub_dock_1793219911439.jpg';
-export const LAPTOP_RISER_STAND_IMAGE = '/src/assets/images/laptop_riser_stand_1793219926609.jpg';
-export const CABLE_BLOCKS_ORGANIZER_IMAGE = '/src/assets/images/magnetic_cable_blocks_1793219927656.jpg';
+export const STAND_MAGSAFE_ALUMINUM_IMAGE = '/images/aluminum_magsafe_stand_real_1793219826893.jpg';
+export const HUB_THUNDERBOLT_10IN1_IMAGE = '/images/thunderbolt_hub_dock_1793219911439.jpg';
+export const LAPTOP_RISER_STAND_IMAGE = '/images/laptop_riser_stand_1793219926609.jpg';
+export const CABLE_BLOCKS_ORGANIZER_IMAGE = '/images/magnetic_cable_blocks_1793219927656.jpg';
 
 // Reordered: Audio & Chargers first, NOT mobile devices
 export const CATEGORIES: CategoryInfo[] = [
