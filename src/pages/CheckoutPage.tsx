@@ -10,18 +10,12 @@ import {
   Truck,
   ShieldCheck,
   Package,
-  Send,
-  Radio,
-  Copy,
-  Check,
 } from 'lucide-react';
 import { ProductVisual } from '../components/ProductVisual';
 import {
   sendOrderToWebhook,
   WebhookOrderPayload,
   getWebhookUrl,
-  setWebhookUrl,
-  WebhookDispatchResult,
 } from '../services/webhookService';
 
 interface CheckoutPageProps {
@@ -41,11 +35,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
 
   const [step, setStep] = useState<'shipping' | 'payment' | 'confirmation'>(initialStep);
   const [isPlacingOrder, setIsPlacingOrder] = useState<boolean>(false);
-  const [webhookStatus, setWebhookStatus] = useState<string | null>(null);
-  const [webhookResult, setWebhookResult] = useState<WebhookDispatchResult | null>(null);
-  const [testWebhookLoading, setTestWebhookLoading] = useState<boolean>(false);
-  const [copiedCurl, setCopiedCurl] = useState<boolean>(false);
-  const [currentWebhookUrl, setCurrentWebhookUrl] = useState<string>(getWebhookUrl());
+  const currentWebhookUrl = getWebhookUrl();
 
   // Customer & Delivery Address Form State
   const [formData, setFormData] = useState({
@@ -188,11 +178,11 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
         estimatedDelivery: '3 - 4 Business Days via Air Express',
       };
 
-      // 1. Build and dispatch structured webhook payload (NO Order ID)
+      // 1. Build and dispatch structured webhook payload seamlessly in background (NO Order ID)
       const payload = buildWebhookPayload(cart, finalTotal);
-      const res = await sendOrderToWebhook(payload, currentWebhookUrl);
-      setWebhookResult(res);
-      setWebhookStatus(res.message);
+      sendOrderToWebhook(payload, currentWebhookUrl).catch((err) => {
+        console.warn('Webhook dispatch notice:', err);
+      });
 
       // 2. Save order and clear cart
       createOrder(orderData);
@@ -207,34 +197,6 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
     } finally {
       setIsPlacingOrder(false);
     }
-  };
-
-  /**
-   * Immediate test sender for n8n to initialize the webhook listener
-   */
-  const handleTestWebhook = async () => {
-    setTestWebhookLoading(true);
-    try {
-      const payload = buildWebhookPayload();
-      const res = await sendOrderToWebhook(payload, currentWebhookUrl);
-      setWebhookResult(res);
-      setWebhookStatus(res.message);
-    } catch (err: any) {
-      setWebhookStatus('Test dispatch sent to webhook endpoint');
-    } finally {
-      setTestWebhookLoading(false);
-    }
-  };
-
-  const copyCurlToClipboard = () => {
-    const payload = buildWebhookPayload(createdOrder ? createdOrder.items : cart, finalTotal);
-    const curl = `curl -X POST "${currentWebhookUrl}" \\
-  -H "Content-Type: application/json" \\
-  -d '${JSON.stringify(payload)}'`;
-
-    navigator.clipboard?.writeText(curl);
-    setCopiedCurl(true);
-    setTimeout(() => setCopiedCurl(false), 2500);
   };
 
   // If bag is empty and not on confirmation screen
@@ -555,7 +517,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Order data immediately posted to n8n webhook</span>
+                  <span>Immediate dispatch confirmation & tracking updates</span>
                 </div>
               </div>
             </div>
@@ -588,53 +550,19 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
               </div>
             </div>
 
-            {/* n8n Webhook Integration Card with instant test button */}
-            <div className="bg-slate-900 text-white rounded-xl p-4 text-xs space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 font-semibold">
-                  <Radio className="w-4 h-4 text-emerald-400 animate-pulse" />
-                  <span>n8n Webhook Dispatch Ready</span>
-                </div>
-                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800">
-                  HTTP POST
-                </span>
+            {/* Courier Guarantee Card */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-600 flex items-start gap-3">
+              <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 mt-0.5">
+                <ShieldCheck className="w-4 h-4" />
               </div>
-
-              <div className="space-y-1">
-                <div className="text-[11px] text-slate-300 font-mono truncate">
-                  Endpoint: {currentWebhookUrl}
-                </div>
-                <div className="text-[10px] text-slate-400">
-                  Transmits all 11 required customer & product attributes. No Order ID is included (Order ID assigned later in n8n).
-                </div>
+              <div className="space-y-0.5">
+                <p className="font-semibold text-slate-900 text-xs">
+                  Courier Inspection & Cash Delivery Guarantee
+                </p>
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  Your order is prepared and sealed with tamper-evident security tape. When the courier arrives, you can verify your package before handing over the cash payment.
+                </p>
               </div>
-
-              <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-800">
-                <button
-                  type="button"
-                  disabled={testWebhookLoading}
-                  onClick={handleTestWebhook}
-                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 text-white font-semibold rounded text-[11px] flex items-center gap-1.5 cursor-pointer transition-colors"
-                >
-                  <Send className="w-3 h-3" />
-                  <span>{testWebhookLoading ? 'Sending Test...' : 'Initialize / Test Webhook Now'}</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={copyCurlToClipboard}
-                  className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono rounded text-[11px] flex items-center gap-1.5 cursor-pointer transition-colors"
-                >
-                  {copiedCurl ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                  <span>{copiedCurl ? 'cURL Copied!' : 'Copy cURL Test Command'}</span>
-                </button>
-              </div>
-
-              {webhookStatus && (
-                <div className="text-[11px] text-emerald-300 bg-slate-950/70 p-2 rounded border border-slate-800 font-mono">
-                  ✓ {webhookStatus}
-                </div>
-              )}
             </div>
 
             {/* Actions */}
@@ -798,48 +726,17 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
             </div>
           </div>
 
-          {/* Webhook Dispatch Status Note */}
-          <div className="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs space-y-3 text-left">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="font-bold text-white">n8n Webhook Dispatched</span>
-              </div>
-              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
-                POST 200
-              </span>
+          {/* Authentic Delivery Notice */}
+          <div className="bg-blue-50/80 border border-blue-200/80 rounded-2xl p-5 text-xs text-left space-y-2">
+            <div className="flex items-center gap-2 text-blue-900 font-semibold text-sm">
+              <Truck className="w-4 h-4 text-blue-600 shrink-0" />
+              <span>Courier Delivery Dispatch Confirmed</span>
             </div>
-
-            <p className="text-[11px] text-slate-300 leading-relaxed">
-              Structured order payload transmitted to your webhook:{' '}
-              <span className="font-mono text-sky-300">{currentWebhookUrl}</span>.
-              Contains Customer Name, Phone, Address, Products, and Cash Price.
+            <p className="text-slate-600 text-xs leading-relaxed">
+              We have received your order. Delivery updates and courier dispatch notifications have been sent to{' '}
+              <strong className="text-slate-800">{createdOrder.shippingAddress.email}</strong> and{' '}
+              <strong className="text-slate-800 font-mono">{createdOrder.shippingAddress.phone}</strong>. Our logistics courier will contact you prior to arrival to coordinate your cash on delivery handover.
             </p>
-
-            <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-800">
-              <button
-                onClick={handleTestWebhook}
-                disabled={testWebhookLoading}
-                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 text-white font-medium rounded text-[11px] flex items-center gap-1.5 cursor-pointer transition-colors"
-              >
-                <Send className="w-3 h-3" />
-                <span>{testWebhookLoading ? 'Sending...' : 'Re-send POST to Webhook'}</span>
-              </button>
-
-              <button
-                onClick={copyCurlToClipboard}
-                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono rounded text-[11px] flex items-center gap-1.5 cursor-pointer transition-colors"
-              >
-                {copiedCurl ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                <span>{copiedCurl ? 'cURL Copied!' : 'Copy cURL Test Command'}</span>
-              </button>
-            </div>
-
-            {webhookStatus && (
-              <div className="text-[11px] text-emerald-300 font-mono">
-                Status: {webhookStatus}
-              </div>
-            )}
           </div>
 
           {/* Action: End process and Back to Home as requested */}
