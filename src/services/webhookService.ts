@@ -1,7 +1,7 @@
 /**
  * Webhook Service for Khizar Tech Store
- * Sends structured order data via HTTP POST to the designated n8n webhook:
- * http://localhost:5678/webhook-test/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4
+ * Sends structured order data via HTTP POST to the designated n8n production webhook:
+ * http://localhost:5678/webhook/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4
  *
  * NOTE: As requested by the user:
  * - NO Order ID is sent (Order ID will be assigned inside n8n workflow).
@@ -20,11 +20,17 @@
  */
 
 export const DEFAULT_WEBHOOK_URL =
-  'http://localhost:5678/webhook-test/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4';
+  'http://localhost:5678/webhook/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4';
 
 export function getWebhookUrl(): string {
   try {
-    return localStorage.getItem('khizar_store_webhook_url') || DEFAULT_WEBHOOK_URL;
+    const stored = localStorage.getItem('khizar_store_webhook_url');
+    // Auto-migrate from previous test URL to the production webhook URL
+    if (stored && stored.includes('/webhook-test/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4')) {
+      localStorage.setItem('khizar_store_webhook_url', DEFAULT_WEBHOOK_URL);
+      return DEFAULT_WEBHOOK_URL;
+    }
+    return stored || DEFAULT_WEBHOOK_URL;
   } catch {
     return DEFAULT_WEBHOOK_URL;
   }
