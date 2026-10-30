@@ -50,10 +50,10 @@ export const HomePage: React.FC = () => {
                       e.preventDefault();
                       navigateTo({ name: 'category', categoryId: 'audio' });
                     }}
-                    className="px-5 py-2.5 bg-white hover:bg-blue-50 text-blue-900 text-xs font-bold rounded-lg transition-all shadow-sm flex items-center gap-2 cursor-pointer text-inherit no-underline"
+                    className="px-5 py-2.5 bg-white hover:bg-slate-100 text-slate-900 text-xs font-bold rounded-lg transition-all shadow-sm flex items-center gap-2 cursor-pointer no-underline"
                   >
-                    <span>Explore AirPods & Audio</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-blue-900" />
+                    <span className="text-slate-900 font-bold">Explore AirPods & Audio</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-900" />
                   </a>
                   <a
                     href="/accessories"
@@ -171,7 +171,7 @@ export const HomePage: React.FC = () => {
                 e.preventDefault();
                 navigateTo({ name: 'accessories' });
               }}
-              className="text-xs text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-1.5 cursor-pointer text-inherit no-underline"
+              className="text-xs text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-1.5 cursor-pointer no-underline"
             >
               <span>View All 20+ Hardware Accessories</span>
               <ArrowRight className="w-3.5 h-3.5" />
