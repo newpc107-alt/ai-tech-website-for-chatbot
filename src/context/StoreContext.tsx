@@ -5,6 +5,7 @@ import { PRODUCTS } from '../data/products';
 interface StoreContextType {
   route: PageRoute;
   navigateTo: (newRoute: PageRoute) => void;
+  routeToPath: (route: PageRoute) => string;
   cart: CartItem[];
   addToCart: (product: Product, quantity?: number, selectedOptions?: Record<string, string>) => void;
   removeFromCart: (cartItemId: string) => void;
@@ -64,33 +65,107 @@ const INITIAL_DEMO_ORDER: OrderDetails = {
   estimatedDelivery: '3 - 4 Business Days',
 };
 
-// Parse URL hash to route
-function parseHash(hash: string): PageRoute {
-  const clean = hash.replace(/^#\/?/, '');
-  if (!clean) return { name: 'home' };
+// Convert route to real descriptive URL path
+export function routeToPath(route: PageRoute): string {
+  switch (route.name) {
+    case 'home':
+      return '/';
+    case 'category':
+      return route.subcategory
+        ? `/categories/${route.categoryId}/${encodeURIComponent(route.subcategory)}`
+        : `/categories/${route.categoryId}`;
+    case 'accessories':
+      return route.subcategory
+        ? `/accessories/${encodeURIComponent(route.subcategory)}`
+        : '/accessories';
+    case 'product':
+      return `/products/${route.productId}`;
+    case 'cart':
+      return '/cart';
+    case 'checkout':
+      return route.step && route.step !== 'shipping' ? `/checkout/${route.step}` : '/checkout';
+    case 'deals':
+      return '/deals';
+    case 'about':
+      return '/about';
+    default:
+      return '/';
+  }
+}
 
-  const parts = clean.split('/');
+// Parse pathname and any legacy hash into a strongly typed PageRoute
+export function parseLocation(): PageRoute {
+  if (typeof window === 'undefined') return { name: 'home' };
+
+  // 1. First gracefully inspect legacy hash URLs (e.g. #/products/..., #category/..., #product/...)
+  const hash = window.location.hash.replace(/^#\/?/, '');
+  if (hash) {
+    const hashParts = hash.split('/').filter(Boolean);
+    const hashSection = hashParts[0];
+    if ((hashSection === 'category' || hashSection === 'categories') && hashParts[1]) {
+      return {
+        name: 'category',
+        categoryId: hashParts[1] as any,
+        subcategory: hashParts[2] ? decodeURIComponent(hashParts[2]) : undefined,
+      };
+    }
+    if ((hashSection === 'product' || hashSection === 'products') && hashParts[1]) {
+      return { name: 'product', productId: hashParts[1] };
+    }
+    if (hashSection === 'accessories') {
+      return { name: 'accessories', subcategory: hashParts[1] ? decodeURIComponent(hashParts[1]) : undefined };
+    }
+    if (hashSection === 'cart') return { name: 'cart' };
+    if (hashSection === 'checkout') {
+      const step = (hashParts[1] as any) || 'shipping';
+      return { name: 'checkout', step };
+    }
+    if (hashSection === 'deals') return { name: 'deals' };
+    if (hashSection === 'about') return { name: 'about' };
+  }
+
+  // 2. Parse standard HTML5 pathname
+  const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  if (!path) return { name: 'home' };
+
+  const parts = path.split('/');
   const section = parts[0];
 
-  if (section === 'category' && parts[1]) {
-    return { name: 'category', categoryId: parts[1] as any, subcategory: parts[2] ? decodeURIComponent(parts[2]) : undefined };
+  // /categories/:categoryId or legacy /category/:categoryId
+  if ((section === 'categories' || section === 'category') && parts[1]) {
+    return {
+      name: 'category',
+      categoryId: parts[1] as any,
+      subcategory: parts[2] ? decodeURIComponent(parts[2]) : undefined,
+    };
   }
-  if (section === 'product' && parts[1]) {
+
+  // /products/:productId or legacy /product/:productId
+  if ((section === 'products' || section === 'product') && parts[1]) {
     return { name: 'product', productId: parts[1] };
   }
+
+  // /accessories or /accessories/:subcategory
   if (section === 'accessories') {
-    return { name: 'accessories', subcategory: parts[1] ? decodeURIComponent(parts[1]) : undefined };
+    return {
+      name: 'accessories',
+      subcategory: parts[1] ? decodeURIComponent(parts[1]) : undefined,
+    };
   }
+
   if (section === 'cart') {
     return { name: 'cart' };
   }
+
   if (section === 'checkout') {
     const step = (parts[1] as any) || 'shipping';
     return { name: 'checkout', step };
   }
+
   if (section === 'deals') {
     return { name: 'deals' };
   }
+
   if (section === 'about') {
     return { name: 'about' };
   }
@@ -98,32 +173,17 @@ function parseHash(hash: string): PageRoute {
   return { name: 'home' };
 }
 
-// Convert route to hash string
-function routeToHash(route: PageRoute): string {
-  switch (route.name) {
-    case 'home':
-      return '';
-    case 'category':
-      return route.subcategory ? `category/${route.categoryId}/${encodeURIComponent(route.subcategory)}` : `category/${route.categoryId}`;
-    case 'accessories':
-      return route.subcategory ? `accessories/${encodeURIComponent(route.subcategory)}` : 'accessories';
-    case 'product':
-      return `product/${route.productId}`;
-    case 'cart':
-      return 'cart';
-    case 'checkout':
-      return `checkout/${route.step}`;
-    case 'deals':
-      return 'deals';
-    case 'about':
-      return 'about';
-    default:
-      return '';
-  }
-}
-
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [route, setRoute] = useState<PageRoute>(() => parseHash(window.location.hash));
+  const [route, setRoute] = useState<PageRoute>(() => {
+    const initial = parseLocation();
+    // If user arrived with a legacy hash URL, normalize browser address bar to clean real URL path
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const cleanPath = routeToPath(initial);
+      window.history.replaceState(null, '', cleanPath);
+    }
+    return initial;
+  });
+
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
       const saved = localStorage.getItem('kinetic_cart');
@@ -145,15 +205,15 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
 
-  // Sync hash changes from browser back/forward buttons
+  // Sync route on browser back and forward button clicks
   useEffect(() => {
-    const handleHashChange = () => {
-      setRoute(parseHash(window.location.hash));
+    const handlePopState = () => {
+      setRoute(parseLocation());
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   // Save cart to local storage
@@ -175,10 +235,14 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [wishlist]);
 
   const navigateTo = (newRoute: PageRoute) => {
-    const hash = routeToHash(newRoute);
-    window.location.hash = hash ? `#${hash}` : '#';
-    setRoute(newRoute);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const targetPath = routeToPath(newRoute);
+    if (typeof window !== 'undefined') {
+      if (window.location.pathname !== targetPath) {
+        window.history.pushState(null, '', targetPath);
+      }
+      setRoute(newRoute);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const addToCart = (product: Product, quantity = 1, selectedOptions: Record<string, string> = {}) => {
@@ -276,6 +340,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       value={{
         route,
         navigateTo,
+        routeToPath,
         cart,
         addToCart,
         removeFromCart,

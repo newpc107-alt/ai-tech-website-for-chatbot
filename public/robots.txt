@@ -1,0 +1,10 @@
+# Robots.txt for Khizar Tech Store
+# https://khizartech.netlify.app
+
+User-agent: *
+Allow: /
+Disallow: /checkout
+Disallow: /cart
+
+# XML Sitemap
+Sitemap: https://khizartech.netlify.app/sitemap.xml

@@ -66,21 +66,29 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-12">
       {/* Breadcrumb Navigation */}
       <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-slate-500">
-        <button
-          onClick={() => navigateTo({ name: 'home' })}
-          className="hover:text-blue-600 transition-colors cursor-pointer"
+        <a
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            navigateTo({ name: 'home' });
+          }}
+          className="hover:text-blue-600 transition-colors cursor-pointer text-inherit no-underline"
         >
           Home
-        </button>
+        </a>
         <span aria-hidden="true" className="text-slate-300">/</span>
         {category && (
           <>
-            <button
-              onClick={() => navigateTo({ name: 'category', categoryId: category.id })}
-              className="hover:text-blue-600 transition-colors cursor-pointer"
+            <a
+              href={`/categories/${category.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                navigateTo({ name: 'category', categoryId: category.id });
+              }}
+              className="hover:text-blue-600 transition-colors cursor-pointer text-inherit no-underline"
             >
               {category.name}
-            </button>
+            </a>
             <span aria-hidden="true" className="text-slate-300">/</span>
           </>
         )}

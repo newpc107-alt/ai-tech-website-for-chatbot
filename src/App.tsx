@@ -17,6 +17,7 @@ import { CartPage } from './pages/CartPage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { DealsPage } from './pages/DealsPage';
 import { AboutPage } from './pages/AboutPage';
+import { SEOHead } from './components/SEOHead';
 
 const AppContent: React.FC = () => {
   const { route } = useStore();
@@ -57,6 +58,9 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-sky-50/70 via-white to-blue-50/40 text-slate-900 selection:bg-blue-100 selection:text-blue-900 relative">
+      {/* Dynamic SEO Meta, Open Graph & Schema.org JSON-LD */}
+      <SEOHead />
+
       {/* Subtle refreshing ambient light gradient overlay */}
       <div 
         className="fixed inset-0 pointer-events-none -z-10 bg-[radial-gradient(ellipse_90%_50%_at_50%_-5%,rgba(224,242,254,0.45),rgba(255,255,255,0))] mix-blend-multiply" 

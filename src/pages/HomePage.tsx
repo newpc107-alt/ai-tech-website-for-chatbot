@@ -44,19 +44,27 @@ export const HomePage: React.FC = () => {
 
               <div className="pt-8 space-y-4">
                 <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    onClick={() => navigateTo({ name: 'category', categoryId: 'audio' })}
-                    className="px-5 py-2.5 bg-white hover:bg-blue-50 text-blue-900 text-xs font-bold rounded-lg transition-all shadow-sm flex items-center gap-2 cursor-pointer"
+                  <a
+                    href="/categories/audio"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateTo({ name: 'category', categoryId: 'audio' });
+                    }}
+                    className="px-5 py-2.5 bg-white hover:bg-blue-50 text-blue-900 text-xs font-bold rounded-lg transition-all shadow-sm flex items-center gap-2 cursor-pointer text-inherit no-underline"
                   >
                     <span>Explore AirPods & Audio</span>
                     <ArrowRight className="w-3.5 h-3.5 text-blue-900" />
-                  </button>
-                  <button
-                    onClick={() => navigateTo({ name: 'accessories' })}
-                    className="px-5 py-2.5 bg-blue-800/80 hover:bg-blue-700/80 text-white border border-blue-400/40 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 cursor-pointer"
+                  </a>
+                  <a
+                    href="/accessories"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateTo({ name: 'accessories' });
+                    }}
+                    className="px-5 py-2.5 bg-blue-800/80 hover:bg-blue-700/80 text-white border border-blue-400/40 text-xs font-semibold rounded-lg transition-all flex items-center gap-2 cursor-pointer text-inherit no-underline"
                   >
                     <span>All Accessories Catalog</span>
-                  </button>
+                  </a>
                 </div>
 
                 <div className="flex items-center gap-4 text-xs text-sky-300 pt-2 font-mono">
@@ -101,10 +109,14 @@ export const HomePage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {CATEGORIES.map((category) => (
-              <div
+              <a
                 key={category.id}
-                onClick={() => navigateTo({ name: 'category', categoryId: category.id })}
-                className="group relative bg-white hover:bg-blue-50/40 border border-slate-200/90 hover:border-blue-400 rounded-xl p-6 transition-all duration-200 cursor-pointer flex flex-col justify-between shadow-2xs hover:shadow-md hover:-translate-y-0.5"
+                href={`/categories/${category.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo({ name: 'category', categoryId: category.id });
+                }}
+                className="group relative bg-white hover:bg-blue-50/40 border border-slate-200/90 hover:border-blue-400 rounded-xl p-6 transition-all duration-200 cursor-pointer flex flex-col justify-between shadow-2xs hover:shadow-md hover:-translate-y-0.5 text-inherit no-underline"
               >
                 <div>
                   <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
@@ -135,7 +147,7 @@ export const HomePage: React.FC = () => {
                   ))}
                   <span className="text-[11px] text-blue-600 font-medium">explore</span>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -153,13 +165,17 @@ export const HomePage: React.FC = () => {
                 Top Rated Audio, Power & Interconnects
               </h2>
             </div>
-            <button
-              onClick={() => navigateTo({ name: 'accessories' })}
-              className="text-xs text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-1.5 cursor-pointer"
+            <a
+              href="/accessories"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateTo({ name: 'accessories' });
+              }}
+              className="text-xs text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-1.5 cursor-pointer text-inherit no-underline"
             >
               <span>View All 20+ Hardware Accessories</span>
               <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            </a>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

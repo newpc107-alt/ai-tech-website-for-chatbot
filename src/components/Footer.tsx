@@ -70,21 +70,29 @@ export const Footer: React.FC = () => {
           <ul className="space-y-2">
             {CATEGORIES.map((cat) => (
               <li key={cat.id}>
-                <button
-                  onClick={() => navigateTo({ name: 'category', categoryId: cat.id })}
-                  className="hover:text-blue-400 transition-colors text-xs text-left cursor-pointer"
+                <a
+                  href={`/categories/${cat.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigateTo({ name: 'category', categoryId: cat.id });
+                  }}
+                  className="hover:text-blue-400 transition-colors text-xs text-left cursor-pointer inline-block text-inherit no-underline"
                 >
                   {cat.name}
-                </button>
+                </a>
               </li>
             ))}
             <li>
-              <button
-                onClick={() => navigateTo({ name: 'accessories' })}
-                className="hover:text-blue-300 transition-colors text-xs text-left cursor-pointer font-bold text-blue-400"
+              <a
+                href="/accessories"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo({ name: 'accessories' });
+                }}
+                className="hover:text-blue-300 transition-colors text-xs text-left cursor-pointer font-bold text-blue-400 inline-block no-underline"
               >
                 Accessories Superstore →
-              </button>
+              </a>
             </li>
           </ul>
         </div>
@@ -96,36 +104,52 @@ export const Footer: React.FC = () => {
           </div>
           <ul className="space-y-2">
             <li>
-              <button
-                onClick={() => navigateTo({ name: 'home' })}
-                className="hover:text-blue-400 transition-colors text-xs text-left cursor-pointer"
+              <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo({ name: 'home' });
+                }}
+                className="hover:text-blue-400 transition-colors text-xs text-left cursor-pointer inline-block text-inherit no-underline"
               >
                 Storefront Home
-              </button>
+              </a>
             </li>
             <li>
-              <button
-                onClick={() => navigateTo({ name: 'deals' })}
-                className="hover:text-blue-400 transition-colors text-xs text-left cursor-pointer"
+              <a
+                href="/deals"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo({ name: 'deals' });
+                }}
+                className="hover:text-blue-400 transition-colors text-xs text-left cursor-pointer inline-block text-inherit no-underline"
               >
                 Hardware Bundles & Deals
-              </button>
+              </a>
             </li>
             <li>
-              <button
-                onClick={() => navigateTo({ name: 'cart' })}
-                className="hover:text-blue-400 transition-colors text-xs text-left cursor-pointer"
+              <a
+                href="/cart"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo({ name: 'cart' });
+                }}
+                className="hover:text-blue-400 transition-colors text-xs text-left cursor-pointer inline-block text-inherit no-underline"
               >
                 Shopping Bag & Review
-              </button>
+              </a>
             </li>
             <li>
-              <button
-                onClick={() => navigateTo({ name: 'about' })}
-                className="hover:text-blue-400 transition-colors text-xs text-left cursor-pointer"
+              <a
+                href="/about"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo({ name: 'about' });
+                }}
+                className="hover:text-blue-400 transition-colors text-xs text-left cursor-pointer inline-block text-inherit no-underline"
               >
                 Engineering & Metallurgy
-              </button>
+              </a>
             </li>
           </ul>
         </div>

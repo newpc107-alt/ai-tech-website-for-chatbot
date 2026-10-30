@@ -25,12 +25,16 @@ export const Navbar: React.FC = () => {
             <span className="hidden md:inline text-blue-300">· Use code <strong>KHIZAR10</strong> for 10% off</span>
           </p>
           <div className="hidden sm:flex items-center gap-4 text-blue-200">
-            <button
-              onClick={() => navigateTo({ name: 'about' })}
-              className="hover:text-white transition-colors cursor-pointer"
+            <a
+              href="/about"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateTo({ name: 'about' });
+              }}
+              className="hover:text-white transition-colors cursor-pointer text-inherit no-underline"
             >
               Engineering & Lab
-            </button>
+            </a>
           </div>
         </div>
       </aside>
@@ -40,12 +44,14 @@ export const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-8 px-4 sm:px-6 py-3.5">
           {/* Zone 1: Brand Wordmark with Khizar's Name */}
           <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={() => {
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
                 navigateTo({ name: 'home' });
                 setMobileMenuOpen(false);
               }}
-              className="flex items-center gap-2.5 text-left group cursor-pointer"
+              className="flex items-center gap-2.5 text-left group cursor-pointer text-inherit no-underline"
             >
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-sm tracking-tighter shadow-sm group-hover:from-blue-700 group-hover:to-indigo-700 transition-colors">
                 KT
@@ -58,59 +64,83 @@ export const Navbar: React.FC = () => {
                   Store
                 </span>
               </div>
-            </button>
+            </a>
           </div>
 
           {/* Zone 2: 5 Concise Single-Line Navigation Links (Audio & Chargers first!) */}
           <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-600">
-            <button
-              onClick={() => navigateTo({ name: 'category', categoryId: 'audio' })}
-              className={`hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 py-1 border-b-2 ${
+            <a
+              href="/categories/audio"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateTo({ name: 'category', categoryId: 'audio' });
+              }}
+              className={`hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 py-1 border-b-2 text-inherit no-underline ${
                 isCurrentCategory('audio') ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent'
               }`}
             >
               AirPods & Audio
-            </button>
-            <button
-              onClick={() => navigateTo({ name: 'category', categoryId: 'chargers' })}
-              className={`hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 py-1 border-b-2 ${
+            </a>
+            <a
+              href="/categories/chargers"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateTo({ name: 'category', categoryId: 'chargers' });
+              }}
+              className={`hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 py-1 border-b-2 text-inherit no-underline ${
                 isCurrentCategory('chargers') ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent'
               }`}
             >
               Chargers & Power
-            </button>
-            <button
-              onClick={() => navigateTo({ name: 'category', categoryId: 'cables' })}
-              className={`hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 py-1 border-b-2 ${
+            </a>
+            <a
+              href="/categories/cables"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateTo({ name: 'category', categoryId: 'cables' });
+              }}
+              className={`hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 py-1 border-b-2 text-inherit no-underline ${
                 isCurrentCategory('cables') ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent'
               }`}
             >
               Cables
-            </button>
-            <button
-              onClick={() => navigateTo({ name: 'accessories' })}
-              className={`hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 py-1 border-b-2 ${
+            </a>
+            <a
+              href="/accessories"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateTo({ name: 'accessories' });
+              }}
+              className={`hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 py-1 border-b-2 text-inherit no-underline ${
                 route.name === 'accessories' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent'
               }`}
             >
               Accessories Hub
-            </button>
-            <button
-              onClick={() => navigateTo({ name: 'deals' })}
-              className={`hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 py-1 border-b-2 ${
+            </a>
+            <a
+              href="/deals"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateTo({ name: 'deals' });
+              }}
+              className={`hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 py-1 border-b-2 text-inherit no-underline ${
                 route.name === 'deals' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent'
               }`}
             >
               Bundles & Deals
-            </button>
-            <button
-              onClick={() => navigateTo({ name: 'category', categoryId: 'smartphones' })}
-              className={`hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 py-1 border-b-2 ${
+            </a>
+            <a
+              href="/categories/smartphones"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateTo({ name: 'category', categoryId: 'smartphones' });
+              }}
+              className={`hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 py-1 border-b-2 text-inherit no-underline ${
                 isCurrentCategory('smartphones') ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent'
               }`}
             >
               Mobiles
-            </button>
+            </a>
           </nav>
 
           {/* Zone 3: Search + Shopping Bag (Clean e-commerce actions, no clutter) */}
@@ -154,59 +184,69 @@ export const Navbar: React.FC = () => {
               Browse Sub-Pages
             </div>
             <div className="grid grid-cols-1 gap-2">
-              <button
-                onClick={() => {
+              <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
                   navigateTo({ name: 'home' });
                   setMobileMenuOpen(false);
                 }}
-                className="flex items-center justify-between text-left py-2 text-sm text-slate-700 hover:text-blue-600 border-b border-slate-100"
+                className="flex items-center justify-between text-left py-2 text-sm text-slate-700 hover:text-blue-600 border-b border-slate-100 text-inherit no-underline"
               >
                 <span>Storefront Home</span>
                 <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-              </button>
+              </a>
               {CATEGORIES.map((cat) => (
-                <button
+                <a
                   key={cat.id}
-                  onClick={() => {
+                  href={`/categories/${cat.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
                     navigateTo({ name: 'category', categoryId: cat.id });
                     setMobileMenuOpen(false);
                   }}
-                  className="flex items-center justify-between text-left py-2 text-sm text-slate-700 hover:text-blue-600 border-b border-slate-100"
+                  className="flex items-center justify-between text-left py-2 text-sm text-slate-700 hover:text-blue-600 border-b border-slate-100 text-inherit no-underline"
                 >
                   <span>{cat.name}</span>
                   <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                </button>
+                </a>
               ))}
-              <button
-                onClick={() => {
+              <a
+                href="/accessories"
+                onClick={(e) => {
+                  e.preventDefault();
                   navigateTo({ name: 'accessories' });
                   setMobileMenuOpen(false);
                 }}
-                className="flex items-center justify-between text-left py-2 text-sm text-slate-700 hover:text-blue-600 border-b border-slate-100 font-semibold"
+                className="flex items-center justify-between text-left py-2 text-sm text-slate-700 hover:text-blue-600 border-b border-slate-100 font-semibold text-inherit no-underline"
               >
                 <span>Complete Accessories Hub</span>
                 <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-              </button>
-              <button
-                onClick={() => {
+              </a>
+              <a
+                href="/deals"
+                onClick={(e) => {
+                  e.preventDefault();
                   navigateTo({ name: 'deals' });
                   setMobileMenuOpen(false);
                 }}
-                className="flex items-center justify-between text-left py-2 text-sm text-slate-700 hover:text-blue-600 border-b border-slate-100"
+                className="flex items-center justify-between text-left py-2 text-sm text-slate-700 hover:text-blue-600 border-b border-slate-100 text-inherit no-underline"
               >
                 <span>Hardware Bundles & Deals</span>
                 <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-              </button>
-              <button
-                onClick={() => {
+              </a>
+              <a
+                href="/about"
+                onClick={(e) => {
+                  e.preventDefault();
                   navigateTo({ name: 'about' });
                   setMobileMenuOpen(false);
                 }}
-                className="flex items-center justify-between text-left py-2 text-sm text-slate-700 hover:text-blue-600"
+                className="flex items-center justify-between text-left py-2 text-sm text-slate-700 hover:text-blue-600 text-inherit no-underline"
               >
                 <span>Engineering & Craftsmanship</span>
                 <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-              </button>
+              </a>
             </div>
           </div>
         )}

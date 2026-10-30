@@ -11,19 +11,24 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { navigateTo, addToCart } = useStore();
 
-  const handleCardClick = () => {
+  const productPath = `/products/${product.id}`;
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     navigateTo({ name: 'product', productId: product.id });
   };
 
   const handleQuickAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     addToCart(product, 1);
   };
 
   return (
-    <article
+    <a
+      href={productPath}
       onClick={handleCardClick}
-      className="group flex flex-col bg-white hover:bg-slate-50/50 border border-slate-200/90 hover:border-blue-300 rounded-xl overflow-hidden transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md hover:-translate-y-0.5"
+      className="group flex flex-col bg-white hover:bg-slate-50/50 border border-slate-200/90 hover:border-blue-300 rounded-xl overflow-hidden transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md hover:-translate-y-0.5 text-inherit no-underline"
     >
       {/* 65%-75% Height Image Area */}
       <div className="relative aspect-[4/3] w-full bg-slate-100 overflow-hidden border-b border-slate-100">
@@ -98,6 +103,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </span>
         </div>
       </div>
-    </article>
+    </a>
   );
 };
