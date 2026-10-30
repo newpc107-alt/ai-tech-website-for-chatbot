@@ -18,6 +18,7 @@ import { CheckoutPage } from './pages/CheckoutPage';
 import { DealsPage } from './pages/DealsPage';
 import { AboutPage } from './pages/AboutPage';
 import { SEOHead } from './components/SEOHead';
+import { NoviChatbot } from './components/NoviChatbot';
 
 const AppContent: React.FC = () => {
   const { route } = useStore();
@@ -82,6 +83,7 @@ const AppContent: React.FC = () => {
       {/* Global Interactive Overlays */}
       <CartDrawer />
       <SearchModal />
+      <NoviChatbot />
 
       {/* Footer & Direct Sub-Page Directory */}
       <Footer />

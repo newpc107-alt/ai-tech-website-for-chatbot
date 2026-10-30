@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novi Chatbot Preview</title>
+</head>
+<body style="margin: 0; padding: 40px; font-family: system-ui, -apple-system, sans-serif; background: #f8fafc; color: #1e293b;">
+  <div style="max-width: 600px; margin: 0 auto; text-align: center; padding-top: 60px;">
+    <h1 style="font-size: 28px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Novi AI E-Commerce Assistant</h1>
+    <p style="color: #64748b; font-size: 16px; line-height: 1.6;">
+      Click the launcher icon in the bottom right corner to test the upgraded, responsive Novi chat widget.
+    </p>
+  </div>
+
+  <!-- ================= START NOVI CHATBOT WIDGET ================= -->
+  <div id="novi-widget">
+    <!-- Floating Launcher Button -->
+    <button id="novi-launcher" aria-label="Open Novi chat" title="Chat with Novi AI">
+      <svg class="novi-launcher-icon novi-icon-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+      </svg>
+      <svg class="novi-launcher-icon novi-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+      <span class="novi-badge-pulse" aria-hidden="true"></span>
+    </button>
+
+    <!-- Chat Interface Window -->
+    <section id="novi-chat" aria-label="Novi customer support chat" role="dialog" aria-modal="true">
+      <!-- Header -->
+      <header class="novi-header">
+        <div class="novi-header-brand">
+          <div class="novi-avatar-wrapper">
+            <div class="novi-avatar">✨</div>
+            <span class="novi-status-dot" title="Online and active"></span>
+          </div>
+          <div class="novi-header-info">
+            <div class="novi-title-row">
+              <strong class="novi-brand-name">Novi</strong>
+              <span class="novi-badge">AI Assistant</span>
+            </div>
+            <small class="novi-status-text">
+              <span class="novi-pulse-mini"></span>
+              We're here to help • Online
+            </small>
+          </div>
+        </div>
+
+        <div class="novi-header-actions">
+          <button id="novi-reset" type="button" class="novi-header-btn" title="Reset conversation session" aria-label="Reset conversation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+              <path d="M21 3v5h-5"></path>
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+              <path d="M8 16H3v5"></path>
+            </svg>
+          </button>
+          <button id="novi-close" type="button" class="novi-header-btn" aria-label="Close chat" title="Close chat window">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Category Selection Bar -->
+      <div class="novi-categories">
+        <div class="novi-categories-header">
+          <p class="novi-cat-prompt">What can I help you with today?</p>
+          <small id="novi-selection">Select category to chat</small>
+        </div>
+        <div class="novi-category-buttons">
+          <button type="button" class="novi-category" data-category="products">
+            <span class="novi-cat-icon">🛍️</span>
+            <span class="novi-cat-text">Products &amp; Sales</span>
+          </button>
+          <button type="button" class="novi-category" data-category="faq">
+            <span class="novi-cat-icon">📋</span>
+            <span class="novi-cat-text">FAQs &amp; Policies</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages Stream -->
+      <div id="novi-messages" aria-live="polite">
+        <div class="novi-message-group bot">
+          <div class="novi-message bot">
+            Hey there! 👋 Welcome to our store. How can I assist you today? Please choose an inquiry topic above to get started.
+          </div>
+          <span class="novi-time">Just now</span>
+        </div>
+      </div>
+
+      <!-- Input Form -->
+      <form id="novi-form">
+        <div class="novi-input-container">
+          <input
+            id="novi-input"
+            type="text"
+            placeholder="Select a category first..."
+            autocomplete="off"
+            disabled
+          />
+          <button id="novi-send" type="submit" disabled aria-label="Send message">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </form>
+
+      <!-- Footer Brand Notice -->
+      <div class="novi-footer">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path>
+        </svg>
+        <span>Powered by Novi AI Support</span>
+      </div>
+    </section>
+  </div>
+
+  <style>
+    /* ================= NOVI MODERN DESIGN SYSTEM ================= */
+    #novi-widget {
+      --novi-primary: #2563eb;
+      --novi-primary-hover: #1d4ed8;
+      --novi-primary-gradient: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+      --novi-accent: #38bdf8;
+      --novi-bg: #ffffff;
+      --novi-surface: #f8fafc;
+      --novi-surface-hover: #f1f5f9;
+      --novi-text-main: #0f172a;
+      --novi-text-muted: #64748b;
+      --novi-border: #e2e8f0;
+      --novi-online: #10b981;
+      --novi-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.2), 0 0 1px 1px rgba(15, 23, 42, 0.05);
+      --novi-radius: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #novi-widget * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Launcher Button */
+    #novi-launcher {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 99999;
+      width: 60px;
+      height: 60px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--novi-primary-gradient);
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 10px 25px -4px rgba(37, 99, 235, 0.5), 0 4px 10px -2px rgba(37, 99, 235, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+      outline: none;
+    }
+
+    #novi-launcher:hover {
+      transform: scale(1.06) translateY(-2px);
+      box-shadow: 0 14px 28px -4px rgba(37, 99, 235, 0.6), 0 6px 12px -2px rgba(37, 99, 235, 0.4);
+    }
+
+    #novi-launcher:active {
+      transform: scale(0.95);
+    }
+
+    #novi-launcher .novi-launcher-icon {
+      width: 28px;
+      height: 28px;
+      stroke: currentColor;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+
+    #novi-launcher .novi-icon-close {
+      display: none;
+      width: 24px;
+      height: 24px;
+    }
+
+    #novi-launcher.active .novi-icon-chat {
+      display: none;
+    }
+
+    #novi-launcher.active .novi-icon-close {
+      display: block;
+      transform: rotate(90deg);
+    }
+
+    /* Live notification pulse on launcher */
+    .novi-badge-pulse {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--novi-online);
+      border: 2.5px solid #ffffff;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: novi-pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+    }
+
+    @keyframes novi-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    /* Chat Floating Container */
+    #novi-chat {
+      display: none;
+      position: fixed;
+      right: 24px;
+      bottom: 96px;
+      z-index: 99999;
+      width: 380px;
+      height: 580px;
+      max-height: calc(85vh - 96px);
+      background: var(--novi-bg);
+      border-radius: var(--novi-radius);
+      overflow: hidden;
+      box-shadow: var(--novi-shadow);
+      border: 1px solid var(--novi-border);
+      flex-direction: column;
+      color: var(--novi-text-main);
+      transform-origin: bottom right;
+      animation: novi-pop-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    #novi-chat.open {
+      display: flex;
+    }
+
+    @keyframes novi-pop-in {
+      from {
+        opacity: 0;
+        transform: scale(0.92) translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* Header */
+    .novi-header {
+      background: var(--novi-primary-gradient);
+      color: #ffffff;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      user-select: none;
+    }
+
+    .novi-header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .novi-avatar-wrapper {
+      position: relative;
+    }
+
+    .novi-avatar {
+      width: 38px;
+      height: 38px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .novi-status-dot {
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 10px;
+      height: 10px;
+      background: var(--novi-online);
+      border: 2px solid #2563eb;
+      border-radius: 50%;
+    }
+
+    .novi-title-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .novi-brand-name {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .novi-badge {
+      font-size: 9.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      background: rgba(255, 255, 255, 0.22);
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #ffffff;
+    }
+
+    .novi-status-text {
+      font-size: 11.5px;
+      color: rgba(255, 255, 255, 0.85);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 1px;
+    }
+
+    .novi-pulse-mini {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #34d399;
+    }
+
+    .novi-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .novi-header-btn {
+      background: transparent;
+      border: 0;
+      color: rgba(255, 255, 255, 0.82);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+
+    .novi-header-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .novi-header-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+    }
+
+    /* Category Pill Selector */
+    .novi-categories {
+      background: var(--novi-surface);
+      border-bottom: 1px solid var(--novi-border);
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .novi-categories-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .novi-cat-prompt {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--novi-text-muted);
+    }
+
+    #novi-selection {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--novi-primary);
+      text-align: right;
+    }
+
+    .novi-category-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .novi-category {
+      background: #ffffff;
+      border: 1px solid var(--novi-border);
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--novi-text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .novi-category:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+
+    .novi-category.active {
+      background: var(--novi-primary);
+      color: #ffffff;
+      border-color: var(--novi-primary);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+    }
+
+    /* Messages Area */
+    #novi-messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+
+    #novi-messages::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    #novi-messages::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    .novi-message-group {
+      display: flex;
+      flex-direction: column;
+      max-width: 86%;
+    }
+
+    .novi-message-group.bot {
+      align-self: flex-start;
+      align-items: flex-start;
+    }
+
+    .novi-message-group.user {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
+    .novi-message {
+      padding: 10px 14px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      word-break: break-word;
+      border-radius: 16px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .novi-message.bot {
+      background: #ffffff;
+      color: var(--novi-text-main);
+      border: 1px solid var(--novi-border);
+      border-bottom-left-radius: 4px;
+    }
+
+    .novi-message.user {
+      background: var(--novi-primary-gradient);
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .novi-message code {
+      background: rgba(0, 0, 0, 0.06);
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: monospace;
+    }
+
+    .novi-message.user code {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    .novi-time {
+      font-size: 10px;
+      color: #94a3b8;
+      margin-top: 3px;
+      padding: 0 2px;
+      font-family: monospace;
+    }
+
+    /* Animated Typing Indicator */
+    .novi-typing {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 12px 16px;
+    }
+
+    .novi-typing-dot {
+      width: 6.5px;
+      height: 6.5px;
+      background: var(--novi-primary);
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: novi-bounce 1.4s infinite ease-in-out both;
+    }
+
+    .novi-typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .novi-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes novi-bounce {
+      0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Form & Input */
+    #novi-form {
+      padding: 10px 14px;
+      background: #ffffff;
+      border-top: 1px solid var(--novi-border);
+    }
+
+    .novi-input-container {
+      display: flex;
+      align-items: center;
+      background: var(--novi-surface);
+      border: 1px solid var(--novi-border);
+      border-radius: 12px;
+      padding: 3px 4px 3px 12px;
+      transition: all 0.2s ease;
+    }
+
+    .novi-input-container:focus-within {
+      background: #ffffff;
+      border-color: var(--novi-primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    #novi-input {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      font-size: 13px;
+      color: var(--novi-text-main);
+      outline: none;
+      padding: 8px 4px;
+    }
+
+    #novi-input::placeholder {
+      color: #94a3b8;
+    }
+
+    #novi-input:disabled {
+      cursor: not-allowed;
+      opacity: 0.65;
+    }
+
+    #novi-send {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--novi-primary);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      flex-shrink: 0;
+    }
+
+    #novi-send svg {
+      width: 15px;
+      height: 15px;
+      transform: translate(1px, -1px);
+    }
+
+    #novi-send:hover:not(:disabled) {
+      background: var(--novi-primary-hover);
+      transform: scale(1.05);
+    }
+
+    #novi-send:active:not(:disabled) {
+      transform: scale(0.95);
+    }
+
+    #novi-send:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    /* Footer */
+    .novi-footer {
+      background: var(--novi-surface);
+      border-top: 1px solid #f1f5f9;
+      padding: 6px 14px;
+      font-size: 10px;
+      font-weight: 500;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      user-select: none;
+    }
+
+    .novi-footer svg {
+      width: 11px;
+      height: 11px;
+      color: var(--novi-primary);
+    }
+
+    /* Mobile Responsive Full Bleed Adjustments */
+    @media (max-width: 480px) {
+      #novi-chat {
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        border: 0;
+      }
+      #novi-launcher {
+        right: 18px;
+        bottom: 18px;
+      }
+      .novi-header {
+        padding-top: max(14px, env(safe-area-inset-top));
+        border-radius: 0;
+      }
+      .novi-footer {
+        padding-bottom: max(6px, env(safe-area-inset-bottom));
+      }
+    }
+  </style>
+
+  <script>
+    (function () {
+      // Configuration & Endpoints
+      const CHAT_URL = "http://localhost:5678/webhook/3c17df4f-05ed-4a80-b85d-f3991a46ca47/chat";
+
+      // State
+      let selectedCategory = null;
+      let isSubmitting = false;
+
+      // DOM Elements
+      const launcher = document.getElementById("novi-launcher");
+      const chat = document.getElementById("novi-chat");
+      const closeBtn = document.getElementById("novi-close");
+      const resetBtn = document.getElementById("novi-reset");
+      const categoryBtns = document.querySelectorAll(".novi-category");
+      const selectionLabel = document.getElementById("novi-selection");
+      const messagesContainer = document.getElementById("novi-messages");
+      const form = document.getElementById("novi-form");
+      const input = document.getElementById("novi-input");
+      const sendBtn = document.getElementById("novi-send");
+
+      // Session ID generator/storage per category
+      function getSessionId(category) {
+        const key = "novi_session_" + category;
+        let id = localStorage.getItem(key);
+        if (!id) {
+          id = "novi_" + category + "_" + Date.now() + "_" + Math.random().toString(36).substring(2, 9);
+          localStorage.setItem(key, id);
+        }
+        return id;
+      }
+
+      // Format time string
+      function getFormattedTime() {
+        const now = new Date();
+        return now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      }
+
+      // Safe HTML formatting for bold & newlines
+      function formatBotResponse(text) {
+        if (!text) return "";
+        const escaped = text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+        
+        return escaped
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+          .replace(/`([^`]+)`/g, "<code>$1</code>")
+          .replace(/\n/g, "<br>");
+      }
+
+      // Safe Answer Extraction from n8n JSON output
+      function getAnswer(data) {
+        if (!data) return "I received an empty response. Please verify the n8n webhook workflow.";
+        
+        if (Array.isArray(data)) {
+          if (data.length === 0) return "No response received.";
+          data = data[0];
+        }
+
+        if (typeof data === "string") {
+          try {
+            const parsed = JSON.parse(data);
+            if (typeof parsed === "object" && parsed !== null) {
+              data = parsed;
+            } else {
+              return data;
+            }
+          } catch (e) {
+            return data;
+          }
+        }
+
+        if (typeof data === "object" && data !== null) {
+          if (typeof data.output === "string") return data.output;
+          if (typeof data.text === "string") return data.text;
+          if (typeof data.answer === "string") return data.answer;
+          if (typeof data.response === "string") return data.response;
+          if (typeof data.message === "string") return data.message;
+          if (data.data && typeof data.data.output === "string") return data.data.output;
+          if (data.data && typeof data.data.text === "string") return data.data.text;
+          if (data.data && typeof data.data.answer === "string") return data.data.answer;
+          if (data.json && typeof data.json.output === "string") return data.json.output;
+          if (data.json && typeof data.json.text === "string") return data.json.text;
+
+          const stringVals = Object.values(data).filter(v => typeof v === "string");
+          if (stringVals.length > 0) return stringVals[0];
+
+          return JSON.stringify(data);
+        }
+
+        return String(data);
+      }
+
+      // Scroll to bottom
+      function scrollToBottom() {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      // Append Message
+      function appendMessage(sender, text, isRawHtml) {
+        const group = document.createElement("div");
+        group.className = "novi-message-group " + sender;
+
+        const bubble = document.createElement("div");
+        bubble.className = "novi-message " + sender;
+
+        if (isRawHtml) {
+          bubble.innerHTML = text;
+        } else {
+          bubble.textContent = text;
+        }
+
+        const timeSpan = document.createElement("span");
+        timeSpan.className = "novi-time";
+        timeSpan.textContent = getFormattedTime();
+
+        group.appendChild(bubble);
+        group.appendChild(timeSpan);
+        messagesContainer.appendChild(group);
+        scrollToBottom();
+      }
+
+      // Typing Indicator
+      let typingElement = null;
+      function showTyping() {
+        if (typingElement) return;
+        typingElement = document.createElement("div");
+        typingElement.className = "novi-message-group bot";
+        typingElement.innerHTML = `
+          <div class="novi-message bot novi-typing">
+            <span class="novi-typing-dot"></span>
+            <span class="novi-typing-dot"></span>
+            <span class="novi-typing-dot"></span>
+          </div>
+        `;
+        messagesContainer.appendChild(typingElement);
+        scrollToBottom();
+      }
+
+      function hideTyping() {
+        if (typingElement) {
+          typingElement.remove();
+          typingElement = null;
+        }
+      }
+
+      // Launcher Toggle
+      function toggleChat() {
+        const isOpen = chat.classList.toggle("open");
+        launcher.classList.toggle("active", isOpen);
+        if (isOpen) {
+          scrollToBottom();
+          if (selectedCategory) {
+            input.focus();
+          }
+        }
+      }
+
+      launcher.addEventListener("click", toggleChat);
+      closeBtn.addEventListener("click", () => {
+        chat.classList.remove("open");
+        launcher.classList.remove("active");
+      });
+
+      // Reset Session
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          if (selectedCategory) {
+            localStorage.removeItem("novi_session_" + selectedCategory);
+          }
+          selectedCategory = null;
+          categoryBtns.forEach(b => b.classList.remove("active"));
+          selectionLabel.textContent = "Select category to chat";
+          input.value = "";
+          input.disabled = true;
+          input.placeholder = "Select a category first...";
+          sendBtn.disabled = true;
+          messagesContainer.innerHTML = "";
+          appendMessage(
+            "bot",
+            "Chat session refreshed. Please choose a category above to start a new inquiry.",
+            false
+          );
+        });
+      }
+
+      // Category Selection
+      categoryBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const category = btn.getAttribute("data-category");
+          selectedCategory = category;
+
+          categoryBtns.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          if (category === "products") {
+            selectionLabel.textContent = "🛍️ Products & Sales";
+            input.placeholder = "Ask about products, availability, orders...";
+          } else {
+            selectionLabel.textContent = "📋 FAQs & Policies";
+            input.placeholder = "Ask about shipping, cash on delivery, returns...";
+          }
+
+          input.disabled = false;
+          input.focus();
+          sendBtn.disabled = !input.value.trim();
+
+          appendMessage(
+            "bot",
+            `Category set to <strong>${btn.textContent.trim()}</strong>. How can I assist with this?`,
+            true
+          );
+        });
+      });
+
+      // Input changes trigger send button availability
+      input.addEventListener("input", () => {
+        sendBtn.disabled = !selectedCategory || !input.value.trim() || isSubmitting;
+      });
+
+      // Submit Message
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const query = input.value.trim();
+        if (!query || !selectedCategory || isSubmitting) return;
+
+        // Display user message
+        appendMessage("user", query, false);
+        input.value = "";
+        sendBtn.disabled = true;
+        isSubmitting = true;
+        showTyping();
+
+        try {
+          const sessionId = getSessionId(selectedCategory);
+          const response = await fetch(CHAT_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              action: "sendMessage",
+              chatInput: query,
+              sessionId: sessionId,
+              metadata: {
+                file_category: selectedCategory
+              }
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+          }
+
+          const responseData = await response.json();
+          const answer = getAnswer(responseData);
+
+          hideTyping();
+          appendMessage("bot", formatBotResponse(answer), true);
+        } catch (error) {
+          hideTyping();
+          appendMessage(
+            "bot",
+            `⚠️ <strong>Unable to connect to Novi AI server</strong><br><br>Target: <code>${CHAT_URL}</code><br><br>Please verify your n8n local webhook service is running on port 5678.`,
+            true
+          );
+        } finally {
+          isSubmitting = false;
+          input.disabled = !selectedCategory;
+          input.focus();
+        }
+      });
+    })();
+  </script>
+  <!-- ================= END NOVI CHATBOT WIDGET ================= -->
+</body>
+</html>
