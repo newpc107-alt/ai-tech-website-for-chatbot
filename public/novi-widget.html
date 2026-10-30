@@ -154,7 +154,7 @@
     #novi-launcher {
       position: fixed;
       right: 24px;
-      bottom: 24px;
+      bottom: 84px; /* Elevated to sit clearly above the Netlify badge */
       z-index: 99999;
       width: 60px;
       height: 60px;
@@ -227,11 +227,11 @@
       display: none;
       position: fixed;
       right: 24px;
-      bottom: 96px;
+      bottom: 154px; /* Positioned right above the elevated launcher */
       z-index: 99999;
       width: 380px;
       height: 580px;
-      max-height: calc(85vh - 96px);
+      max-height: calc(85vh - 154px);
       background: var(--novi-bg);
       border-radius: var(--novi-radius);
       overflow: hidden;
@@ -657,7 +657,7 @@
       }
       #novi-launcher {
         right: 18px;
-        bottom: 18px;
+        bottom: 84px;
       }
       .novi-header {
         padding-top: max(14px, env(safe-area-inset-top));

@@ -207,13 +207,13 @@ export const NoviChatbot: React.FC = () => {
 
   return (
     <div id="novi-widget" className="relative z-50 font-sans">
-      {/* Floating Launcher Button */}
+      {/* Floating Launcher Button - elevated to sit cleanly above Netlify badge */}
       <button
         id="novi-launcher"
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? 'Close Novi chat' : 'Open Novi chat'}
         aria-expanded={isOpen}
-        className={`fixed right-5 bottom-5 z-[99999] w-14 h-14 rounded-full flex items-center justify-center text-white shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-300/60 ${
+        className={`fixed right-5 sm:right-6 bottom-[84px] z-[99999] w-14 h-14 rounded-full flex items-center justify-center text-white shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-300/60 ${
           isOpen
             ? 'bg-slate-800 rotate-90 shadow-slate-900/30'
             : 'bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 shadow-blue-500/40 hover:shadow-blue-600/50'
@@ -246,7 +246,7 @@ export const NoviChatbot: React.FC = () => {
       <section
         id="novi-chat"
         aria-label="Novi customer support chat"
-        className={`fixed right-4 bottom-22 sm:bottom-24 sm:right-6 z-[99999] w-[calc(100vw-2rem)] sm:w-[390px] h-[580px] max-h-[82vh] bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 flex flex-col text-slate-800 transition-all duration-300 origin-bottom-right ${
+        className={`fixed right-4 bottom-[154px] sm:bottom-[154px] sm:right-6 z-[99999] w-[calc(100vw-2rem)] sm:w-[390px] h-[580px] max-h-[calc(85vh-154px)] bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 flex flex-col text-slate-800 transition-all duration-300 origin-bottom-right ${
           isOpen
             ? 'opacity-100 scale-100 pointer-events-auto'
             : 'opacity-0 scale-95 pointer-events-none translate-y-4'
