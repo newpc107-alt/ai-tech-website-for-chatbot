@@ -400,7 +400,7 @@ export const NoviChatbot: React.FC = () => {
               }
               autoComplete="off"
               disabled={!category || isTyping}
-              className="w-full pl-3.5 pr-3 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all disabled:opacity-50 disabled:bg-slate-100 disabled:cursor-not-allowed"
+              className="w-full pl-3.5 pr-3 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder:text-slate-700 placeholder:font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all disabled:opacity-100 disabled:bg-slate-100 disabled:border-slate-300 disabled:cursor-not-allowed disabled:placeholder:text-slate-800 disabled:placeholder:font-semibold"
             />
           </div>
           <button

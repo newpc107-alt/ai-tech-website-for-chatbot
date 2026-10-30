@@ -579,12 +579,22 @@
     }
 
     #novi-input::placeholder {
-      color: #94a3b8;
+      color: #1e293b;
+      font-weight: 500;
+      opacity: 1;
     }
 
     #novi-input:disabled {
       cursor: not-allowed;
-      opacity: 0.65;
+      opacity: 1;
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+
+    #novi-input:disabled::placeholder {
+      color: #1e293b;
+      font-weight: 600;
+      opacity: 1;
     }
 
     #novi-send {
