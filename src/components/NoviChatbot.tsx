@@ -206,7 +206,7 @@ export const NoviChatbot: React.FC = () => {
   };
 
   return (
-    <div id="novi-widget" className="relative z-50 font-sans">
+    <div id="ai-chatbot-widget" className="chatbot-container relative z-50 font-sans" data-widget="novi">
       {/* Floating Launcher Button - elevated to sit cleanly above Netlify badge */}
       <button
         id="novi-launcher"
