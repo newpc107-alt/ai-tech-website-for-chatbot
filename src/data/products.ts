@@ -99,6 +99,7 @@ export const PRODUCTS: Product[] = [
   // ===================== AUDIO & AIRPODS =====================
   {
     id: 'aura-ii-earbuds',
+    code: '01',
     name: 'AURA II ANC Wireless Earbuds',
     tagline: '48dB Hybrid ANC with Custom Beryllium Acoustic Driver',
     category: 'audio',
@@ -140,6 +141,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'airpods-pro-titanium',
+    code: '02',
     name: 'AirPods Pro Master Edition',
     tagline: 'Custom Matte Titanium PVD Chassis & MagSafe Type-C',
     category: 'audio',
@@ -174,6 +176,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'aura-studio-hifi-headphones',
+    code: '03',
     name: 'AURA Studio Hi-Fi Over-Ear Headphones',
     tagline: 'Closed-Back Studio Acoustic Monitors with Lossless USB-C DAC',
     category: 'audio',
@@ -208,6 +211,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'precision-silicone-eartips',
+    code: '04',
     name: 'Precision Acoustic Foam & Silicone Tuning Kit',
     tagline: 'Dual-Density Seal for AirPods Pro & AURA Buds (6 Pairs)',
     category: 'audio',
@@ -238,6 +242,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'carbon-airpods-pro-case',
+    code: '05',
     name: 'AEROKEV Carbon Shield for AirPods Case',
     tagline: 'Military-Grade 1500D Aramid Fiber with MagSafe Latch',
     category: 'audio',
@@ -270,6 +275,7 @@ export const PRODUCTS: Product[] = [
   // ===================== CHARGERS & POWER =====================
   {
     id: 'volt-140w-gan-station',
+    code: '06',
     name: 'VOLT 140W GaN Desktop Power Station',
     tagline: '4-Port Multi-Device Charging with Real-Time Wattage OLED',
     category: 'chargers',
@@ -313,6 +319,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'volt-3in1-magsafe-dock',
+    code: '07',
     name: 'VOLT 3-in-1 Foldable MagSafe Travel Dock',
     tagline: '15W Qi2 Certified iPhone, Apple Watch & AirPods Station',
     category: 'chargers',
@@ -349,6 +356,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'volt-25k-145w-powerbank',
+    code: '08',
     name: 'VOLT 25,000mAh 145W Laptop Power Bank',
     tagline: 'Airline-Approved 99.9Wh Reserve with Digital Stat Screen',
     category: 'chargers',
@@ -383,6 +391,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'volt-65w-travel-brick',
+    code: '09',
     name: 'VOLT 65W GaN Dual-Port Travel Wall Brick',
     tagline: 'Pocket-Sized Foldable Cube with Dual USB-C Fast Delivery',
     category: 'chargers',
@@ -418,6 +427,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'volt-45w-ultraslim-wallpuck',
+    code: '10',
     name: 'VOLT 45W Ultra-Slim GaN Wall Puck',
     tagline: 'Only 14mm Thin Flat Wall Charger with 90° Rotating Prongs',
     category: 'chargers',
@@ -448,6 +458,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'volt-15w-qi2-car-charger',
+    code: '11',
     name: 'VOLT 15W Qi2 Magnetic Vent Car Charger',
     tagline: 'Active Semiconductor Cooling Fan & Ball-Joint Lock',
     category: 'chargers',
@@ -480,6 +491,7 @@ export const PRODUCTS: Product[] = [
   // ===================== CABLES & INTERCONNECTS =====================
   {
     id: 'nexus-240w-thunderbolt4',
+    code: '12',
     name: 'NEXUS 240W Thunderbolt 4 / USB4 Braided Cable (2m)',
     tagline: '40Gbps High-Speed Data, 8K Video & 240W Power Delivery',
     category: 'cables',
@@ -518,6 +530,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'nexus-100w-braided-c2c',
+    code: '13',
     name: 'NEXUS Heavy-Duty Braided USB-C to USB-C 100W (1.5m)',
     tagline: 'Aramid-Reinforced 100W Fast Charging Cable with Leather Strap',
     category: 'cables',
@@ -552,6 +565,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'nexus-90deg-gaming-usbc',
+    code: '14',
     name: 'NEXUS Right-Angle 90° Gaming USB-C Cable (2m)',
     tagline: 'Ergonomic L-Shape Connector for Handheld Gaming & Comfort',
     category: 'cables',
@@ -583,6 +597,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'nexus-silicone-c2lightning',
+    code: '15',
     name: 'NEXUS Liquid Silicone USB-C to Lightning MFi (1.2m)',
     tagline: 'Ultra-Soft Touch Tangle-Free Silicone with 27W Apple Fast Charge',
     category: 'cables',
@@ -615,6 +630,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'nexus-4in1-universal-cable',
+    code: '16',
     name: 'NEXUS 4-in-1 Universal Modular Multi-Cable',
     tagline: 'Swappable USB-A/C to USB-C/Lightning with Metal Shielding',
     category: 'cables',
@@ -646,6 +662,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'nexus-8k-usbc-to-hdmi',
+    code: '17',
     name: 'NEXUS 8K Ultra-Slim USB-C to HDMI 2.1 Cable (2m)',
     tagline: '8K@60Hz / 4K@144Hz HDR Video with Gold-Plated Terminals',
     category: 'cables',
@@ -676,6 +693,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'nexus-usba-to-usbc-10gbps',
+    code: '18',
     name: 'NEXUS USB 3.2 Gen 2 Type-A to Type-C 10Gbps Cable (1m)',
     tagline: 'High-Speed External SSD Data Cable with Braided Armor',
     category: 'cables',
@@ -707,6 +725,7 @@ export const PRODUCTS: Product[] = [
   // ===================== CASES & PROTECTION =====================
   {
     id: 'aerokev-aramid-case',
+    code: '19',
     name: 'AEROKEV 1500D Aramid Fiber Magnetic Case',
     tagline: '0.7mm Ultra-Thin 12g Shell with Built-In MagSafe Array',
     category: 'protection',
@@ -744,6 +763,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'titan-armor-shockproof-case',
+    code: '20',
     name: 'TITAN Armor Shockproof Military Bumper Case',
     tagline: '15ft Drop Certified with Machined Anodized Aluminum Buttons',
     category: 'protection',
@@ -776,6 +796,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'frost-translucent-case',
+    code: '21',
     name: 'FROST Translucent Matte Magnetic Case',
     tagline: 'Oleophobic Anti-Yellowing Polycarbonate with Aluminum Accents',
     category: 'protection',
@@ -806,6 +827,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'sapphire-shield-screen-protector',
+    code: '22',
     name: '9H+ Sapphire Shield Glass with Dust-Free Auto Alignment Tray (2-Pack)',
     tagline: '10-Second Bubble-Free Installation with Electrostatic Dust Removal',
     category: 'protection',
@@ -839,6 +861,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'titanium-camera-lens-protector',
+    code: '23',
     name: 'Titanium Alloy Individual Camera Lens Ring Protectors',
     tagline: 'AR Anti-Reflective Optical Glass with Precision Color Match',
     category: 'protection',
@@ -869,6 +892,7 @@ export const PRODUCTS: Product[] = [
   // ===================== MOUNTS, DOCKS & ORGANIZATION =====================
   {
     id: 'orbit-aluminum-magsafe-stand',
+    code: '24',
     name: 'ORBIT Precision CNC Aluminum MagSafe Desk Stand',
     tagline: 'Solid Weighted Brass Core with 360° Smooth Fluid Rotation',
     category: 'stands',
@@ -901,6 +925,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'vertex-10in1-hub',
+    code: '25',
     name: 'VERTEX 10-in-1 Dual 4K Thunderbolt 4 Aluminum Dock',
     tagline: 'Dual HDMI 2.1, 2.5G Ethernet, 10Gbps USB-C & 100W PD Pass-through',
     category: 'stands',
@@ -934,6 +959,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'kinetic-laptop-riser',
+    code: '26',
     name: 'KHIZAR Dual-Pivot Ergonomic Aluminum Laptop Riser',
     tagline: 'Dual Precision Tension Hinges Holding up to 10kg with Cable Guide',
     category: 'stands',
@@ -965,6 +991,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'nexus-magnetic-cable-blocks',
+    code: '27',
     name: 'NEXUS Magnetic Weighted Cable Organizer Blocks (3-Pack)',
     tagline: 'Solid Metal Core with Micro-Suction Nano Base & Magnetic Collars',
     category: 'stands',
@@ -996,6 +1023,7 @@ export const PRODUCTS: Product[] = [
   // ===================== SMARTPHONES & MOBILES (Placed after audio & chargers) =====================
   {
     id: 'apex-ultra-titanium-5g',
+    code: '28',
     name: 'APEX Ultra Pro 5G Titanium',
     tagline: 'Grade 5 Titanium Armor with 200MP Periscope Camera',
     category: 'smartphones',
@@ -1038,6 +1066,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'apex-horizon-fold-pro',
+    code: '29',
     name: 'APEX Horizon Fold Pro',
     tagline: 'Zero-Crease Titanium Teardrop Hinge & Dual 120Hz Displays',
     category: 'smartphones',
@@ -1074,6 +1103,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'apex-air-compact-flagship',
+    code: '30',
     name: 'APEX Air Compact Flagship',
     tagline: '6.1-Inch Ergonomic Pocket Powerhouse with 120Hz OLED',
     category: 'smartphones',
@@ -1108,6 +1138,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'apex-studio-cinema-edition',
+    code: '31',
     name: 'APEX Studio Cinema Edition (1TB)',
     tagline: 'ProRes 4K 120fps Direct Recording with Mechanical Shutter Dial',
     category: 'smartphones',

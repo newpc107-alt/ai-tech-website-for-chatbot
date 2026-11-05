@@ -25,6 +25,7 @@ export interface ReviewItem {
 
 export interface Product {
   id: string;
+  code: string;
   name: string;
   tagline: string;
   category: CategoryId;

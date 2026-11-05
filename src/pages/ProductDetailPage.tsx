@@ -92,7 +92,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId 
             <span aria-hidden="true" className="text-slate-300">/</span>
           </>
         )}
-        <span className="text-slate-900 font-semibold truncate max-w-xs">{product.name}</span>
+        <span className="text-slate-900 font-semibold truncate max-w-xs">{product.name} [#{product.code}]</span>
       </nav>
 
       {/* Main Contiguous PDP Split (Left Gallery + Right Purchase Module) */}
@@ -165,9 +165,14 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId 
               </div>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-display">
-              {product.name}
-            </h1>
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="inline-flex items-center px-3 py-1 rounded-md text-xs font-bold font-mono bg-blue-600 text-white shadow-xs">
+                Product Code: {product.code}
+              </span>
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-display">
+                {product.name}
+              </h1>
+            </div>
             <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
               {product.tagline}
             </p>

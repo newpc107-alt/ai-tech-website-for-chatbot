@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
-import { ShoppingBag, Search, Menu, X, ArrowRight, ShieldCheck, Truck } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, ArrowRight } from 'lucide-react';
 import { CATEGORIES } from '../data/products';
 
 export const Navbar: React.FC = () => {
@@ -12,37 +12,10 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      {/* Fresh Blue Top Announcement Strip */}
-      <aside aria-label="Announcement" className="bg-gradient-to-r from-blue-900 via-indigo-900 to-blue-950 text-blue-100 py-1.5 px-4 text-center border-b border-blue-950 text-xs">
-        <div className="max-w-7xl mx-auto flex items-center justify-between text-xs">
-          <div className="hidden sm:flex items-center gap-2">
-            <ShieldCheck className="w-3.5 h-3.5 text-blue-300" />
-            <span className="text-blue-100 font-medium">Khizar Tech 2-Year Full Hardware Warranty</span>
-          </div>
-          <p className="mx-auto sm:mx-0 flex items-center gap-2 text-white font-medium">
-            <Truck className="w-3.5 h-3.5 text-sky-300" />
-            <span>Complimentary Express Air Delivery over $50</span>
-            <span className="hidden md:inline text-blue-300">· Use code <strong>KHIZAR10</strong> for 10% off</span>
-          </p>
-          <div className="hidden sm:flex items-center gap-4 text-blue-200">
-            <a
-              href="/about"
-              onClick={(e) => {
-                e.preventDefault();
-                navigateTo({ name: 'about' });
-              }}
-              className="hover:text-white transition-colors cursor-pointer text-inherit no-underline"
-            >
-              Engineering & Lab
-            </a>
-          </div>
-        </div>
-      </aside>
-
       {/* Top Bar: Clean White/Blue Header */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-2xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-8 px-4 sm:px-6 py-3.5">
-          {/* Zone 1: Brand Wordmark with Khizar's Name */}
+          {/* Zone 1: Upgraded High-Tech Brand Logo & Modern Typography */}
           <div className="flex items-center gap-3 shrink-0">
             <a
               href="/"
@@ -51,18 +24,37 @@ export const Navbar: React.FC = () => {
                 navigateTo({ name: 'home' });
                 setMobileMenuOpen(false);
               }}
-              className="flex items-center gap-2.5 text-left group cursor-pointer text-inherit no-underline"
+              className="flex items-center gap-3 text-left group cursor-pointer text-inherit no-underline select-none"
             >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-sm tracking-tighter shadow-sm group-hover:from-blue-700 group-hover:to-indigo-700 transition-colors">
-                KT
+              {/* Modern Tech Emblem Mark */}
+              <div className="relative w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-700 via-indigo-600 to-cyan-500 p-[1.5px] shadow-md shadow-blue-500/20 group-hover:shadow-blue-500/40 group-hover:scale-105 transition-all duration-200">
+                <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden relative">
+                  <div className="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:6px_6px] opacity-25" />
+                  <svg className="w-5 h-5 text-cyan-400 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 4v16" />
+                    <path d="M4 12l8-8" />
+                    <path d="M8 8l10 12" />
+                    <circle cx="18" cy="6" r="2" fill="currentColor" stroke="none" />
+                  </svg>
+                </div>
               </div>
+
+              {/* Modern Sophisticated Typography */}
               <div className="flex flex-col">
-                <span className="text-lg font-bold tracking-tight text-slate-900 uppercase font-display whitespace-nowrap leading-none group-hover:text-blue-600 transition-colors">
-                  Khizar Tech
-                </span>
-                <span className="text-[10px] font-semibold text-blue-600 uppercase tracking-widest font-mono">
-                  Store
-                </span>
+                <div className="flex items-center gap-1.5 leading-none">
+                  <span className="text-xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors font-display">
+                    KHIZAR
+                  </span>
+                  <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 bg-clip-text text-transparent font-display">
+                    TECH
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 mt-1">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.28em] font-mono leading-none">
+                    STORE
+                  </span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                </div>
               </div>
             </a>
           </div>

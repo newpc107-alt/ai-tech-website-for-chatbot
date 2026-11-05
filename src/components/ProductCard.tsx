@@ -70,14 +70,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <div className="flex items-center gap-1 text-slate-700">
               <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
               <span className="font-mono tabular-nums text-xs font-semibold">{product.rating}</span>
-              <span className="text-slate-400 text-[11px]">({product.reviewCount})</span>
+              <span className="text-slate-400 text-[11px]">({product.reviewCount} reviews)</span>
             </div>
           </div>
 
-          {/* Product Name */}
-          <h3 className="text-sm font-semibold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
-            {product.name}
-          </h3>
+          {/* Product Name with Prominent Numeric Code */}
+          <div className="flex items-start gap-2">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-bold font-mono bg-blue-600 text-white shrink-0 mt-0.5 shadow-2xs">
+              Code {product.code}
+            </span>
+            <h3 className="text-sm font-semibold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+              {product.name}
+            </h3>
+          </div>
 
           {/* Quiet Tagline/Key benefit */}
           <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">

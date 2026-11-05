@@ -15,7 +15,12 @@
       "name": "AirPods & Acoustics",
       "url": "https://khizartech.netlify.app/categories/audio",
       "description": "Studio-grade wireless noise-cancelling earbuds, spatial audio AirPods, over-ear hi-fi monitors, and tuned acoustic silicone tips.",
-      "subcategories": ["All Audio", "Wireless Earbuds", "Over-Ear Studio", "Audio Accessories"]
+      "subcategories": [
+        "All Audio",
+        "Wireless Earbuds",
+        "Over-Ear Studio",
+        "Audio Accessories"
+      ]
     },
     {
       "id": "chargers",
@@ -23,7 +28,13 @@
       "name": "Chargers & Power",
       "url": "https://khizartech.netlify.app/categories/chargers",
       "description": "Fast desktop power blocks, ultra-compact travel GaN adapters, 3-in-1 MagSafe multi-docks, and high-capacity 100W+ laptop power banks.",
-      "subcategories": ["All Chargers", "Desktop GaN Stations", "Travel Adapters", "MagSafe & Wireless", "Power Banks"]
+      "subcategories": [
+        "All Chargers",
+        "Desktop GaN Stations",
+        "Travel Adapters",
+        "MagSafe & Wireless",
+        "Power Banks"
+      ]
     },
     {
       "id": "cables",
@@ -31,7 +42,13 @@
       "name": "Cables & Interconnects",
       "url": "https://khizartech.netlify.app/categories/cables",
       "description": "Every cable standard engineered for longevity: Thunderbolt 4, 100W/240W Type-C to Type-C, right-angle gaming cables, and MFi Lightning.",
-      "subcategories": ["All Cables", "Type-C to Type-C", "Thunderbolt 4 / USB4", "USB-C to Lightning", "USB-A & Display"]
+      "subcategories": [
+        "All Cables",
+        "Type-C to Type-C",
+        "Thunderbolt 4 / USB4",
+        "USB-C to Lightning",
+        "USB-A & Display"
+      ]
     },
     {
       "id": "protection",
@@ -39,7 +56,13 @@
       "name": "Cases & Protection",
       "url": "https://khizartech.netlify.app/categories/protection",
       "description": "Ultra-thin 1500D Kevlar skins, military-grade drop armor with MagSafe magnetic rings, 9H+ sapphire screen protectors, and camera shields.",
-      "subcategories": ["All Protection", "Aramid & Slim Cases", "Rugged Armor", "Screen Glass", "Lens Protectors"]
+      "subcategories": [
+        "All Protection",
+        "Aramid & Slim Cases",
+        "Rugged Armor",
+        "Screen Glass",
+        "Lens Protectors"
+      ]
     },
     {
       "id": "stands",
@@ -47,7 +70,13 @@
       "name": "Mounts & Docks",
       "url": "https://khizartech.netlify.app/categories/stands",
       "description": "Precision magnetic desk stands, 10-in-1 Thunderbolt desktop docking hubs, dual-pivot laptop risers, and magnetic cable anchoring bases.",
-      "subcategories": ["All Mounts & Docks", "Desk Stands", "Multi-Port Hubs", "Vehicle Mounts", "Cable Organizers"]
+      "subcategories": [
+        "All Mounts & Docks",
+        "Desk Stands",
+        "Multi-Port Hubs",
+        "Vehicle Mounts",
+        "Cable Organizers"
+      ]
     },
     {
       "id": "smartphones",
@@ -55,11 +84,17 @@
       "name": "Mobiles & Devices",
       "url": "https://khizartech.netlify.app/categories/smartphones",
       "description": "Next-generation flagship smartphones, ultra-thin zero-crease foldables, and pocket-sized high-refresh performance devices.",
-      "subcategories": ["All Mobiles", "Titanium Flagships", "Foldable Series", "Compact Edition"]
+      "subcategories": [
+        "All Mobiles",
+        "Titanium Flagships",
+        "Foldable Series",
+        "Compact Edition"
+      ]
     }
   ],
   "products": [
     {
+      "code": "01",
       "id": "aura-ii-earbuds",
       "slug": "aura-ii-earbuds",
       "name": "AURA II ANC Wireless Earbuds",
@@ -99,10 +134,18 @@
         "Weight": "4.8g per earbud"
       },
       "options": [
-        { "name": "Color", "values": ["Ice Blue", "Silver Titanium", "Onyx Black"] }
+        {
+          "name": "Color",
+          "values": [
+            "Ice Blue",
+            "Silver Titanium",
+            "Onyx Black"
+          ]
+        }
       ]
     },
     {
+      "code": "02",
       "id": "airpods-pro-titanium",
       "slug": "airpods-pro-titanium",
       "name": "AirPods Pro Master Edition",
@@ -139,10 +182,18 @@
         "Charging": "USB-C, MagSafe, Apple Watch Puck, Qi"
       },
       "options": [
-        { "name": "Finish", "values": ["Pure White & Titanium", "Space Silver", "Stealth Slate"] }
+        {
+          "name": "Finish",
+          "values": [
+            "Pure White & Titanium",
+            "Space Silver",
+            "Stealth Slate"
+          ]
+        }
       ]
     },
     {
+      "code": "03",
       "id": "aura-studio-hifi-headphones",
       "slug": "aura-studio-hifi-headphones",
       "name": "AURA Studio Hi-Fi Over-Ear Headphones",
@@ -160,7 +211,9 @@
       "tag": "Audiophile Choice",
       "url": "https://khizartech.netlify.app/products/aura-studio-hifi-headphones",
       "image": "/images/headphones_overear_studio_1793218339958.jpg",
-      "images": ["/images/headphones_overear_studio_1793218339958.jpg"],
+      "images": [
+        "/images/headphones_overear_studio_1793218339958.jpg"
+      ],
       "description": "Milled from aircraft-grade aluminum with magnetic memory-foam sheepskin ear cushions. Features an integrated 24-bit/192kHz USB-C digital audio converter and ultra-low distortion planar drivers.",
       "features": [
         "Built-in 24-bit/192kHz high-resolution audiophile USB-C DAC",
@@ -176,10 +229,18 @@
         "Weight": "320g"
       },
       "options": [
-        { "name": "Color", "values": ["Silver & White Leather", "Space Silver", "Cobalt Blue Accent"] }
+        {
+          "name": "Color",
+          "values": [
+            "Silver & White Leather",
+            "Space Silver",
+            "Cobalt Blue Accent"
+          ]
+        }
       ]
     },
     {
+      "code": "04",
       "id": "precision-silicone-eartips",
       "slug": "precision-silicone-eartips",
       "name": "Precision Acoustic Foam & Silicone Tuning Kit",
@@ -196,7 +257,9 @@
       "tag": "Accessory",
       "url": "https://khizartech.netlify.app/products/precision-silicone-eartips",
       "image": "/images/earbud_tuning_silicone_tips_1793219800973.jpg",
-      "images": ["/images/earbud_tuning_silicone_tips_1793219800973.jpg"],
+      "images": [
+        "/images/earbud_tuning_silicone_tips_1793219800973.jpg"
+      ],
       "description": "Medical-grade hypoallergenic silicone tips combined with slow-recovery memory foam cores to ensure maximum bass retention and passive noise isolation. Includes XS, S, M, L sizes in a custom organizer tray.",
       "features": [
         "Dual-layer composite: silicone exterior with internal high-density foam",
@@ -210,10 +273,18 @@
         "Mesh Type": "Surgical 316 Stainless Mesh"
       },
       "options": [
-        { "name": "Color", "values": ["Pure White", "Smoked Blue", "Charcoal"] }
+        {
+          "name": "Color",
+          "values": [
+            "Pure White",
+            "Smoked Blue",
+            "Charcoal"
+          ]
+        }
       ]
     },
     {
+      "code": "05",
       "id": "carbon-airpods-pro-case",
       "slug": "carbon-airpods-pro-case",
       "name": "AEROKEV Carbon Shield for AirPods Case",
@@ -230,7 +301,9 @@
       "tag": "Accessory",
       "url": "https://khizartech.netlify.app/products/carbon-airpods-pro-case",
       "image": "/images/carbon_fiber_airpods_case_1793219801737.jpg",
-      "images": ["/images/carbon_fiber_airpods_case_1793219801737.jpg"],
+      "images": [
+        "/images/carbon_fiber_airpods_case_1793219801737.jpg"
+      ],
       "description": "Real 1500D aramid fiber construction with magnetic closure latch and machined titanium lanyard carabiner. Guarantees 100% wireless charging and MagSafe puck passthrough.",
       "features": [
         "Only 0.9mm thickness with zero bulk in pockets",
@@ -244,10 +317,17 @@
         "Compatibility": "AirPods Pro 1 & 2 (Lightning & USB-C cases)"
       },
       "options": [
-        { "name": "Weave", "values": ["Classic Twill Weave", "Matte Blue Weave"] }
+        {
+          "name": "Weave",
+          "values": [
+            "Classic Twill Weave",
+            "Matte Blue Weave"
+          ]
+        }
       ]
     },
     {
+      "code": "06",
       "id": "volt-140w-gan-station",
       "slug": "volt-140w-gan-station",
       "name": "VOLT 140W GaN Desktop Power Station",
@@ -257,7 +337,7 @@
       "subcategory": "Desktop GaN Stations",
       "price": 99,
       "originalPrice": 119,
-      "rating": 5.0,
+      "rating": 5,
       "reviewCount": 467,
       "availability": "in_stock",
       "inStock": true,
@@ -288,11 +368,25 @@
         "Weight": "295g"
       },
       "options": [
-        { "name": "Wattage Output", "values": ["140W GaN Station", "100W Compact Desktop", "200W Pro Tower"] },
-        { "name": "Finish", "values": ["Silver Aluminum", "Space Titanium"] }
+        {
+          "name": "Wattage Output",
+          "values": [
+            "140W GaN Station",
+            "100W Compact Desktop",
+            "200W Pro Tower"
+          ]
+        },
+        {
+          "name": "Finish",
+          "values": [
+            "Silver Aluminum",
+            "Space Titanium"
+          ]
+        }
       ]
     },
     {
+      "code": "07",
       "id": "volt-3in1-magsafe-dock",
       "slug": "volt-3in1-magsafe-dock",
       "name": "VOLT 3-in-1 Foldable MagSafe Travel Dock",
@@ -331,10 +425,17 @@
         "Weight": "198g"
       },
       "options": [
-        { "name": "Color", "values": ["Pure White & Chrome", "Silver Aluminum"] }
+        {
+          "name": "Color",
+          "values": [
+            "Pure White & Chrome",
+            "Silver Aluminum"
+          ]
+        }
       ]
     },
     {
+      "code": "08",
       "id": "volt-25k-145w-powerbank",
       "slug": "volt-25k-145w-powerbank",
       "name": "VOLT 25,000mAh 145W Laptop Power Bank",
@@ -352,7 +453,9 @@
       "tag": "Heavy Duty",
       "url": "https://khizartech.netlify.app/products/volt-25k-145w-powerbank",
       "image": "/images/powerbank_digital_display_1793218340448.jpg",
-      "images": ["/images/powerbank_digital_display_1793218340448.jpg"],
+      "images": [
+        "/images/powerbank_digital_display_1793218340448.jpg"
+      ],
       "description": "The maximum allowable capacity for commercial air travel (99.9Wh). Provides 100W USB-C output to recharge laptops from 0 to 100%, plus a secondary 45W port to charge phones simultaneously.",
       "features": [
         "25,000mAh capacity recharges a flagship smartphone 4-5 times or laptop 1.3 times",
@@ -368,10 +471,17 @@
         "Weight": "495g"
       },
       "options": [
-        { "name": "Capacity", "values": ["25,000mAh (145W)", "15,000mAh (65W)"] }
+        {
+          "name": "Capacity",
+          "values": [
+            "25,000mAh (145W)",
+            "15,000mAh (65W)"
+          ]
+        }
       ]
     },
     {
+      "code": "09",
       "id": "volt-65w-travel-brick",
       "slug": "volt-65w-travel-brick",
       "name": "VOLT 65W GaN Dual-Port Travel Wall Brick",
@@ -389,7 +499,9 @@
       "tag": "Travel Essential",
       "url": "https://khizartech.netlify.app/products/volt-65w-travel-brick",
       "image": "/images/charger_65w_gan_travel_1793219802504.jpg",
-      "images": ["/images/charger_65w_gan_travel_1793219802504.jpg"],
+      "images": [
+        "/images/charger_65w_gan_travel_1793219802504.jpg"
+      ],
       "description": "52% smaller than standard 65W wall chargers. Features folding US prongs plus swappable international EU & UK adapters for worldwide travel. Charges a laptop and phone simultaneously.",
       "features": [
         "Dual USB-C ports with intelligent power splitting (45W + 20W or single 65W)",
@@ -405,11 +517,25 @@
         "Protocols": "PD 3.0, PPS, QC 4.0, AFC, FCP"
       },
       "options": [
-        { "name": "Color", "values": ["Pure White", "Sky Blue", "Matte Black"] },
-        { "name": "Plugs Included", "values": ["US + EU/UK Adapters", "US Only"] }
+        {
+          "name": "Color",
+          "values": [
+            "Pure White",
+            "Sky Blue",
+            "Matte Black"
+          ]
+        },
+        {
+          "name": "Plugs Included",
+          "values": [
+            "US + EU/UK Adapters",
+            "US Only"
+          ]
+        }
       ]
     },
     {
+      "code": "10",
       "id": "volt-45w-ultraslim-wallpuck",
       "slug": "volt-45w-ultraslim-wallpuck",
       "name": "VOLT 45W Ultra-Slim GaN Wall Puck",
@@ -426,7 +552,9 @@
       "tag": "Novelty",
       "url": "https://khizartech.netlify.app/products/volt-45w-ultraslim-wallpuck",
       "image": "/images/charger_45w_slim_puck_1793219802723.jpg",
-      "images": ["/images/charger_45w_slim_puck_1793219802723.jpg"],
+      "images": [
+        "/images/charger_45w_slim_puck_1793219802723.jpg"
+      ],
       "description": "Engineered specifically for tight spaces behind couches, beds, and entertainment centers. Sits perfectly flush against the wall plate with bottom-facing USB-C ports so cables don’t bend.",
       "features": [
         "Ultra-thin 14mm profile fits where standard chargers cannot",
@@ -440,10 +568,17 @@
         "Orientation": "Down-angled cable ports"
       },
       "options": [
-        { "name": "Color", "values": ["Glacier White", "Cobalt Blue Accent"] }
+        {
+          "name": "Color",
+          "values": [
+            "Glacier White",
+            "Cobalt Blue Accent"
+          ]
+        }
       ]
     },
     {
+      "code": "11",
       "id": "volt-15w-qi2-car-charger",
       "slug": "volt-15w-qi2-car-charger",
       "name": "VOLT 15W Qi2 Magnetic Vent Car Charger",
@@ -460,7 +595,9 @@
       "tag": "Automotive",
       "url": "https://khizartech.netlify.app/products/volt-15w-qi2-car-charger",
       "image": "/images/charger_car_vent_mount_1793219803944.jpg",
-      "images": ["/images/charger_car_vent_mount_1793219803944.jpg"],
+      "images": [
+        "/images/charger_car_vent_mount_1793219803944.jpg"
+      ],
       "description": "Features cryo-boost thermoelectric cooling that prevents your phone from overheating during GPS navigation and fast 15W wireless charging in hot cars. Reinforced steel hook grips any vent blade.",
       "features": [
         "Qi2 Certified true 15W MagSafe wireless fast charging",
@@ -474,10 +611,17 @@
         "Included in Box": "Car Mount, 1.2m Braided Cable, 36W Car Adapter"
       },
       "options": [
-        { "name": "Mount Style", "values": ["Air Vent Twist-Lock", "Suction Dashboard Base"] }
+        {
+          "name": "Mount Style",
+          "values": [
+            "Air Vent Twist-Lock",
+            "Suction Dashboard Base"
+          ]
+        }
       ]
     },
     {
+      "code": "12",
       "id": "nexus-240w-thunderbolt4",
       "slug": "nexus-240w-thunderbolt4",
       "name": "NEXUS 240W Thunderbolt 4 / USB4 Braided Cable (2m)",
@@ -487,7 +631,7 @@
       "subcategory": "Thunderbolt 4 / USB4",
       "price": 49,
       "originalPrice": 59,
-      "rating": 5.0,
+      "rating": 5,
       "reviewCount": 389,
       "availability": "in_stock",
       "inStock": true,
@@ -514,11 +658,25 @@
         "Durability": "50,000+ Bend Cycle Rating"
       },
       "options": [
-        { "name": "Length", "values": ["1.0 Meter (3.3ft)", "2.0 Meters (6.6ft)", "3.0 Meters (10ft)"] },
-        { "name": "Color", "values": ["Silver Braided Weave", "Cobalt Blue Accent"] }
+        {
+          "name": "Length",
+          "values": [
+            "1.0 Meter (3.3ft)",
+            "2.0 Meters (6.6ft)",
+            "3.0 Meters (10ft)"
+          ]
+        },
+        {
+          "name": "Color",
+          "values": [
+            "Silver Braided Weave",
+            "Cobalt Blue Accent"
+          ]
+        }
       ]
     },
     {
+      "code": "13",
       "id": "nexus-100w-braided-c2c",
       "slug": "nexus-100w-braided-c2c",
       "name": "NEXUS Heavy-Duty Braided USB-C to USB-C 100W (1.5m)",
@@ -536,7 +694,9 @@
       "tag": "Top Pick",
       "url": "https://khizartech.netlify.app/products/nexus-100w-braided-c2c",
       "image": "/images/braided_usbc_cable_blue_1793219803382.jpg",
-      "images": ["/images/braided_usbc_cable_blue_1793219803382.jpg"],
+      "images": [
+        "/images/braided_usbc_cable_blue_1793219803382.jpg"
+      ],
       "description": "Constructed with internal DuPont Kevlar fibers capable of lifting up to 100kg. Supports full 100W Power Delivery and high-speed USB 2.0 data. Includes a handcrafted genuine leather cable wrap.",
       "features": [
         "100W Power Delivery (20V/5A) fast charges all laptops, tablets, and phones",
@@ -551,11 +711,26 @@
         "Core Material": "Aramid / Tinned Copper"
       },
       "options": [
-        { "name": "Length", "values": ["1.0m (3.3ft)", "1.5m (5.0ft)", "2.0m (6.6ft)"] },
-        { "name": "Color", "values": ["Electric Blue Weave", "Silver Gray", "Navy Braided"] }
+        {
+          "name": "Length",
+          "values": [
+            "1.0m (3.3ft)",
+            "1.5m (5.0ft)",
+            "2.0m (6.6ft)"
+          ]
+        },
+        {
+          "name": "Color",
+          "values": [
+            "Electric Blue Weave",
+            "Silver Gray",
+            "Navy Braided"
+          ]
+        }
       ]
     },
     {
+      "code": "14",
       "id": "nexus-90deg-gaming-usbc",
       "slug": "nexus-90deg-gaming-usbc",
       "name": "NEXUS Right-Angle 90° Gaming USB-C Cable (2m)",
@@ -572,7 +747,9 @@
       "tag": "Gamer Essential",
       "url": "https://khizartech.netlify.app/products/nexus-90deg-gaming-usbc",
       "image": "/images/gaming_right_angle_cable_1793219803719.jpg",
-      "images": ["/images/gaming_right_angle_cable_1793219803719.jpg"],
+      "images": [
+        "/images/gaming_right_angle_cable_1793219803719.jpg"
+      ],
       "description": "Designed for gamers holding their phones or handheld consoles horizontally. The 90-degree right angle connector routes the cable smoothly along your palm without bending or digging into your hands.",
       "features": [
         "Low-profile 90-degree right-angle plug prevents palm discomfort",
@@ -586,11 +763,24 @@
         "Length": "2.0m (6.6ft)"
       },
       "options": [
-        { "name": "Length", "values": ["1.2m", "2.0m"] },
-        { "name": "Color", "values": ["Azure Blue", "Stealth Black"] }
+        {
+          "name": "Length",
+          "values": [
+            "1.2m",
+            "2.0m"
+          ]
+        },
+        {
+          "name": "Color",
+          "values": [
+            "Azure Blue",
+            "Stealth Black"
+          ]
+        }
       ]
     },
     {
+      "code": "15",
       "id": "nexus-silicone-c2lightning",
       "slug": "nexus-silicone-c2lightning",
       "name": "NEXUS Liquid Silicone USB-C to Lightning MFi (1.2m)",
@@ -607,7 +797,9 @@
       "tag": "MFi Certified",
       "url": "https://khizartech.netlify.app/products/nexus-silicone-c2lightning",
       "image": "/images/silicone_lightning_cable_1793219804524.jpg",
-      "images": ["/images/silicone_lightning_cable_1793219804524.jpg"],
+      "images": [
+        "/images/silicone_lightning_cable_1793219804524.jpg"
+      ],
       "description": "Made from silky smooth food-grade liquid silicone that never kinks or knots, even when shoved into tight pockets. Apple MFi certified with original C94 lightning connector for rapid charging.",
       "features": [
         "Certified Apple MFi for guaranteed compatibility and zero warning popups",
@@ -622,11 +814,25 @@
         "Length": "1.2m (4ft)"
       },
       "options": [
-        { "name": "Color", "values": ["Sky Blue", "Cloud White", "Mint Slate"] },
-        { "name": "Length", "values": ["1.2m (4ft)", "1.8m (6ft)"] }
+        {
+          "name": "Color",
+          "values": [
+            "Sky Blue",
+            "Cloud White",
+            "Mint Slate"
+          ]
+        },
+        {
+          "name": "Length",
+          "values": [
+            "1.2m (4ft)",
+            "1.8m (6ft)"
+          ]
+        }
       ]
     },
     {
+      "code": "16",
       "id": "nexus-4in1-universal-cable",
       "slug": "nexus-4in1-universal-cable",
       "name": "NEXUS 4-in-1 Universal Modular Multi-Cable",
@@ -644,7 +850,9 @@
       "tag": "All-in-One",
       "url": "https://khizartech.netlify.app/products/nexus-4in1-universal-cable",
       "image": "/images/universal_4in1_cable_real_1793219825113.jpg",
-      "images": ["/images/universal_4in1_cable_real_1793219825113.jpg"],
+      "images": [
+        "/images/universal_4in1_cable_real_1793219825113.jpg"
+      ],
       "description": "The only cable you need to carry. Built-in tethered adapter heads convert effortlessly between: USB-C to USB-C (60W), USB-A to USB-C (18W), USB-C to Lightning (27W), and USB-A to Lightning (12W).",
       "features": [
         "4 connection combinations in a single robust cable",
@@ -658,10 +866,17 @@
         "Housing": "Die-Cast Zinc Alloy"
       },
       "options": [
-        { "name": "Color", "values": ["Silver & Blue Accent", "Matte Slate"] }
+        {
+          "name": "Color",
+          "values": [
+            "Silver & Blue Accent",
+            "Matte Slate"
+          ]
+        }
       ]
     },
     {
+      "code": "17",
       "id": "nexus-8k-usbc-to-hdmi",
       "slug": "nexus-8k-usbc-to-hdmi",
       "name": "NEXUS 8K Ultra-Slim USB-C to HDMI 2.1 Cable (2m)",
@@ -678,7 +893,9 @@
       "tag": "Ultra HD",
       "url": "https://khizartech.netlify.app/products/nexus-8k-usbc-to-hdmi",
       "image": "/images/hdmi_8k_braided_cable_real_1793219825403.jpg",
-      "images": ["/images/hdmi_8k_braided_cable_real_1793219825403.jpg"],
+      "images": [
+        "/images/hdmi_8k_braided_cable_real_1793219825403.jpg"
+      ],
       "description": "Directly connect USB-C laptops, tablets, or phones to 4K/8K TVs and gaming monitors with zero latency or adapter lag. Supports HDCP 2.3, eARC, Dolby Vision, and VRR variable refresh rate.",
       "features": [
         "HDMI 2.1 specification supporting 48Gbps video bandwidth",
@@ -692,10 +909,17 @@
         "Length": "2.0m (6.6ft)"
       },
       "options": [
-        { "name": "Length", "values": ["2.0m (6.6ft)", "3.0m (10ft)"] }
+        {
+          "name": "Length",
+          "values": [
+            "2.0m (6.6ft)",
+            "3.0m (10ft)"
+          ]
+        }
       ]
     },
     {
+      "code": "18",
       "id": "nexus-usba-to-usbc-10gbps",
       "slug": "nexus-usba-to-usbc-10gbps",
       "name": "NEXUS USB 3.2 Gen 2 Type-A to Type-C 10Gbps Cable (1m)",
@@ -712,7 +936,9 @@
       "tag": "High Speed",
       "url": "https://khizartech.netlify.app/products/nexus-usba-to-usbc-10gbps",
       "image": "/images/usba_to_usbc_10gbps_cable_real_1793219826343.jpg",
-      "images": ["/images/usba_to_usbc_10gbps_cable_real_1793219826343.jpg"],
+      "images": [
+        "/images/usba_to_usbc_10gbps_cable_real_1793219826343.jpg"
+      ],
       "description": "Connect high-speed NVMe portable SSDs and cameras to older desktop USB-A ports at blazing 10Gbps transfer rates (up to 1,050 MB/s real-world read/write).",
       "features": [
         "USB 3.2 Gen 2 10Gbps data bandwidth",
@@ -725,10 +951,17 @@
         "Length": "1.0m (3.3ft)"
       },
       "options": [
-        { "name": "Length", "values": ["1.0m (3.3ft)", "0.5m (1.6ft)"] }
+        {
+          "name": "Length",
+          "values": [
+            "1.0m (3.3ft)",
+            "0.5m (1.6ft)"
+          ]
+        }
       ]
     },
     {
+      "code": "19",
       "id": "aerokev-aramid-case",
       "slug": "aerokev-aramid-case",
       "name": "AEROKEV 1500D Aramid Fiber Magnetic Case",
@@ -746,7 +979,9 @@
       "tag": "Ultra Slim",
       "url": "https://khizartech.netlify.app/products/aerokev-aramid-case",
       "image": "/images/phone_case_aramid_carbon_real_1793219826925.jpg",
-      "images": ["/images/phone_case_aramid_carbon_real_1793219826925.jpg"],
+      "images": [
+        "/images/phone_case_aramid_carbon_real_1793219826925.jpg"
+      ],
       "description": "Molded from 100% genuine aerospace 1500D aramid fiber. Five times stronger than steel of equivalent weight yet wafer-thin at 0.7mm. Precision 3D grip texture feels silky smooth without slippery drops.",
       "features": [
         "Ultra-thin 0.7mm thickness preserves the bare-phone feel in hand",
@@ -761,11 +996,26 @@
         "Magnetic Array": "N52 Neodymium Ring (1,200g holding force)"
       },
       "options": [
-        { "name": "Device Compatibility", "values": ["APEX Ultra 5G", "APEX Air Compact", "iPhone 16 Pro Max", "iPhone 16 Pro"] },
-        { "name": "Finish", "values": ["Classic Twill Weave", "Matte Raw Carbon"] }
+        {
+          "name": "Device Compatibility",
+          "values": [
+            "APEX Ultra 5G",
+            "APEX Air Compact",
+            "iPhone 16 Pro Max",
+            "iPhone 16 Pro"
+          ]
+        },
+        {
+          "name": "Finish",
+          "values": [
+            "Classic Twill Weave",
+            "Matte Raw Carbon"
+          ]
+        }
       ]
     },
     {
+      "code": "20",
       "id": "titan-armor-shockproof-case",
       "slug": "titan-armor-shockproof-case",
       "name": "TITAN Armor Shockproof Military Bumper Case",
@@ -783,7 +1033,9 @@
       "tag": "Heavy Duty",
       "url": "https://khizartech.netlify.app/products/titan-armor-shockproof-case",
       "image": "/images/rugged_armor_case_1793219909912.jpg",
-      "images": ["/images/rugged_armor_case_1793219909912.jpg"],
+      "images": [
+        "/images/rugged_armor_case_1793219909912.jpg"
+      ],
       "description": "Triple-layer defensive engineering: internal honeycomb shock-absorbing TPU, rigid polycarbonate skeleton, and corner air cushions tested to survive 15ft drops onto concrete. Independent aluminum tactile buttons.",
       "features": [
         "MIL-STD-810H military drop test certified up to 15 feet",
@@ -797,11 +1049,26 @@
         "Buttons": "Independent CNC Aluminum"
       },
       "options": [
-        { "name": "Device Compatibility", "values": ["APEX Ultra 5G", "APEX Air Compact", "iPhone 16 Pro"] },
-        { "name": "Color", "values": ["Tactical Blue & Slate", "Gunmetal Gray", "Alpine White"] }
+        {
+          "name": "Device Compatibility",
+          "values": [
+            "APEX Ultra 5G",
+            "APEX Air Compact",
+            "iPhone 16 Pro"
+          ]
+        },
+        {
+          "name": "Color",
+          "values": [
+            "Tactical Blue & Slate",
+            "Gunmetal Gray",
+            "Alpine White"
+          ]
+        }
       ]
     },
     {
+      "code": "21",
       "id": "frost-translucent-case",
       "slug": "frost-translucent-case",
       "name": "FROST Translucent Matte Magnetic Case",
@@ -818,7 +1085,9 @@
       "tag": "Minimalist",
       "url": "https://khizartech.netlify.app/products/frost-translucent-case",
       "image": "/images/frost_translucent_case_1793219911284.jpg",
-      "images": ["/images/frost_translucent_case_1793219911284.jpg"],
+      "images": [
+        "/images/frost_translucent_case_1793219911284.jpg"
+      ],
       "description": "Showcases your phone’s natural finish through a semi-translucent frosted glass back. Treated with antioxidant coatings to guarantee zero yellowing for 36 months.",
       "features": [
         "Guaranteed 3-year non-yellowing anti-oxidation formulation",
@@ -831,11 +1100,26 @@
         "Backplate": "Semi-Transparent Frosted Bayer PC"
       },
       "options": [
-        { "name": "Device Compatibility", "values": ["APEX Ultra 5G", "APEX Air Compact", "iPhone 16 Pro"] },
-        { "name": "Accent Color", "values": ["Azure Blue Ring", "Silver Ring", "Black Ring"] }
+        {
+          "name": "Device Compatibility",
+          "values": [
+            "APEX Ultra 5G",
+            "APEX Air Compact",
+            "iPhone 16 Pro"
+          ]
+        },
+        {
+          "name": "Accent Color",
+          "values": [
+            "Azure Blue Ring",
+            "Silver Ring",
+            "Black Ring"
+          ]
+        }
       ]
     },
     {
+      "code": "22",
       "id": "sapphire-shield-screen-protector",
       "slug": "sapphire-shield-screen-protector",
       "name": "9H+ Sapphire Shield Glass with Dust-Free Auto Alignment Tray (2-Pack)",
@@ -853,7 +1137,9 @@
       "tag": "Customer Favorite",
       "url": "https://khizartech.netlify.app/products/sapphire-shield-screen-protector",
       "image": "/images/glass_screen_protector_1793219911344.jpg",
-      "images": ["/images/glass_screen_protector_1793219911344.jpg"],
+      "images": [
+        "/images/glass_screen_protector_1793219911344.jpg"
+      ],
       "description": "Features a fool-proof auto-alignment installation frame. Pull the tab and the electrostatic film lifts all dust while perfectly centering the tempered glass with zero bubbles in 10 seconds.",
       "features": [
         "Dual-tempered aluminosilicate glass with 9H+ diamond scratch rating",
@@ -867,11 +1153,27 @@
         "Quantity": "2 Glass Protectors + 1 Auto Tray + 2 Cleaning Kits"
       },
       "options": [
-        { "name": "Device Compatibility", "values": ["APEX Ultra 5G", "APEX Air Compact", "iPhone 16 Pro Max", "iPhone 16 Pro"] },
-        { "name": "Type", "values": ["HD Ultra Clear", "Matte Anti-Glare Gaming", "28° Privacy Shield"] }
+        {
+          "name": "Device Compatibility",
+          "values": [
+            "APEX Ultra 5G",
+            "APEX Air Compact",
+            "iPhone 16 Pro Max",
+            "iPhone 16 Pro"
+          ]
+        },
+        {
+          "name": "Type",
+          "values": [
+            "HD Ultra Clear",
+            "Matte Anti-Glare Gaming",
+            "28° Privacy Shield"
+          ]
+        }
       ]
     },
     {
+      "code": "23",
       "id": "titanium-camera-lens-protector",
       "slug": "titanium-camera-lens-protector",
       "name": "Titanium Alloy Individual Camera Lens Ring Protectors",
@@ -888,7 +1190,9 @@
       "tag": "Accessory",
       "url": "https://khizartech.netlify.app/products/titanium-camera-lens-protector",
       "image": "/images/camera_lens_rings_1793219912059.jpg",
-      "images": ["/images/camera_lens_rings_1793219912059.jpg"],
+      "images": [
+        "/images/camera_lens_rings_1793219912059.jpg"
+      ],
       "description": "Separate titanium alloy protective rings that individual mount over each camera lens. Optical-grade anti-reflective glass ensures night mode photos have zero flash glare or ghosting reflections.",
       "features": [
         "Grade 5 titanium alloy bezel ring matches phone body perfectly",
@@ -900,10 +1204,18 @@
         "Set Count": "3 Lens Protectors with One-Step Applicator"
       },
       "options": [
-        { "name": "Finish", "values": ["Ice Blue Titanium", "Natural Titanium", "Space Black"] }
+        {
+          "name": "Finish",
+          "values": [
+            "Ice Blue Titanium",
+            "Natural Titanium",
+            "Space Black"
+          ]
+        }
       ]
     },
     {
+      "code": "24",
       "id": "orbit-aluminum-magsafe-stand",
       "slug": "orbit-aluminum-magsafe-stand",
       "name": "ORBIT Precision CNC Aluminum MagSafe Desk Stand",
@@ -921,7 +1233,9 @@
       "tag": "Top Rated",
       "url": "https://khizartech.netlify.app/products/orbit-aluminum-magsafe-stand",
       "image": "/images/aluminum_magsafe_stand_real_1793219826893.jpg",
-      "images": ["/images/aluminum_magsafe_stand_real_1793219826893.jpg"],
+      "images": [
+        "/images/aluminum_magsafe_stand_real_1793219826893.jpg"
+      ],
       "description": "Machined from a single solid billet of aircraft aluminum with an ultra-dense brass base counterweight. Pick up your phone one-handed without the stand lifting or sliding across your desk.",
       "features": [
         "Heavy 380g weighted brass core ensures true one-handed phone detachment",
@@ -935,10 +1249,17 @@
         "Angle Adjustment": "0° to 65° Tilt, 360° Swivel"
       },
       "options": [
-        { "name": "Finish", "values": ["Pure Silver Bead-Blasted", "Space Gray Anodized"] }
+        {
+          "name": "Finish",
+          "values": [
+            "Pure Silver Bead-Blasted",
+            "Space Gray Anodized"
+          ]
+        }
       ]
     },
     {
+      "code": "25",
       "id": "vertex-10in1-hub",
       "slug": "vertex-10in1-hub",
       "name": "VERTEX 10-in-1 Dual 4K Thunderbolt 4 Aluminum Dock",
@@ -956,7 +1277,9 @@
       "tag": "Pro Studio Hub",
       "url": "https://khizartech.netlify.app/products/vertex-10in1-hub",
       "image": "/images/thunderbolt_hub_dock_1793219911439.jpg",
-      "images": ["/images/thunderbolt_hub_dock_1793219911439.jpg"],
+      "images": [
+        "/images/thunderbolt_hub_dock_1793219911439.jpg"
+      ],
       "description": "Transform a single laptop port into an entire workstation command center. Powers dual 4K 144Hz monitors, connects high-speed storage via 10Gbps USB-C, and provides blazing 2.5 Gigabit wired ethernet.",
       "features": [
         "10 Comprehensive Ports: 2x HDMI 2.1, 1x 2.5G RJ45, 3x USB-C 10Gbps, 2x USB-A 3.2, SD 4.0, 100W PD-In",
@@ -971,10 +1294,17 @@
         "Housing": "Extruded Aluminum Fin Chassis"
       },
       "options": [
-        { "name": "Color", "values": ["Silver Aluminum", "Dark Titanium"] }
+        {
+          "name": "Color",
+          "values": [
+            "Silver Aluminum",
+            "Dark Titanium"
+          ]
+        }
       ]
     },
     {
+      "code": "26",
       "id": "kinetic-laptop-riser",
       "slug": "kinetic-laptop-riser",
       "name": "KHIZAR Dual-Pivot Ergonomic Aluminum Laptop Riser",
@@ -991,7 +1321,9 @@
       "tag": "Ergonomic",
       "url": "https://khizartech.netlify.app/products/kinetic-laptop-riser",
       "image": "/images/laptop_riser_stand_1793219926609.jpg",
-      "images": ["/images/laptop_riser_stand_1793219926609.jpg"],
+      "images": [
+        "/images/laptop_riser_stand_1793219926609.jpg"
+      ],
       "description": "Elevates your laptop up to 21cm to eye level, relieving neck and shoulder tension during long work days. Dual aerospace-grade steel hinges maintain exact elevation without wobbling or slipping.",
       "features": [
         "Dual heavy-duty friction hinges hold laptops up to 17 inches and 10kg firmly",
@@ -1006,10 +1338,17 @@
         "Material": "4mm Thick Aluminum Alloy"
       },
       "options": [
-        { "name": "Color", "values": ["Pure Silver", "Space Gray"] }
+        {
+          "name": "Color",
+          "values": [
+            "Pure Silver",
+            "Space Gray"
+          ]
+        }
       ]
     },
     {
+      "code": "27",
       "id": "nexus-magnetic-cable-blocks",
       "slug": "nexus-magnetic-cable-blocks",
       "name": "NEXUS Magnetic Weighted Cable Organizer Blocks (3-Pack)",
@@ -1026,7 +1365,9 @@
       "tag": "Desk Hero",
       "url": "https://khizartech.netlify.app/products/nexus-magnetic-cable-blocks",
       "image": "/images/magnetic_cable_blocks_1793219927656.jpg",
-      "images": ["/images/magnetic_cable_blocks_1793219927656.jpg"],
+      "images": [
+        "/images/magnetic_cable_blocks_1793219927656.jpg"
+      ],
       "description": "Keep your charging cables from dropping behind desks or nightstands forever. Snap the included magnetic collars onto any cable, and they lock with a satisfying click onto the weighted metal base block.",
       "features": [
         "Solid steel-weighted anchor block with reusable nano-suction base",
@@ -1039,10 +1380,17 @@
         "Base Size": "90 x 20 x 15 mm"
       },
       "options": [
-        { "name": "Color", "values": ["Sky Blue & White", "Brushed Titanium Silver"] }
+        {
+          "name": "Color",
+          "values": [
+            "Sky Blue & White",
+            "Brushed Titanium Silver"
+          ]
+        }
       ]
     },
     {
+      "code": "28",
       "id": "apex-ultra-titanium-5g",
       "slug": "apex-ultra-titanium-5g",
       "name": "APEX Ultra Pro 5G Titanium",
@@ -1082,11 +1430,26 @@
         "Water Resistance": "IP68 (6 meters for 30 min)"
       },
       "options": [
-        { "name": "Storage", "values": ["256GB", "512GB", "1TB"] },
-        { "name": "Color", "values": ["Natural Titanium", "Space Obsidian", "Deep Desert"] }
+        {
+          "name": "Storage",
+          "values": [
+            "256GB",
+            "512GB",
+            "1TB"
+          ]
+        },
+        {
+          "name": "Color",
+          "values": [
+            "Natural Titanium",
+            "Space Obsidian",
+            "Deep Desert"
+          ]
+        }
       ]
     },
     {
+      "code": "29",
       "id": "apex-horizon-fold-pro",
       "slug": "apex-horizon-fold-pro",
       "name": "APEX Horizon Fold Pro",
@@ -1124,11 +1487,24 @@
         "Water Resistance": "IPX8 Water Resistant"
       },
       "options": [
-        { "name": "Storage", "values": ["512GB", "1TB"] },
-        { "name": "Color", "values": ["Titanium Silver", "Carbon Black"] }
+        {
+          "name": "Storage",
+          "values": [
+            "512GB",
+            "1TB"
+          ]
+        },
+        {
+          "name": "Color",
+          "values": [
+            "Titanium Silver",
+            "Carbon Black"
+          ]
+        }
       ]
     },
     {
+      "code": "30",
       "id": "apex-air-compact-flagship",
       "slug": "apex-air-compact-flagship",
       "name": "APEX Air Compact Flagship",
@@ -1146,7 +1522,9 @@
       "tag": "Compact Hero",
       "url": "https://khizartech.netlify.app/products/apex-air-compact-flagship",
       "image": "/images/phone_compact_minimal_1793218338599.jpg",
-      "images": ["/images/phone_compact_minimal_1793218338599.jpg"],
+      "images": [
+        "/images/phone_compact_minimal_1793218338599.jpg"
+      ],
       "description": "No compromises on flagship power in a one-handed 6.1-inch form factor. Weighs only 164 grams with 50MP dual cameras, ultrasonic under-display fingerprint sensor, and full wireless charging.",
       "features": [
         "6.1\" Flat 120Hz OLED with symmetrical 1.2mm ultra-slim bezels",
@@ -1161,11 +1539,26 @@
         "Charging": "65W Wired / 30W Wireless"
       },
       "options": [
-        { "name": "Storage", "values": ["128GB", "256GB", "512GB"] },
-        { "name": "Color", "values": ["Ice Blue", "Glacier White", "Midnight Slate"] }
+        {
+          "name": "Storage",
+          "values": [
+            "128GB",
+            "256GB",
+            "512GB"
+          ]
+        },
+        {
+          "name": "Color",
+          "values": [
+            "Ice Blue",
+            "Glacier White",
+            "Midnight Slate"
+          ]
+        }
       ]
     },
     {
+      "code": "31",
       "id": "apex-studio-cinema-edition",
       "slug": "apex-studio-cinema-edition",
       "name": "APEX Studio Cinema Edition (1TB)",
@@ -1201,7 +1594,13 @@
         "Camera Sensor": "1.0-inch 50MP Primary + 50MP 3x + 50MP 6x Periscope"
       },
       "options": [
-        { "name": "Finish", "values": ["Cinema Matte Titanium", "Obsidian Slate"] }
+        {
+          "name": "Finish",
+          "values": [
+            "Cinema Matte Titanium",
+            "Obsidian Slate"
+          ]
+        }
       ]
     }
   ]

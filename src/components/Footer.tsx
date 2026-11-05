@@ -46,13 +46,30 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-2 md:grid-cols-5 gap-8">
         {/* Brand column */}
         <div className="col-span-2 space-y-3">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xs tracking-tighter shadow-sm">
-              KT
+          <div className="flex items-center gap-3">
+            <div className="relative w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-700 via-indigo-600 to-cyan-500 p-[1.5px] shadow-sm">
+              <div className="w-full h-full bg-slate-950 rounded-[6px] flex items-center justify-center overflow-hidden">
+                <svg className="w-4 h-4 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 4v16" />
+                  <path d="M4 12l8-8" />
+                  <path d="M8 8l10 12" />
+                  <circle cx="18" cy="6" r="2" fill="currentColor" stroke="none" />
+                </svg>
+              </div>
             </div>
-            <span className="text-base font-bold text-white uppercase tracking-tight font-display">
-              Khizar Tech Store
-            </span>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1.5 leading-none">
+                <span className="text-base font-extrabold tracking-tight text-white font-display">
+                  KHIZAR
+                </span>
+                <span className="text-base font-extrabold tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 bg-clip-text text-transparent font-display">
+                  TECH
+                </span>
+              </div>
+              <span className="text-[8.5px] font-bold text-slate-400 uppercase tracking-[0.25em] font-mono mt-0.5">
+                STORE
+              </span>
+            </div>
           </div>
           <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
             Founded by Khizar. High-performance audio, GaN fast charging, and precision hardware accessories crafted for tech purists.
