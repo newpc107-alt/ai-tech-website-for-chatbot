@@ -442,7 +442,11 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                   <div className="w-12 h-12 rounded overflow-hidden border border-slate-100 bg-slate-50 shrink-0">
                     <ProductVisual
                       productId={item.product.id}
-                      imageSrc={item.product.image}
+                      imageSrc={
+                        (item.selectedOptions?.Edition &&
+                          item.product.editionImages?.[item.selectedOptions.Edition]) ||
+                        item.product.image
+                      }
                       name={item.product.name}
                       className="w-full h-full object-cover"
                     />

@@ -110,12 +110,16 @@ export const PRODUCTS: Product[] = [
     originalPrice: 229,
     rating: 4.9,
     reviewCount: 342,
-    image: EARBUDS_IMAGE,
-    gallery: [EARBUDS_IMAGE, EARBUDS_SILVER_TITANIUM_IMAGE, EARBUDS_ONYX_BLACK_IMAGE],
+    image: '/images/editions/p01_ice_blue.jpg',
+    gallery: [
+      '/images/editions/p01_ice_blue.jpg',
+      '/images/editions/p01_silver_titanium.jpg',
+      '/images/editions/p01_onyx_black.jpg'
+    ],
     editionImages: {
-      'Ice Blue': EARBUDS_IMAGE,
-      'Silver Titanium': EARBUDS_SILVER_TITANIUM_IMAGE,
-      'Onyx Black': EARBUDS_ONYX_BLACK_IMAGE,
+      'Ice Blue': '/images/editions/p01_ice_blue.jpg',
+      'Silver Titanium': '/images/editions/p01_silver_titanium.jpg',
+      'Onyx Black': '/images/editions/p01_onyx_black.jpg'
     },
     tag: 'Best Seller',
     description: 'Engineered for audio purists and mobile professionals. Features custom 11mm beryllium composite drivers, dual adaptive noise cancellation microphones, and low-latency Bluetooth 5.4 with LDAC lossless audio streaming.',
@@ -157,12 +161,16 @@ export const PRODUCTS: Product[] = [
     originalPrice: 269,
     rating: 4.9,
     reviewCount: 512,
-    image: AIRPODS_PRO_WHITE_IMAGE,
-    gallery: [AIRPODS_PRO_WHITE_IMAGE, EARBUDS_SILVER_TITANIUM_IMAGE, EARBUDS_ONYX_BLACK_IMAGE],
+    image: '/images/editions/p02_pure_white.jpg',
+    gallery: [
+      '/images/editions/p02_pure_white.jpg',
+      '/images/editions/p02_space_silver.jpg',
+      '/images/editions/p02_stealth_slate.jpg'
+    ],
     editionImages: {
-      'Pure White & Titanium': AIRPODS_PRO_WHITE_IMAGE,
-      'Space Silver': EARBUDS_SILVER_TITANIUM_IMAGE,
-      'Stealth Slate': EARBUDS_ONYX_BLACK_IMAGE,
+      'Pure White & Titanium': '/images/editions/p02_pure_white.jpg',
+      'Space Silver': '/images/editions/p02_space_silver.jpg',
+      'Stealth Slate': '/images/editions/p02_stealth_slate.jpg'
     },
     tag: 'Flagship Audio',
     description: 'Equipped with custom acoustic vents and H2 computation chip. Features tailored Spatial Audio with real-time head-tracking and a MagSafe wireless charging case equipped with a find-my speaker and lanyard loop.',
@@ -197,8 +205,17 @@ export const PRODUCTS: Product[] = [
     originalPrice: 429,
     rating: 4.8,
     reviewCount: 168,
-    image: HEADPHONES_STUDIO_IMAGE,
-    gallery: [HEADPHONES_STUDIO_IMAGE],
+    image: '/images/editions/p03_silver_white.jpg',
+    gallery: [
+      '/images/editions/p03_silver_white.jpg',
+      '/images/editions/p03_space_silver.jpg',
+      '/images/editions/p03_cobalt_blue.jpg'
+    ],
+    editionImages: {
+      'Silver & White Leather': '/images/editions/p03_silver_white.jpg',
+      'Space Silver': '/images/editions/p03_space_silver.jpg',
+      'Cobalt Blue Accent': '/images/editions/p03_cobalt_blue.jpg'
+    },
     tag: 'Audiophile Choice',
     description: 'Milled from aircraft-grade aluminum with magnetic memory-foam sheepskin ear cushions. Features an integrated 24-bit/192kHz USB-C digital audio converter and ultra-low distortion planar drivers.',
     keyFeatures: [
@@ -231,8 +248,17 @@ export const PRODUCTS: Product[] = [
     price: 24,
     rating: 4.7,
     reviewCount: 94,
-    image: EARTIPS_TUNING_IMAGE,
-    gallery: [EARTIPS_TUNING_IMAGE],
+    image: '/images/editions/p04_pure_white.jpg',
+    gallery: [
+      '/images/editions/p04_pure_white.jpg',
+      '/images/editions/p04_smoked_blue.jpg',
+      '/images/editions/p04_charcoal.jpg'
+    ],
+    editionImages: {
+      'Pure White': '/images/editions/p04_pure_white.jpg',
+      'Smoked Blue': '/images/editions/p04_smoked_blue.jpg',
+      'Charcoal': '/images/editions/p04_charcoal.jpg'
+    },
     tag: 'Accessory',
     description: 'Medical-grade hypoallergenic silicone tips combined with slow-recovery memory foam cores to ensure maximum bass retention and passive noise isolation. Includes XS, S, M, L sizes in a custom organizer tray.',
     keyFeatures: [
@@ -262,8 +288,15 @@ export const PRODUCTS: Product[] = [
     price: 32,
     rating: 4.8,
     reviewCount: 184,
-    image: AIRPODS_CARBON_CASE_IMAGE,
-    gallery: [AIRPODS_CARBON_CASE_IMAGE],
+    image: '/images/editions/p05_classic_twill.jpg',
+    gallery: [
+      '/images/editions/p05_classic_twill.jpg',
+      '/images/editions/p05_matte_blue.jpg'
+    ],
+    editionImages: {
+      'Classic Twill Weave': '/images/editions/p05_classic_twill.jpg',
+      'Matte Blue Weave': '/images/editions/p05_matte_blue.jpg'
+    },
     tag: 'Accessory',
     description: 'Real 1500D aramid fiber construction with magnetic closure latch and machined titanium lanyard carabiner. Guarantees 100% wireless charging and MagSafe puck passthrough.',
     keyFeatures: [
@@ -296,8 +329,15 @@ export const PRODUCTS: Product[] = [
     originalPrice: 119,
     rating: 5.0,
     reviewCount: 467,
-    image: GAN_CHARGER_IMAGE,
-    gallery: [GAN_CHARGER_IMAGE],
+    image: '/images/editions/p06_silver_aluminum.jpg',
+    gallery: [
+      '/images/editions/p06_silver_aluminum.jpg',
+      '/images/editions/p06_space_titanium.jpg'
+    ],
+    editionImages: {
+      'Silver Aluminum': '/images/editions/p06_silver_aluminum.jpg',
+      'Space Titanium': '/images/editions/p06_space_titanium.jpg'
+    },
     tag: 'Editor Choice',
     description: 'Equipped with GaNFast V semiconductors and an intelligent OLED screen showing real-time voltage, amperage, and port power breakdown. Capable of charging two 16-inch laptops simultaneously at full speed.',
     keyFeatures: [
@@ -340,8 +380,15 @@ export const PRODUCTS: Product[] = [
     originalPrice: 109,
     rating: 4.9,
     reviewCount: 310,
-    image: CHARGER_MAGSAFE_3IN1_IMAGE,
-    gallery: [CHARGER_MAGSAFE_3IN1_IMAGE],
+    image: '/images/editions/p07_pure_white.jpg',
+    gallery: [
+      '/images/editions/p07_pure_white.jpg',
+      '/images/editions/p07_silver_aluminum.jpg'
+    ],
+    editionImages: {
+      'Pure White & Chrome': '/images/editions/p07_pure_white.jpg',
+      'Silver Aluminum': '/images/editions/p07_silver_aluminum.jpg'
+    },
     tag: 'Best Design',
     description: 'Precision hinges allow this 3-in-1 charger to fold down into a compact deck of cards. Holds your phone in StandBy landscape mode while fast-charging Apple Watch and wireless earbuds on rear trays.',
     keyFeatures: [
@@ -377,8 +424,15 @@ export const PRODUCTS: Product[] = [
     originalPrice: 139,
     rating: 4.9,
     reviewCount: 275,
-    image: POWERBANK_DIGITAL_IMAGE,
-    gallery: [POWERBANK_DIGITAL_IMAGE],
+    image: '/images/editions/p08_digital_titanium.jpg',
+    gallery: [
+      '/images/editions/p08_digital_titanium.jpg',
+      '/images/editions/p08_stealth_graphite.jpg'
+    ],
+    editionImages: {
+      'Digital Titanium OLED': '/images/editions/p08_digital_titanium.jpg',
+      'Stealth Graphite': '/images/editions/p08_stealth_graphite.jpg'
+    },
     tag: 'Heavy Duty',
     description: 'The maximum allowable capacity for commercial air travel (99.9Wh). Provides 100W USB-C output to recharge laptops from 0 to 100%, plus a secondary 45W port to charge phones simultaneously.',
     keyFeatures: [
@@ -412,8 +466,17 @@ export const PRODUCTS: Product[] = [
     originalPrice: 55,
     rating: 4.8,
     reviewCount: 388,
-    image: CHARGER_65W_TRAVEL_IMAGE,
-    gallery: [CHARGER_65W_TRAVEL_IMAGE],
+    image: '/images/editions/p09_pure_white.jpg',
+    gallery: [
+      '/images/editions/p09_pure_white.jpg',
+      '/images/editions/p09_sky_blue.jpg',
+      '/images/editions/p09_matte_black.jpg'
+    ],
+    editionImages: {
+      'Pure White': '/images/editions/p09_pure_white.jpg',
+      'Sky Blue': '/images/editions/p09_sky_blue.jpg',
+      'Matte Black': '/images/editions/p09_matte_black.jpg'
+    },
     tag: 'Travel Essential',
     description: '52% smaller than standard 65W wall chargers. Features folding US prongs plus swappable international EU & UK adapters for worldwide travel. Charges a laptop and phone simultaneously.',
     keyFeatures: [
@@ -447,8 +510,15 @@ export const PRODUCTS: Product[] = [
     price: 39,
     rating: 4.7,
     reviewCount: 142,
-    image: CHARGER_45W_PUCK_IMAGE,
-    gallery: [CHARGER_45W_PUCK_IMAGE],
+    image: '/images/editions/p10_glacier_white.jpg',
+    gallery: [
+      '/images/editions/p10_glacier_white.jpg',
+      '/images/editions/p10_cobalt_blue.jpg'
+    ],
+    editionImages: {
+      'Glacier White': '/images/editions/p10_glacier_white.jpg',
+      'Cobalt Blue Accent': '/images/editions/p10_cobalt_blue.jpg'
+    },
     tag: 'Novelty',
     description: 'Engineered specifically for tight spaces behind couches, beds, and entertainment centers. Sits perfectly flush against the wall plate with bottom-facing USB-C ports so cables don’t bend.',
     keyFeatures: [
@@ -478,8 +548,15 @@ export const PRODUCTS: Product[] = [
     price: 54,
     rating: 4.8,
     reviewCount: 198,
-    image: CHARGER_CAR_VENT_IMAGE,
-    gallery: [CHARGER_CAR_VENT_IMAGE],
+    image: '/images/editions/p11_vent_lock.jpg',
+    gallery: [
+      '/images/editions/p11_vent_lock.jpg',
+      '/images/editions/p11_dashboard_base.jpg'
+    ],
+    editionImages: {
+      'Air Vent Twist-Lock': '/images/editions/p11_vent_lock.jpg',
+      'Suction Dashboard Base': '/images/editions/p11_dashboard_base.jpg'
+    },
     tag: 'Automotive',
     description: 'Features cryo-boost thermoelectric cooling that prevents your phone from overheating during GPS navigation and fast 15W wireless charging in hot cars. Reinforced steel hook grips any vent blade.',
     keyFeatures: [
@@ -512,8 +589,15 @@ export const PRODUCTS: Product[] = [
     originalPrice: 59,
     rating: 5.0,
     reviewCount: 389,
-    image: CABLES_IMAGE,
-    gallery: [CABLES_IMAGE],
+    image: '/images/editions/p12_silver_braided.jpg',
+    gallery: [
+      '/images/editions/p12_silver_braided.jpg',
+      '/images/editions/p12_cobalt_blue.jpg'
+    ],
+    editionImages: {
+      'Silver Braided Weave': '/images/editions/p12_silver_braided.jpg',
+      'Cobalt Blue Accent': '/images/editions/p12_cobalt_blue.jpg'
+    },
     tag: 'Certified 40Gbps',
     description: 'The definitive pro cable. Certified for USB4, Thunderbolt 4, and USB-PD 3.1 Extended Power Range (EPR) up to 240W (48V/5A). Connects high-end displays up to 8K@60Hz or dual 4K@120Hz while carrying max power.',
     keyFeatures: [
@@ -551,8 +635,17 @@ export const PRODUCTS: Product[] = [
     originalPrice: 28,
     rating: 4.8,
     reviewCount: 520,
-    image: CABLE_100W_BRAIDED_IMAGE,
-    gallery: [CABLE_100W_BRAIDED_IMAGE],
+    image: '/images/editions/p13_electric_blue.jpg',
+    gallery: [
+      '/images/editions/p13_electric_blue.jpg',
+      '/images/editions/p13_silver_gray.jpg',
+      '/images/editions/p13_navy_braided.jpg'
+    ],
+    editionImages: {
+      'Electric Blue Weave': '/images/editions/p13_electric_blue.jpg',
+      'Silver Gray': '/images/editions/p13_silver_gray.jpg',
+      'Navy Braided': '/images/editions/p13_navy_braided.jpg'
+    },
     tag: 'Top Pick',
     description: 'Constructed with internal DuPont Kevlar fibers capable of lifting up to 100kg. Supports full 100W Power Delivery and high-speed USB 2.0 data. Includes a handcrafted genuine leather cable wrap.',
     keyFeatures: [
@@ -585,8 +678,15 @@ export const PRODUCTS: Product[] = [
     price: 26,
     rating: 4.9,
     reviewCount: 215,
-    image: CABLE_90DEG_GAMING_IMAGE,
-    gallery: [CABLE_90DEG_GAMING_IMAGE],
+    image: '/images/editions/p14_azure_blue.jpg',
+    gallery: [
+      '/images/editions/p14_azure_blue.jpg',
+      '/images/editions/p14_stealth_black.jpg'
+    ],
+    editionImages: {
+      'Azure Blue': '/images/editions/p14_azure_blue.jpg',
+      'Stealth Black': '/images/editions/p14_stealth_black.jpg'
+    },
     tag: 'Gamer Essential',
     description: 'Designed for gamers holding their phones or handheld consoles horizontally. The 90-degree right angle connector routes the cable smoothly along your palm without bending or digging into your hands.',
     keyFeatures: [
@@ -617,8 +717,17 @@ export const PRODUCTS: Product[] = [
     price: 24,
     rating: 4.8,
     reviewCount: 310,
-    image: CABLE_SILICONE_LIGHTNING_IMAGE,
-    gallery: [CABLE_SILICONE_LIGHTNING_IMAGE],
+    image: '/images/editions/p15_sky_blue.jpg',
+    gallery: [
+      '/images/editions/p15_sky_blue.jpg',
+      '/images/editions/p15_cloud_white.jpg',
+      '/images/editions/p15_mint_slate.jpg'
+    ],
+    editionImages: {
+      'Sky Blue': '/images/editions/p15_sky_blue.jpg',
+      'Cloud White': '/images/editions/p15_cloud_white.jpg',
+      'Mint Slate': '/images/editions/p15_mint_slate.jpg'
+    },
     tag: 'MFi Certified',
     description: 'Made from silky smooth food-grade liquid silicone that never kinks or knots, even when shoved into tight pockets. Apple MFi certified with original C94 lightning connector for rapid charging.',
     keyFeatures: [
@@ -651,8 +760,15 @@ export const PRODUCTS: Product[] = [
     originalPrice: 40,
     rating: 4.7,
     reviewCount: 178,
-    image: CABLE_4IN1_UNIVERSAL_IMAGE,
-    gallery: [CABLE_4IN1_UNIVERSAL_IMAGE],
+    image: '/images/editions/p16_silver_blue.jpg',
+    gallery: [
+      '/images/editions/p16_silver_blue.jpg',
+      '/images/editions/p16_matte_slate.jpg'
+    ],
+    editionImages: {
+      'Silver & Blue Accent': '/images/editions/p16_silver_blue.jpg',
+      'Matte Slate': '/images/editions/p16_matte_slate.jpg'
+    },
     tag: 'All-in-One',
     description: 'The only cable you need to carry. Built-in tethered adapter heads convert effortlessly between: USB-C to USB-C (60W), USB-A to USB-C (18W), USB-C to Lightning (27W), and USB-A to Lightning (12W).',
     keyFeatures: [
@@ -682,8 +798,15 @@ export const PRODUCTS: Product[] = [
     price: 38,
     rating: 4.9,
     reviewCount: 160,
-    image: CABLE_8K_HDMI_IMAGE,
-    gallery: [CABLE_8K_HDMI_IMAGE],
+    image: '/images/editions/p17_space_gray.jpg',
+    gallery: [
+      '/images/editions/p17_space_gray.jpg',
+      '/images/editions/p17_midnight_blue.jpg'
+    ],
+    editionImages: {
+      'Space Gray Braided': '/images/editions/p17_space_gray.jpg',
+      'Midnight Blue Armor': '/images/editions/p17_midnight_blue.jpg'
+    },
     tag: 'Ultra HD',
     description: 'Directly connect USB-C laptops, tablets, or phones to 4K/8K TVs and gaming monitors with zero latency or adapter lag. Supports HDCP 2.3, eARC, Dolby Vision, and VRR variable refresh rate.',
     keyFeatures: [
@@ -714,8 +837,15 @@ export const PRODUCTS: Product[] = [
     price: 19,
     rating: 4.8,
     reviewCount: 110,
-    image: CABLE_USBA_10GBPS_IMAGE,
-    gallery: [CABLE_USBA_10GBPS_IMAGE],
+    image: '/images/editions/p18_carbon_black.jpg',
+    gallery: [
+      '/images/editions/p18_carbon_black.jpg',
+      '/images/editions/p18_steel_silver.jpg'
+    ],
+    editionImages: {
+      'Carbon Black': '/images/editions/p18_carbon_black.jpg',
+      'Steel Silver': '/images/editions/p18_steel_silver.jpg'
+    },
     tag: 'High Speed',
     description: 'Connect high-speed NVMe portable SSDs and cameras to older desktop USB-A ports at blazing 10Gbps transfer rates (up to 1,050 MB/s real-world read/write).',
     keyFeatures: [
@@ -748,8 +878,15 @@ export const PRODUCTS: Product[] = [
     originalPrice: 58,
     rating: 4.9,
     reviewCount: 412,
-    image: CASE_ARAMID_IMAGE,
-    gallery: [CASE_ARAMID_IMAGE],
+    image: '/images/editions/p19_classic_twill.jpg',
+    gallery: [
+      '/images/editions/p19_classic_twill.jpg',
+      '/images/editions/p19_raw_carbon.jpg'
+    ],
+    editionImages: {
+      'Classic Twill Weave': '/images/editions/p19_classic_twill.jpg',
+      'Matte Raw Carbon': '/images/editions/p19_raw_carbon.jpg'
+    },
     tag: 'Ultra Slim',
     description: 'Molded from 100% genuine aerospace 1500D aramid fiber. Five times stronger than steel of equivalent weight yet wafer-thin at 0.7mm. Precision 3D grip texture feels silky smooth without slippery drops.',
     keyFeatures: [
@@ -786,8 +923,17 @@ export const PRODUCTS: Product[] = [
     originalPrice: 45,
     rating: 4.8,
     reviewCount: 290,
-    image: CASE_RUGGED_ARMOR_IMAGE,
-    gallery: [CASE_RUGGED_ARMOR_IMAGE],
+    image: '/images/editions/p20_tactical_blue.jpg',
+    gallery: [
+      '/images/editions/p20_tactical_blue.jpg',
+      '/images/editions/p20_gunmetal_gray.jpg',
+      '/images/editions/p20_alpine_white.jpg'
+    ],
+    editionImages: {
+      'Tactical Blue & Slate': '/images/editions/p20_tactical_blue.jpg',
+      'Gunmetal Gray': '/images/editions/p20_gunmetal_gray.jpg',
+      'Alpine White': '/images/editions/p20_alpine_white.jpg'
+    },
     tag: 'Heavy Duty',
     description: 'Triple-layer defensive engineering: internal honeycomb shock-absorbing TPU, rigid polycarbonate skeleton, and corner air cushions tested to survive 15ft drops onto concrete. Independent aluminum tactile buttons.',
     keyFeatures: [
@@ -818,8 +964,17 @@ export const PRODUCTS: Product[] = [
     price: 32,
     rating: 4.7,
     reviewCount: 204,
-    image: CASE_FROST_IMAGE,
-    gallery: [CASE_FROST_IMAGE],
+    image: '/images/editions/p21_azure_blue_ring.jpg',
+    gallery: [
+      '/images/editions/p21_azure_blue_ring.jpg',
+      '/images/editions/p21_silver_ring.jpg',
+      '/images/editions/p21_black_ring.jpg'
+    ],
+    editionImages: {
+      'Azure Blue Ring': '/images/editions/p21_azure_blue_ring.jpg',
+      'Silver Ring': '/images/editions/p21_silver_ring.jpg',
+      'Black Ring': '/images/editions/p21_black_ring.jpg'
+    },
     tag: 'Minimalist',
     description: 'Showcases your phone’s natural finish through a semi-translucent frosted glass back. Treated with antioxidant coatings to guarantee zero yellowing for 36 months.',
     keyFeatures: [
@@ -850,8 +1005,17 @@ export const PRODUCTS: Product[] = [
     originalPrice: 35,
     rating: 4.9,
     reviewCount: 630,
-    image: SCREEN_PROTECTOR_GLASS_IMAGE,
-    gallery: [SCREEN_PROTECTOR_GLASS_IMAGE],
+    image: '/images/editions/p22_hd_clear.jpg',
+    gallery: [
+      '/images/editions/p22_hd_clear.jpg',
+      '/images/editions/p22_matte_antiglare.jpg',
+      '/images/editions/p22_privacy_shield.jpg'
+    ],
+    editionImages: {
+      'HD Ultra Clear': '/images/editions/p22_hd_clear.jpg',
+      'Matte Anti-Glare Gaming': '/images/editions/p22_matte_antiglare.jpg',
+      '28° Privacy Shield': '/images/editions/p22_privacy_shield.jpg'
+    },
     tag: 'Customer Favorite',
     description: 'Features a fool-proof auto-alignment installation frame. Pull the tab and the electrostatic film lifts all dust while perfectly centering the tempered glass with zero bubbles in 10 seconds.',
     keyFeatures: [
@@ -883,8 +1047,17 @@ export const PRODUCTS: Product[] = [
     price: 18,
     rating: 4.8,
     reviewCount: 155,
-    image: CAMERA_LENS_RINGS_IMAGE,
-    gallery: [CAMERA_LENS_RINGS_IMAGE],
+    image: '/images/editions/p23_ice_blue_titanium.jpg',
+    gallery: [
+      '/images/editions/p23_ice_blue_titanium.jpg',
+      '/images/editions/p23_natural_titanium.jpg',
+      '/images/editions/p23_space_black.jpg'
+    ],
+    editionImages: {
+      'Ice Blue Titanium': '/images/editions/p23_ice_blue_titanium.jpg',
+      'Natural Titanium': '/images/editions/p23_natural_titanium.jpg',
+      'Space Black': '/images/editions/p23_space_black.jpg'
+    },
     tag: 'Accessory',
     description: 'Separate titanium alloy protective rings that individual mount over each camera lens. Optical-grade anti-reflective glass ensures night mode photos have zero flash glare or ghosting reflections.',
     keyFeatures: [
@@ -915,8 +1088,15 @@ export const PRODUCTS: Product[] = [
     originalPrice: 59,
     rating: 4.9,
     reviewCount: 320,
-    image: STAND_MAGSAFE_ALUMINUM_IMAGE,
-    gallery: [STAND_MAGSAFE_ALUMINUM_IMAGE],
+    image: '/images/editions/p24_pure_silver.jpg',
+    gallery: [
+      '/images/editions/p24_pure_silver.jpg',
+      '/images/editions/p24_space_gray.jpg'
+    ],
+    editionImages: {
+      'Pure Silver Bead-Blasted': '/images/editions/p24_pure_silver.jpg',
+      'Space Gray Anodized': '/images/editions/p24_space_gray.jpg'
+    },
     tag: 'Top Rated',
     description: 'Machined from a single solid billet of aircraft aluminum with an ultra-dense brass base counterweight. Pick up your phone one-handed without the stand lifting or sliding across your desk.',
     keyFeatures: [
@@ -948,8 +1128,15 @@ export const PRODUCTS: Product[] = [
     originalPrice: 219,
     rating: 4.9,
     reviewCount: 198,
-    image: HUB_THUNDERBOLT_10IN1_IMAGE,
-    gallery: [HUB_THUNDERBOLT_10IN1_IMAGE],
+    image: '/images/editions/p25_silver_aluminum.jpg',
+    gallery: [
+      '/images/editions/p25_silver_aluminum.jpg',
+      '/images/editions/p25_dark_titanium.jpg'
+    ],
+    editionImages: {
+      'Silver Aluminum': '/images/editions/p25_silver_aluminum.jpg',
+      'Dark Titanium': '/images/editions/p25_dark_titanium.jpg'
+    },
     tag: 'Pro Studio Hub',
     description: 'Transform a single laptop port into an entire workstation command center. Powers dual 4K 144Hz monitors, connects high-speed storage via 10Gbps USB-C, and provides blazing 2.5 Gigabit wired ethernet.',
     keyFeatures: [
@@ -981,8 +1168,15 @@ export const PRODUCTS: Product[] = [
     price: 59,
     rating: 4.8,
     reviewCount: 240,
-    image: LAPTOP_RISER_STAND_IMAGE,
-    gallery: [LAPTOP_RISER_STAND_IMAGE],
+    image: '/images/editions/p26_pure_silver.jpg',
+    gallery: [
+      '/images/editions/p26_pure_silver.jpg',
+      '/images/editions/p26_space_gray.jpg'
+    ],
+    editionImages: {
+      'Pure Silver': '/images/editions/p26_pure_silver.jpg',
+      'Space Gray': '/images/editions/p26_space_gray.jpg'
+    },
     tag: 'Ergonomic',
     description: 'Elevates your laptop up to 21cm to eye level, relieving neck and shoulder tension during long work days. Dual aerospace-grade steel hinges maintain exact elevation without wobbling or slipping.',
     keyFeatures: [
@@ -1013,8 +1207,15 @@ export const PRODUCTS: Product[] = [
     price: 22,
     rating: 4.8,
     reviewCount: 310,
-    image: CABLE_BLOCKS_ORGANIZER_IMAGE,
-    gallery: [CABLE_BLOCKS_ORGANIZER_IMAGE],
+    image: '/images/editions/p27_sky_blue.jpg',
+    gallery: [
+      '/images/editions/p27_sky_blue.jpg',
+      '/images/editions/p27_brushed_titanium.jpg'
+    ],
+    editionImages: {
+      'Sky Blue & White': '/images/editions/p27_sky_blue.jpg',
+      'Brushed Titanium Silver': '/images/editions/p27_brushed_titanium.jpg'
+    },
     tag: 'Desk Hero',
     description: 'Keep your charging cables from dropping behind desks or nightstands forever. Snap the included magnetic collars onto any cable, and they lock with a satisfying click onto the weighted metal base block.',
     keyFeatures: [
@@ -1046,8 +1247,17 @@ export const PRODUCTS: Product[] = [
     originalPrice: 1199,
     rating: 4.9,
     reviewCount: 420,
-    image: SMARTPHONE_IMAGE, // High-res studio shot of flagship titanium
-    gallery: [SMARTPHONE_IMAGE],
+    image: '/images/editions/p28_natural_titanium.jpg', // High-res studio shot of flagship titanium
+    gallery: [
+      '/images/editions/p28_natural_titanium.jpg',
+      '/images/editions/p28_space_obsidian.jpg',
+      '/images/editions/p28_deep_desert.jpg'
+    ],
+    editionImages: {
+      'Natural Titanium': '/images/editions/p28_natural_titanium.jpg',
+      'Space Obsidian': '/images/editions/p28_space_obsidian.jpg',
+      'Deep Desert': '/images/editions/p28_deep_desert.jpg'
+    },
     tag: 'Flagship Device',
     description: 'Forged from Grade 5 aerospace titanium with ceramic back glass. Features a 6.82-inch 1-120Hz LTPO OLED display with 3,000 nits peak brightness, Snapdragon 8 Elite 3nm processor, and 5,400mAh silicon-carbon battery.',
     keyFeatures: [
@@ -1089,8 +1299,15 @@ export const PRODUCTS: Product[] = [
     originalPrice: 1749,
     rating: 4.8,
     reviewCount: 195,
-    image: PHONE_FOLDABLE_IMAGE, // Distinct studio photo of folding phone partially open at 120°
-    gallery: [PHONE_FOLDABLE_IMAGE],
+    image: '/images/editions/p29_titanium_silver.jpg', // Distinct studio photo of folding phone partially open at 120°
+    gallery: [
+      '/images/editions/p29_titanium_silver.jpg',
+      '/images/editions/p29_carbon_black.jpg'
+    ],
+    editionImages: {
+      'Titanium Silver': '/images/editions/p29_titanium_silver.jpg',
+      'Carbon Black': '/images/editions/p29_carbon_black.jpg'
+    },
     tag: 'Next-Gen Foldable',
     description: 'The thinnest foldable in the world at only 9.2mm folded and 4.4mm unfolded. Features an expansive 8.03-inch inner folding canvas with zero-crease titanium micro-hinge and full active stylus support.',
     keyFeatures: [
@@ -1126,8 +1343,17 @@ export const PRODUCTS: Product[] = [
     originalPrice: 849,
     rating: 4.7,
     reviewCount: 228,
-    image: PHONE_COMPACT_IMAGE, // Distinct studio photo of compact ice-blue smartphone on round pedestal
-    gallery: [PHONE_COMPACT_IMAGE],
+    image: '/images/editions/p30_ice_blue.jpg', // Distinct studio photo of compact ice-blue smartphone on round pedestal
+    gallery: [
+      '/images/editions/p30_ice_blue.jpg',
+      '/images/editions/p30_glacier_white.jpg',
+      '/images/editions/p30_midnight_slate.jpg'
+    ],
+    editionImages: {
+      'Ice Blue': '/images/editions/p30_ice_blue.jpg',
+      'Glacier White': '/images/editions/p30_glacier_white.jpg',
+      'Midnight Slate': '/images/editions/p30_midnight_slate.jpg'
+    },
     tag: 'Compact Hero',
     description: 'No compromises on flagship power in a one-handed 6.1-inch form factor. Weighs only 164 grams with 50MP dual cameras, ultrasonic under-display fingerprint sensor, and full wireless charging.',
     keyFeatures: [
@@ -1161,8 +1387,15 @@ export const PRODUCTS: Product[] = [
     originalPrice: 1399,
     rating: 4.9,
     reviewCount: 142,
-    image: PHONE_CINEMA_IMAGE,
-    gallery: [PHONE_CINEMA_IMAGE, SMARTPHONE_IMAGE],
+    image: '/images/editions/p31_cinema_titanium.jpg',
+    gallery: [
+      '/images/editions/p31_cinema_titanium.jpg',
+      '/images/editions/p31_obsidian_slate.jpg'
+    ],
+    editionImages: {
+      'Cinema Matte Titanium': '/images/editions/p31_cinema_titanium.jpg',
+      'Obsidian Slate': '/images/editions/p31_obsidian_slate.jpg'
+    },
     tag: 'Cinema Pro',
     description: 'Built for video creators and cinematographers. Features direct-to-external-SSD ProRes recording at 4K 120fps, custom LOG profiles, and a physical capacitive camera control rocker on the titanium frame.',
     keyFeatures: [

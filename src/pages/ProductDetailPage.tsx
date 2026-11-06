@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PRODUCTS, CATEGORIES } from '../data/products';
 import { useStore } from '../context/StoreContext';
 import { ProductCard } from '../components/ProductCard';
@@ -20,6 +20,7 @@ interface ProductDetailPageProps {
 
 export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId }) => {
   const { navigateTo, addToCart, isWishlisted, toggleWishlist } = useStore();
+
   const product = PRODUCTS.find((p) => p.id === productId) || PRODUCTS[0];
   const category = CATEGORIES.find((c) => c.id === product.category);
 
@@ -47,6 +48,26 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId 
 
   const [quantity, setQuantity] = useState(1);
   const [addedNotice, setAddedNotice] = useState(false);
+
+  useEffect(() => {
+    const initial: Record<string, string> = {};
+    if (product.options) {
+      product.options.forEach((opt) => {
+        if (opt.values.length > 0) {
+          initial[opt.name] = opt.values[0];
+        }
+      });
+    }
+    setSelectedOptions(initial);
+
+    const defaultEdition = product.options?.find((o) => o.name === 'Edition')?.values[0];
+    if (defaultEdition && product.editionImages && product.editionImages[defaultEdition]) {
+      setActiveImage(product.editionImages[defaultEdition]);
+    } else {
+      setActiveImage(product.image);
+    }
+    setQuantity(1);
+  }, [product.id]);
 
   const handleOptionChange = (optionName: string, value: string) => {
     setSelectedOptions((prev) => ({ ...prev, [optionName]: value }));

@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
-import { ShoppingBag, Search, Menu, X, ArrowRight } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, ArrowRight, Table } from 'lucide-react';
 import { CATEGORIES } from '../data/products';
 
 export const Navbar: React.FC = () => {
-  const { route, navigateTo, cartCount, setIsCartDrawerOpen, setIsSearchOpen } = useStore();
+  const {
+    route,
+    navigateTo,
+    cartCount,
+    setIsCartDrawerOpen,
+    setIsSearchOpen,
+    setIsProductTableModalOpen,
+  } = useStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isCurrentCategory = (catId: string) =>
@@ -135,8 +142,18 @@ export const Navbar: React.FC = () => {
             </a>
           </nav>
 
-          {/* Zone 3: Search + Shopping Bag (Clean e-commerce actions, no clutter) */}
+          {/* Zone 3: Search + Shopping Bag + Editions Table */}
           <div className="flex items-center gap-3 shrink-0">
+            <button
+              onClick={() => setIsProductTableModalOpen(true)}
+              aria-label="Open Product Catalog & Editions Table"
+              title="View Product Code, Name, Price & Editions Table (for Spreadsheet)"
+              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:text-blue-600 bg-slate-100/80 hover:bg-blue-50 border border-slate-200 rounded-lg transition-colors cursor-pointer"
+            >
+              <Table className="w-3.5 h-3.5 text-blue-600" />
+              <span>Editions Table</span>
+            </button>
+
             <button
               onClick={() => setIsSearchOpen(true)}
               aria-label="Search catalog"

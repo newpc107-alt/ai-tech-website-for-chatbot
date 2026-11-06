@@ -74,7 +74,11 @@ export const CartDrawer: React.FC = () => {
                   <div className="w-18 h-18 rounded overflow-hidden border border-slate-200 bg-white shrink-0">
                     <ProductVisual
                       productId={item.product.id}
-                      imageSrc={item.product.image}
+                      imageSrc={
+                        (item.selectedOptions?.Edition &&
+                          item.product.editionImages?.[item.selectedOptions.Edition]) ||
+                        item.product.image
+                      }
                       name={item.product.name}
                       className="w-full h-full object-cover"
                     />

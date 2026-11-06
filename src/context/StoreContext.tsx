@@ -22,6 +22,8 @@ interface StoreContextType {
   isWishlisted: (productId: string) => boolean;
   orders: OrderDetails[];
   createOrder: (order: OrderDetails) => void;
+  isProductTableModalOpen: boolean;
+  setIsProductTableModalOpen: (open: boolean) => void;
   appliedPromo: string | null;
   applyPromo: (code: string) => { success: boolean; message: string; discountPercent?: number };
   discountAmount: number;
@@ -203,6 +205,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [orders, setOrders] = useState<OrderDetails[]>([INITIAL_DEMO_ORDER]);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isProductTableModalOpen, setIsProductTableModalOpen] = useState(false);
   const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
 
   // Sync route on browser back and forward button clicks
@@ -357,6 +360,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         isWishlisted,
         orders,
         createOrder,
+        isProductTableModalOpen,
+        setIsProductTableModalOpen,
         appliedPromo,
         applyPromo,
         discountAmount,

@@ -4,7 +4,7 @@ import { ShieldCheck, RotateCcw, Zap, Globe } from 'lucide-react';
 import { CATEGORIES } from '../data/products';
 
 export const Footer: React.FC = () => {
-  const { navigateTo } = useStore();
+  const { navigateTo, setIsProductTableModalOpen } = useStore();
 
   return (
     <footer className="bg-slate-900 border-t border-slate-800 text-slate-400 text-xs mt-auto">
@@ -167,6 +167,14 @@ export const Footer: React.FC = () => {
               >
                 Engineering & Metallurgy
               </a>
+            </li>
+            <li>
+              <button
+                onClick={() => setIsProductTableModalOpen(true)}
+                className="hover:text-blue-300 transition-colors text-xs text-left cursor-pointer font-bold text-sky-400 inline-block bg-transparent p-0 border-none"
+              >
+                📊 Product & Editions Table (Spreadsheet)
+              </button>
             </li>
           </ul>
         </div>
