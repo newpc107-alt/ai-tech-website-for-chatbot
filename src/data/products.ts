@@ -12,6 +12,8 @@ export const PHONE_COMPACT_IMAGE = '/images/phone_compact_minimal_1793218338599.
 export const PHONE_CINEMA_IMAGE = '/images/phone_cinema_edition_1793219955586.jpg';
 export const HEADPHONES_STUDIO_IMAGE = '/images/headphones_overear_studio_1793218339958.jpg';
 export const AIRPODS_PRO_WHITE_IMAGE = '/images/airpods_pro_white_case_1793219800813.jpg';
+export const EARBUDS_SILVER_TITANIUM_IMAGE = '/images/airpods_silver_titanium_1793920399144.jpg';
+export const EARBUDS_ONYX_BLACK_IMAGE = '/images/airpods_onyx_black_1793920415446.jpg';
 export const EARTIPS_TUNING_IMAGE = '/images/earbud_tuning_silicone_tips_1793219800973.jpg';
 export const AIRPODS_CARBON_CASE_IMAGE = '/images/carbon_fiber_airpods_case_1793219801737.jpg';
 
@@ -109,7 +111,12 @@ export const PRODUCTS: Product[] = [
     rating: 4.9,
     reviewCount: 342,
     image: EARBUDS_IMAGE,
-    gallery: [EARBUDS_IMAGE, HERO_IMAGE],
+    gallery: [EARBUDS_IMAGE, EARBUDS_SILVER_TITANIUM_IMAGE, EARBUDS_ONYX_BLACK_IMAGE],
+    editionImages: {
+      'Ice Blue': EARBUDS_IMAGE,
+      'Silver Titanium': EARBUDS_SILVER_TITANIUM_IMAGE,
+      'Onyx Black': EARBUDS_ONYX_BLACK_IMAGE,
+    },
     tag: 'Best Seller',
     description: 'Engineered for audio purists and mobile professionals. Features custom 11mm beryllium composite drivers, dual adaptive noise cancellation microphones, and low-latency Bluetooth 5.4 with LDAC lossless audio streaming.',
     keyFeatures: [
@@ -129,7 +136,7 @@ export const PRODUCTS: Product[] = [
       'Weight': '4.8g per earbud',
     },
     options: [
-      { name: 'Color', values: ['Ice Blue', 'Silver Titanium', 'Onyx Black'] },
+      { name: 'Edition', values: ['Ice Blue', 'Silver Titanium', 'Onyx Black'] },
     ],
     inStock: true,
     stockCount: 42,
@@ -151,7 +158,12 @@ export const PRODUCTS: Product[] = [
     rating: 4.9,
     reviewCount: 512,
     image: AIRPODS_PRO_WHITE_IMAGE,
-    gallery: [AIRPODS_PRO_WHITE_IMAGE, EARBUDS_IMAGE],
+    gallery: [AIRPODS_PRO_WHITE_IMAGE, EARBUDS_SILVER_TITANIUM_IMAGE, EARBUDS_ONYX_BLACK_IMAGE],
+    editionImages: {
+      'Pure White & Titanium': AIRPODS_PRO_WHITE_IMAGE,
+      'Space Silver': EARBUDS_SILVER_TITANIUM_IMAGE,
+      'Stealth Slate': EARBUDS_ONYX_BLACK_IMAGE,
+    },
     tag: 'Flagship Audio',
     description: 'Equipped with custom acoustic vents and H2 computation chip. Features tailored Spatial Audio with real-time head-tracking and a MagSafe wireless charging case equipped with a find-my speaker and lanyard loop.',
     keyFeatures: [
@@ -168,7 +180,7 @@ export const PRODUCTS: Product[] = [
       'Charging': 'USB-C, MagSafe, Apple Watch Puck, Qi',
     },
     options: [
-      { name: 'Finish', values: ['Pure White & Titanium', 'Space Silver', 'Stealth Slate'] },
+      { name: 'Edition', values: ['Pure White & Titanium', 'Space Silver', 'Stealth Slate'] },
     ],
     inStock: true,
     stockCount: 28,
@@ -203,7 +215,7 @@ export const PRODUCTS: Product[] = [
       'Weight': '320g',
     },
     options: [
-      { name: 'Color', values: ['Silver & White Leather', 'Space Silver', 'Cobalt Blue Accent'] },
+      { name: 'Edition', values: ['Silver & White Leather', 'Space Silver', 'Cobalt Blue Accent'] },
     ],
     inStock: true,
     stockCount: 19,
@@ -235,7 +247,7 @@ export const PRODUCTS: Product[] = [
       'Mesh Type': 'Surgical 316 Stainless Mesh',
     },
     options: [
-      { name: 'Color', values: ['Pure White', 'Smoked Blue', 'Charcoal'] },
+      { name: 'Edition', values: ['Pure White', 'Smoked Blue', 'Charcoal'] },
     ],
     inStock: true,
     stockCount: 150,
@@ -266,7 +278,7 @@ export const PRODUCTS: Product[] = [
       'Compatibility': 'AirPods Pro 1 & 2 (Lightning & USB-C cases)',
     },
     options: [
-      { name: 'Weave', values: ['Classic Twill Weave', 'Matte Blue Weave'] },
+      { name: 'Edition', values: ['Classic Twill Weave', 'Matte Blue Weave'] },
     ],
     inStock: true,
     stockCount: 88,
@@ -285,7 +297,7 @@ export const PRODUCTS: Product[] = [
     rating: 5.0,
     reviewCount: 467,
     image: GAN_CHARGER_IMAGE,
-    gallery: [GAN_CHARGER_IMAGE, HERO_IMAGE],
+    gallery: [GAN_CHARGER_IMAGE],
     tag: 'Editor Choice',
     description: 'Equipped with GaNFast V semiconductors and an intelligent OLED screen showing real-time voltage, amperage, and port power breakdown. Capable of charging two 16-inch laptops simultaneously at full speed.',
     keyFeatures: [
@@ -307,7 +319,7 @@ export const PRODUCTS: Product[] = [
     },
     options: [
       { name: 'Wattage Output', values: ['140W GaN Station', '100W Compact Desktop', '200W Pro Tower'] },
-      { name: 'Finish', values: ['Silver Aluminum', 'Space Titanium'] },
+      { name: 'Edition', values: ['Silver Aluminum', 'Space Titanium'] },
     ],
     inStock: true,
     stockCount: 65,
@@ -329,7 +341,7 @@ export const PRODUCTS: Product[] = [
     rating: 4.9,
     reviewCount: 310,
     image: CHARGER_MAGSAFE_3IN1_IMAGE,
-    gallery: [CHARGER_MAGSAFE_3IN1_IMAGE, HERO_IMAGE],
+    gallery: [CHARGER_MAGSAFE_3IN1_IMAGE],
     tag: 'Best Design',
     description: 'Precision hinges allow this 3-in-1 charger to fold down into a compact deck of cards. Holds your phone in StandBy landscape mode while fast-charging Apple Watch and wireless earbuds on rear trays.',
     keyFeatures: [
@@ -348,7 +360,7 @@ export const PRODUCTS: Product[] = [
       'Weight': '198g',
     },
     options: [
-      { name: 'Color', values: ['Pure White & Chrome', 'Silver Aluminum'] },
+      { name: 'Edition', values: ['Pure White & Chrome', 'Silver Aluminum'] },
     ],
     inStock: true,
     stockCount: 52,
@@ -383,7 +395,7 @@ export const PRODUCTS: Product[] = [
       'Weight': '495g',
     },
     options: [
-      { name: 'Capacity', values: ['25,000mAh (145W)', '15,000mAh (65W)'] },
+      { name: 'Edition', values: ['Digital Titanium OLED', 'Stealth Graphite'] },
     ],
     inStock: true,
     stockCount: 38,
@@ -418,7 +430,7 @@ export const PRODUCTS: Product[] = [
       'Protocols': 'PD 3.0, PPS, QC 4.0, AFC, FCP',
     },
     options: [
-      { name: 'Color', values: ['Pure White', 'Sky Blue', 'Matte Black'] },
+      { name: 'Edition', values: ['Pure White', 'Sky Blue', 'Matte Black'] },
       { name: 'Plugs Included', values: ['US + EU/UK Adapters', 'US Only'] },
     ],
     inStock: true,
@@ -451,7 +463,7 @@ export const PRODUCTS: Product[] = [
       'Orientation': 'Down-angled cable ports',
     },
     options: [
-      { name: 'Color', values: ['Glacier White', 'Cobalt Blue Accent'] },
+      { name: 'Edition', values: ['Glacier White', 'Cobalt Blue Accent'] },
     ],
     inStock: true,
     stockCount: 77,
@@ -482,7 +494,7 @@ export const PRODUCTS: Product[] = [
       'Included in Box': 'Car Mount, 1.2m Braided Cable, 36W Car Adapter',
     },
     options: [
-      { name: 'Mount Style', values: ['Air Vent Twist-Lock', 'Suction Dashboard Base'] },
+      { name: 'Edition', values: ['Air Vent Twist-Lock', 'Suction Dashboard Base'] },
     ],
     inStock: true,
     stockCount: 56,
@@ -501,7 +513,7 @@ export const PRODUCTS: Product[] = [
     rating: 5.0,
     reviewCount: 389,
     image: CABLES_IMAGE,
-    gallery: [CABLES_IMAGE, HERO_IMAGE],
+    gallery: [CABLES_IMAGE],
     tag: 'Certified 40Gbps',
     description: 'The definitive pro cable. Certified for USB4, Thunderbolt 4, and USB-PD 3.1 Extended Power Range (EPR) up to 240W (48V/5A). Connects high-end displays up to 8K@60Hz or dual 4K@120Hz while carrying max power.',
     keyFeatures: [
@@ -519,7 +531,7 @@ export const PRODUCTS: Product[] = [
     },
     options: [
       { name: 'Length', values: ['1.0 Meter (3.3ft)', '2.0 Meters (6.6ft)', '3.0 Meters (10ft)'] },
-      { name: 'Color', values: ['Silver Braided Weave', 'Cobalt Blue Accent'] },
+      { name: 'Edition', values: ['Silver Braided Weave', 'Cobalt Blue Accent'] },
     ],
     inStock: true,
     stockCount: 92,
@@ -557,7 +569,7 @@ export const PRODUCTS: Product[] = [
     },
     options: [
       { name: 'Length', values: ['1.0m (3.3ft)', '1.5m (5.0ft)', '2.0m (6.6ft)'] },
-      { name: 'Color', values: ['Electric Blue Weave', 'Silver Gray', 'Navy Braided'] },
+      { name: 'Edition', values: ['Electric Blue Weave', 'Silver Gray', 'Navy Braided'] },
     ],
     inStock: true,
     stockCount: 160,
@@ -590,7 +602,7 @@ export const PRODUCTS: Product[] = [
     },
     options: [
       { name: 'Length', values: ['1.2m', '2.0m'] },
-      { name: 'Color', values: ['Azure Blue', 'Stealth Black'] },
+      { name: 'Edition', values: ['Azure Blue', 'Stealth Black'] },
     ],
     inStock: true,
     stockCount: 74,
@@ -622,7 +634,7 @@ export const PRODUCTS: Product[] = [
       'Length': '1.2m (4ft)',
     },
     options: [
-      { name: 'Color', values: ['Sky Blue', 'Cloud White', 'Mint Slate'] },
+      { name: 'Edition', values: ['Sky Blue', 'Cloud White', 'Mint Slate'] },
       { name: 'Length', values: ['1.2m (4ft)', '1.8m (6ft)'] },
     ],
     inStock: true,
@@ -655,7 +667,7 @@ export const PRODUCTS: Product[] = [
       'Housing': 'Die-Cast Zinc Alloy',
     },
     options: [
-      { name: 'Color', values: ['Silver & Blue Accent', 'Matte Slate'] },
+      { name: 'Edition', values: ['Silver & Blue Accent', 'Matte Slate'] },
     ],
     inStock: true,
     stockCount: 62,
@@ -686,6 +698,7 @@ export const PRODUCTS: Product[] = [
       'Length': '2.0m (6.6ft)',
     },
     options: [
+      { name: 'Edition', values: ['Space Gray Braided', 'Midnight Blue Armor'] },
       { name: 'Length', values: ['2.0m (6.6ft)', '3.0m (10ft)'] },
     ],
     inStock: true,
@@ -716,6 +729,7 @@ export const PRODUCTS: Product[] = [
       'Length': '1.0m (3.3ft)',
     },
     options: [
+      { name: 'Edition', values: ['Carbon Black', 'Steel Silver'] },
       { name: 'Length', values: ['1.0m (3.3ft)', '0.5m (1.6ft)'] },
     ],
     inStock: true,
@@ -752,7 +766,7 @@ export const PRODUCTS: Product[] = [
     },
     options: [
       { name: 'Device Compatibility', values: ['APEX Ultra 5G', 'APEX Air Compact', 'iPhone 16 Pro Max', 'iPhone 16 Pro'] },
-      { name: 'Finish', values: ['Classic Twill Weave', 'Matte Raw Carbon'] },
+      { name: 'Edition', values: ['Classic Twill Weave', 'Matte Raw Carbon'] },
     ],
     inStock: true,
     stockCount: 82,
@@ -789,7 +803,7 @@ export const PRODUCTS: Product[] = [
     },
     options: [
       { name: 'Device Compatibility', values: ['APEX Ultra 5G', 'APEX Air Compact', 'iPhone 16 Pro'] },
-      { name: 'Color', values: ['Tactical Blue & Slate', 'Gunmetal Gray', 'Alpine White'] },
+      { name: 'Edition', values: ['Tactical Blue & Slate', 'Gunmetal Gray', 'Alpine White'] },
     ],
     inStock: true,
     stockCount: 60,
@@ -820,7 +834,7 @@ export const PRODUCTS: Product[] = [
     },
     options: [
       { name: 'Device Compatibility', values: ['APEX Ultra 5G', 'APEX Air Compact', 'iPhone 16 Pro'] },
-      { name: 'Accent Color', values: ['Azure Blue Ring', 'Silver Ring', 'Black Ring'] },
+      { name: 'Edition', values: ['Azure Blue Ring', 'Silver Ring', 'Black Ring'] },
     ],
     inStock: true,
     stockCount: 70,
@@ -853,7 +867,7 @@ export const PRODUCTS: Product[] = [
     },
     options: [
       { name: 'Device Compatibility', values: ['APEX Ultra 5G', 'APEX Air Compact', 'iPhone 16 Pro Max', 'iPhone 16 Pro'] },
-      { name: 'Type', values: ['HD Ultra Clear', 'Matte Anti-Glare Gaming', '28° Privacy Shield'] },
+      { name: 'Edition', values: ['HD Ultra Clear', 'Matte Anti-Glare Gaming', '28° Privacy Shield'] },
     ],
     inStock: true,
     stockCount: 210,
@@ -883,7 +897,7 @@ export const PRODUCTS: Product[] = [
       'Set Count': '3 Lens Protectors with One-Step Applicator',
     },
     options: [
-      { name: 'Finish', values: ['Ice Blue Titanium', 'Natural Titanium', 'Space Black'] },
+      { name: 'Edition', values: ['Ice Blue Titanium', 'Natural Titanium', 'Space Black'] },
     ],
     inStock: true,
     stockCount: 120,
@@ -917,7 +931,7 @@ export const PRODUCTS: Product[] = [
       'Angle Adjustment': '0° to 65° Tilt, 360° Swivel',
     },
     options: [
-      { name: 'Finish', values: ['Pure Silver Bead-Blasted', 'Space Gray Anodized'] },
+      { name: 'Edition', values: ['Pure Silver Bead-Blasted', 'Space Gray Anodized'] },
     ],
     inStock: true,
     stockCount: 58,
@@ -951,7 +965,7 @@ export const PRODUCTS: Product[] = [
       'Housing': 'Extruded Aluminum Fin Chassis',
     },
     options: [
-      { name: 'Color', values: ['Silver Aluminum', 'Dark Titanium'] },
+      { name: 'Edition', values: ['Silver Aluminum', 'Dark Titanium'] },
     ],
     inStock: true,
     stockCount: 30,
@@ -984,7 +998,7 @@ export const PRODUCTS: Product[] = [
       'Material': '4mm Thick Aluminum Alloy',
     },
     options: [
-      { name: 'Color', values: ['Pure Silver', 'Space Gray'] },
+      { name: 'Edition', values: ['Pure Silver', 'Space Gray'] },
     ],
     inStock: true,
     stockCount: 66,
@@ -1014,7 +1028,7 @@ export const PRODUCTS: Product[] = [
       'Base Size': '90 x 20 x 15 mm',
     },
     options: [
-      { name: 'Color', values: ['Sky Blue & White', 'Brushed Titanium Silver'] },
+      { name: 'Edition', values: ['Sky Blue & White', 'Brushed Titanium Silver'] },
     ],
     inStock: true,
     stockCount: 140,
@@ -1033,7 +1047,7 @@ export const PRODUCTS: Product[] = [
     rating: 4.9,
     reviewCount: 420,
     image: SMARTPHONE_IMAGE, // High-res studio shot of flagship titanium
-    gallery: [SMARTPHONE_IMAGE, HERO_IMAGE],
+    gallery: [SMARTPHONE_IMAGE],
     tag: 'Flagship Device',
     description: 'Forged from Grade 5 aerospace titanium with ceramic back glass. Features a 6.82-inch 1-120Hz LTPO OLED display with 3,000 nits peak brightness, Snapdragon 8 Elite 3nm processor, and 5,400mAh silicon-carbon battery.',
     keyFeatures: [
@@ -1054,7 +1068,7 @@ export const PRODUCTS: Product[] = [
     },
     options: [
       { name: 'Storage', values: ['256GB', '512GB', '1TB'] },
-      { name: 'Color', values: ['Natural Titanium', 'Space Obsidian', 'Deep Desert'] },
+      { name: 'Edition', values: ['Natural Titanium', 'Space Obsidian', 'Deep Desert'] },
     ],
     inStock: true,
     stockCount: 35,
@@ -1076,7 +1090,7 @@ export const PRODUCTS: Product[] = [
     rating: 4.8,
     reviewCount: 195,
     image: PHONE_FOLDABLE_IMAGE, // Distinct studio photo of folding phone partially open at 120°
-    gallery: [PHONE_FOLDABLE_IMAGE, HERO_IMAGE],
+    gallery: [PHONE_FOLDABLE_IMAGE],
     tag: 'Next-Gen Foldable',
     description: 'The thinnest foldable in the world at only 9.2mm folded and 4.4mm unfolded. Features an expansive 8.03-inch inner folding canvas with zero-crease titanium micro-hinge and full active stylus support.',
     keyFeatures: [
@@ -1095,7 +1109,7 @@ export const PRODUCTS: Product[] = [
     },
     options: [
       { name: 'Storage', values: ['512GB', '1TB'] },
-      { name: 'Color', values: ['Titanium Silver', 'Carbon Black'] },
+      { name: 'Edition', values: ['Titanium Silver', 'Carbon Black'] },
     ],
     inStock: true,
     stockCount: 14,
@@ -1130,7 +1144,7 @@ export const PRODUCTS: Product[] = [
     },
     options: [
       { name: 'Storage', values: ['128GB', '256GB', '512GB'] },
-      { name: 'Color', values: ['Ice Blue', 'Glacier White', 'Midnight Slate'] },
+      { name: 'Edition', values: ['Ice Blue', 'Glacier White', 'Midnight Slate'] },
     ],
     inStock: true,
     stockCount: 40,
@@ -1164,7 +1178,7 @@ export const PRODUCTS: Product[] = [
       'Camera Sensor': '1.0-inch 50MP Primary + 50MP 3x + 50MP 6x Periscope',
     },
     options: [
-      { name: 'Finish', values: ['Cinema Matte Titanium', 'Obsidian Slate'] },
+      { name: 'Edition', values: ['Cinema Matte Titanium', 'Obsidian Slate'] },
     ],
     inStock: true,
     stockCount: 18,

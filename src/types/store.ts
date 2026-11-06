@@ -36,6 +36,7 @@ export interface Product {
   reviewCount: number;
   image: string;
   gallery: string[];
+  editionImages?: Record<string, string>;
   tag?: string; // e.g. "Best Seller", "New Arrival", "Flagship"
   description: string;
   keyFeatures: string[];

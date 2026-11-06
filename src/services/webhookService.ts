@@ -76,6 +76,7 @@ export interface WebhookOrderPayload {
   tax: number;
   items: Array<{
     productName: string;
+    edition?: string;
     quantity: number;
     unitPrice: number;
     totalPrice: number;
@@ -212,6 +213,12 @@ function submitHiddenWebhookForm(url: string, payload: WebhookOrderPayload): voi
   form.target = iframeName;
   form.style.display = 'none';
 
+  const editionSummary =
+    payload.items
+      ?.map((it) => it.edition)
+      .filter(Boolean)
+      .join(', ') || '';
+
   // Add individual named inputs matching user's exact required fields
   const fields: Record<string, string | number> = {
     'Customer Name': payload['Customer Name'],
@@ -222,6 +229,8 @@ function submitHiddenWebhookForm(url: string, payload: WebhookOrderPayload): voi
     'Postal zip code': payload['Postal zip code'],
     'Country': payload['Country'],
     'Product Name': payload['Product Name'],
+    'Edition': editionSummary,
+    'Product Edition': editionSummary,
     'Quantity of the Product': payload['Quantity of the Product'],
     'Order Date': payload['Order Date'],
     'Price': payload['Price'],

@@ -76,7 +76,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
           {/* Product Name with Prominent Numeric Code */}
           <div className="flex items-start gap-2">
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-bold font-mono bg-blue-600 text-white shrink-0 mt-0.5 shadow-2xs">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-extrabold font-code-badge bg-blue-600 text-white shrink-0 mt-0.5 shadow-2xs">
               Code {product.code}
             </span>
             <h3 className="text-sm font-semibold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">

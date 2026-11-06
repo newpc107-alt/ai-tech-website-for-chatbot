@@ -23,9 +23,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId 
   const product = PRODUCTS.find((p) => p.id === productId) || PRODUCTS[0];
   const category = CATEGORIES.find((c) => c.id === product.category);
 
-  // Gallery state
-  const [activeImage, setActiveImage] = useState<string>(product.image);
-
   // Selected variant options
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>(() => {
     const initial: Record<string, string> = {};
@@ -39,11 +36,24 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId 
     return initial;
   });
 
+  // Gallery state - initializes to the active edition's image if available
+  const [activeImage, setActiveImage] = useState<string>(() => {
+    const defaultEdition = product.options?.find((o) => o.name === 'Edition')?.values[0];
+    if (defaultEdition && product.editionImages && product.editionImages[defaultEdition]) {
+      return product.editionImages[defaultEdition];
+    }
+    return product.image;
+  });
+
   const [quantity, setQuantity] = useState(1);
   const [addedNotice, setAddedNotice] = useState(false);
 
   const handleOptionChange = (optionName: string, value: string) => {
     setSelectedOptions((prev) => ({ ...prev, [optionName]: value }));
+    // If the changed option is Edition and has a dedicated image, switch to that edition's picture
+    if (optionName === 'Edition' && product.editionImages && product.editionImages[value]) {
+      setActiveImage(product.editionImages[value]);
+    }
   };
 
   const handleAddToCart = () => {
@@ -130,7 +140,17 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId 
               {product.gallery.map((img, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setActiveImage(img)}
+                  onClick={() => {
+                    setActiveImage(img);
+                    if (product.editionImages) {
+                      const matchedEntry = Object.entries(product.editionImages).find(
+                        ([, src]) => src === img
+                      );
+                      if (matchedEntry) {
+                        setSelectedOptions((prev) => ({ ...prev, Edition: matchedEntry[0] }));
+                      }
+                    }
+                  }}
                   className={`relative w-20 h-16 rounded-lg overflow-hidden border transition-all cursor-pointer bg-white ${
                     activeImage === img
                       ? 'border-blue-600 ring-2 ring-blue-100'
@@ -166,7 +186,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId 
             </div>
 
             <div className="flex items-center gap-3 flex-wrap">
-              <span className="inline-flex items-center px-3 py-1 rounded-md text-xs font-bold font-mono bg-blue-600 text-white shadow-xs">
+              <span className="inline-flex items-center px-3 py-1 rounded-md text-xs font-extrabold font-code-badge bg-blue-600 text-white shadow-xs">
                 Product Code: {product.code}
               </span>
               <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-display">

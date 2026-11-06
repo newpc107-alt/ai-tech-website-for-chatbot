@@ -135,7 +135,7 @@
       },
       "options": [
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Ice Blue",
             "Silver Titanium",
@@ -183,7 +183,7 @@
       },
       "options": [
         {
-          "name": "Finish",
+          "name": "Edition",
           "values": [
             "Pure White & Titanium",
             "Space Silver",
@@ -230,7 +230,7 @@
       },
       "options": [
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Silver & White Leather",
             "Space Silver",
@@ -274,7 +274,7 @@
       },
       "options": [
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Pure White",
             "Smoked Blue",
@@ -318,7 +318,7 @@
       },
       "options": [
         {
-          "name": "Weave",
+          "name": "Edition",
           "values": [
             "Classic Twill Weave",
             "Matte Blue Weave"
@@ -377,7 +377,7 @@
           ]
         },
         {
-          "name": "Finish",
+          "name": "Edition",
           "values": [
             "Silver Aluminum",
             "Space Titanium"
@@ -426,7 +426,7 @@
       },
       "options": [
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Pure White & Chrome",
             "Silver Aluminum"
@@ -472,7 +472,7 @@
       },
       "options": [
         {
-          "name": "Capacity",
+          "name": "Edition",
           "values": [
             "25,000mAh (145W)",
             "15,000mAh (65W)"
@@ -518,7 +518,7 @@
       },
       "options": [
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Pure White",
             "Sky Blue",
@@ -569,7 +569,7 @@
       },
       "options": [
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Glacier White",
             "Cobalt Blue Accent"
@@ -612,7 +612,7 @@
       },
       "options": [
         {
-          "name": "Mount Style",
+          "name": "Edition",
           "values": [
             "Air Vent Twist-Lock",
             "Suction Dashboard Base"
@@ -667,7 +667,7 @@
           ]
         },
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Silver Braided Weave",
             "Cobalt Blue Accent"
@@ -720,7 +720,7 @@
           ]
         },
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Electric Blue Weave",
             "Silver Gray",
@@ -771,7 +771,7 @@
           ]
         },
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Azure Blue",
             "Stealth Black"
@@ -815,7 +815,7 @@
       },
       "options": [
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Sky Blue",
             "Cloud White",
@@ -867,7 +867,7 @@
       },
       "options": [
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Silver & Blue Accent",
             "Matte Slate"
@@ -909,6 +909,13 @@
         "Length": "2.0m (6.6ft)"
       },
       "options": [
+        {
+          "name": "Edition",
+          "values": [
+            "Space Gray Braided",
+            "Midnight Blue Armor"
+          ]
+        },
         {
           "name": "Length",
           "values": [
@@ -952,10 +959,17 @@
       },
       "options": [
         {
+          "name": "Edition",
+          "values": [
+            "Carbon Black",
+            "Steel Silver"
+          ]
+        },
+        {
           "name": "Length",
           "values": [
             "1.0m (3.3ft)",
-            "0.5m (1.6ft)"
+            "2.0m (6.6ft)"
           ]
         }
       ]
@@ -1006,7 +1020,7 @@
           ]
         },
         {
-          "name": "Finish",
+          "name": "Edition",
           "values": [
             "Classic Twill Weave",
             "Matte Raw Carbon"
@@ -1058,7 +1072,7 @@
           ]
         },
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Tactical Blue & Slate",
             "Gunmetal Gray",
@@ -1109,7 +1123,7 @@
           ]
         },
         {
-          "name": "Accent Color",
+          "name": "Edition",
           "values": [
             "Azure Blue Ring",
             "Silver Ring",
@@ -1163,7 +1177,7 @@
           ]
         },
         {
-          "name": "Type",
+          "name": "Edition",
           "values": [
             "HD Ultra Clear",
             "Matte Anti-Glare Gaming",
@@ -1205,7 +1219,7 @@
       },
       "options": [
         {
-          "name": "Finish",
+          "name": "Edition",
           "values": [
             "Ice Blue Titanium",
             "Natural Titanium",
@@ -1250,7 +1264,7 @@
       },
       "options": [
         {
-          "name": "Finish",
+          "name": "Edition",
           "values": [
             "Pure Silver Bead-Blasted",
             "Space Gray Anodized"
@@ -1295,7 +1309,7 @@
       },
       "options": [
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Silver Aluminum",
             "Dark Titanium"
@@ -1339,7 +1353,7 @@
       },
       "options": [
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Pure Silver",
             "Space Gray"
@@ -1381,7 +1395,7 @@
       },
       "options": [
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Sky Blue & White",
             "Brushed Titanium Silver"
@@ -1439,7 +1453,7 @@
           ]
         },
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Natural Titanium",
             "Space Obsidian",
@@ -1495,7 +1509,7 @@
           ]
         },
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Titanium Silver",
             "Carbon Black"
@@ -1548,7 +1562,7 @@
           ]
         },
         {
-          "name": "Color",
+          "name": "Edition",
           "values": [
             "Ice Blue",
             "Glacier White",
@@ -1595,7 +1609,7 @@
       },
       "options": [
         {
-          "name": "Finish",
+          "name": "Edition",
           "values": [
             "Cinema Matte Titanium",
             "Obsidian Slate"

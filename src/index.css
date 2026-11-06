@@ -16,6 +16,12 @@
   h1, h2, h3, .font-display {
     font-family: var(--font-display);
   }
+
+  .font-code-badge {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+    font-variant-numeric: normal;
+    letter-spacing: 0.04em;
+  }
 }
 
 /* Custom scrollbar for fresh tech look */

@@ -100,9 +100,17 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
     });
 
     const productNamesSummary = itemsToUse
-      .map((item) =>
-        item.quantity > 1 ? `${item.product.name} (x${item.quantity})` : item.product.name
-      )
+      .map((item) => {
+        const edition =
+          item.selectedOptions?.Edition ||
+          item.selectedOptions?.Color ||
+          item.selectedOptions?.Weave ||
+          (item.product.options?.find((o) => o.name === 'Edition')?.values[0] ??
+            Object.values(item.selectedOptions || {})[0] ??
+            '');
+        const nameWithEdition = edition ? `${item.product.name} (${edition})` : item.product.name;
+        return item.quantity > 1 ? `${nameWithEdition} (x${item.quantity})` : nameWithEdition;
+      })
       .join(', ');
 
     const totalQuantity = itemsToUse.reduce((sum, item) => sum + item.quantity, 0);
@@ -116,7 +124,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
       'City': formData.city.trim(),
       'Postal zip code': formData.postalCode.trim(),
       'Country': formData.country.trim(),
-      'Product Name': productNamesSummary || 'Volt 65W GaN Dual Port Travel Wall Brick',
+      'Product Name': productNamesSummary || 'AURA II ANC Wireless Earbuds (Ice Blue)',
       'Quantity of the Product': totalQuantity || 1,
       'Order Date': orderDate,
       'Price': totalToUse || 89.99,
@@ -129,7 +137,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
       city: formData.city.trim(),
       postalZipCode: formData.postalCode.trim(),
       country: formData.country.trim(),
-      productName: productNamesSummary || 'Volt 65W GaN Dual Port Travel Wall Brick',
+      productName: productNamesSummary || 'AURA II ANC Wireless Earbuds (Ice Blue)',
       quantity: totalQuantity || 1,
       orderDate,
       price: totalToUse || 89.99,
@@ -137,13 +145,24 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
       subtotal: cartSubtotal,
       shipping: shippingFee,
       tax: estimatedTax,
-      items: itemsToUse.map((it) => ({
-        productName: it.product.name,
-        quantity: it.quantity,
-        unitPrice: it.product.price,
-        totalPrice: it.product.price * it.quantity,
-        selectedOptions: it.selectedOptions || {},
-      })),
+      items: itemsToUse.map((it) => {
+        const edition =
+          it.selectedOptions?.Edition ||
+          it.selectedOptions?.Color ||
+          it.selectedOptions?.Weave ||
+          (it.product.options?.find((o) => o.name === 'Edition')?.values[0] ??
+            Object.values(it.selectedOptions || {})[0] ??
+            '');
+        const nameWithEdition = edition ? `${it.product.name} (${edition})` : it.product.name;
+        return {
+          productName: nameWithEdition,
+          edition: edition || '',
+          quantity: it.quantity,
+          unitPrice: it.product.price,
+          totalPrice: it.product.price * it.quantity,
+          selectedOptions: it.selectedOptions || {},
+        };
+      }),
     };
   };
 
@@ -714,7 +733,8 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
                     <div className="flex items-center gap-2 min-w-0 pr-4">
                       <Package className="w-3.5 h-3.5 text-blue-500 shrink-0" />
                       <span className="truncate font-medium">
-                        {item.product.name} × {item.quantity}
+                        {item.product.name}
+                        {item.selectedOptions?.Edition ? ` (${item.selectedOptions.Edition})` : ''} × {item.quantity}
                       </span>
                     </div>
                     <span className="font-mono text-slate-900 font-bold shrink-0">
