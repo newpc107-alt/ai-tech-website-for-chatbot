@@ -367,36 +367,47 @@ export const NoviChatbot: React.FC = () => {
 
   return (
     <>
-      {/* Floating Trigger Button */}
+      {/* Floating Trigger Button (Circular Icon elevated to avoid Netlify badge) */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full shadow-2xl hover:shadow-blue-500/30 hover:scale-105 active:scale-95 transition-all duration-200 group border border-white/20"
+          className="fixed bottom-24 right-6 z-50 w-14 h-14 bg-gradient-to-tr from-blue-600 via-indigo-600 to-blue-500 text-white rounded-full shadow-2xl hover:shadow-blue-500/40 hover:scale-110 active:scale-95 transition-all duration-200 flex items-center justify-center group border border-white/20 focus:outline-none focus:ring-4 focus:ring-blue-400/30"
           aria-label="Open Novi AI Chat"
+          title="Chat with Novi AI"
         >
-          <div className="relative">
-            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-                />
-              </svg>
-            </div>
-            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-indigo-600 animate-pulse" />
+          <div className="relative flex items-center justify-center">
+            {/* Chat Icon */}
+            <svg
+              className="w-7 h-7 text-white transition-transform duration-200 group-hover:scale-105"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+              />
+            </svg>
+
+            {/* Glowing Online Pulse Indicator */}
+            <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-indigo-700" />
+            </span>
           </div>
-          <div className="text-left">
-            <span className="block text-xs font-semibold uppercase tracking-wider text-blue-100">AI Assistant</span>
-            <span className="block text-sm font-bold text-white leading-tight">Chat with Novi</span>
-          </div>
+
+          {/* Tooltip on hover */}
+          <span className="absolute right-full mr-3 px-3 py-1.5 bg-slate-900/90 backdrop-blur-xs text-white text-xs font-semibold rounded-lg shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150 whitespace-nowrap border border-slate-700/50">
+            Chat with Novi AI
+          </span>
         </button>
       )}
 
-      {/* Main Chatbot Window */}
+      {/* Main Chatbot Window (Positioned elevated above Netlify badge) */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-[420px] max-w-[calc(100vw-32px)] h-[600px] max-h-[calc(100vh-48px)] bg-white rounded-2xl shadow-2xl border border-slate-200/90 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200">
+        <div className="fixed bottom-24 right-4 sm:right-6 z-50 w-[420px] max-w-[calc(100vw-32px)] h-[580px] max-h-[calc(100vh-120px)] bg-white rounded-2xl shadow-2xl border border-slate-200/90 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200">
           {/* Header */}
           <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 text-white px-4 py-3.5 flex items-center justify-between border-b border-white/10 shadow-sm">
             <div className="flex items-center gap-3">
