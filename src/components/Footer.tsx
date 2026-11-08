@@ -47,28 +47,30 @@ export const Footer: React.FC = () => {
         {/* Brand column */}
         <div className="col-span-2 space-y-3">
           <div className="flex items-center gap-3">
-            <div className="relative w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-700 via-indigo-600 to-cyan-500 p-[1.5px] shadow-sm">
-              <div className="w-full h-full bg-slate-950 rounded-[6px] flex items-center justify-center overflow-hidden">
-                <svg className="w-4 h-4 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 4v16" />
-                  <path d="M4 12l8-8" />
-                  <path d="M8 8l10 12" />
-                  <circle cx="18" cy="6" r="2" fill="currentColor" stroke="none" />
+            <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 via-blue-600 to-indigo-700 p-[2px] shadow-sm">
+              <div className="w-full h-full bg-slate-950 rounded-[9px] flex items-center justify-center overflow-hidden">
+                <svg className="w-5 h-5 drop-shadow-[0_0_6px_rgba(56,189,248,0.5)]" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 6C7 5.44772 7.44772 5 8 5H11.5C12.0523 5 12.5 5.44772 12.5 6V26C12.5 26.5523 12.0523 27 11.5 27H8C7.44772 27 7 26.5523 7 26V6Z" fill="#60a5fa" />
+                  <path d="M12.5 16.5L21.8 7.2C22.2 6.8 22.8 6.8 23.2 7.2L25.3 9.3C25.7 9.7 25.7 10.3 25.3 10.7L16.2 19.8L12.5 16.5Z" fill="#38bdf8" />
+                  <path d="M15.5 18.2L23.5 26.2C23.9 26.6 24.5 26.6 24.9 26.2L27 24.1C27.4 23.7 27.4 23.1 27 22.7L18.8 14.5L15.5 18.2Z" fill="#818cf8" />
+                  <circle cx="15.5" cy="17.5" r="2" fill="#34d399" />
                 </svg>
               </div>
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5 leading-none">
-                <span className="text-base font-extrabold tracking-tight text-white font-display">
+                <span className="text-base font-black tracking-tight text-white font-display">
                   KHIZAR
                 </span>
-                <span className="text-base font-extrabold tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 bg-clip-text text-transparent font-display">
+                <span className="text-base font-black tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-emerald-400 bg-clip-text text-transparent font-display">
                   TECH
                 </span>
               </div>
-              <span className="text-[8.5px] font-bold text-slate-400 uppercase tracking-[0.25em] font-mono mt-0.5">
-                STORE
-              </span>
+              <div className="flex items-center gap-1 mt-1">
+                <span className="text-[8.5px] font-bold text-emerald-400 uppercase tracking-widest font-mono">
+                  PRO LABS · VERIFIED
+                </span>
+              </div>
             </div>
           </div>
           <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
