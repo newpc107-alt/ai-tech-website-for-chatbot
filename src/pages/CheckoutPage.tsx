@@ -16,6 +16,7 @@ import {
   sendOrderToWebhook,
   WebhookOrderPayload,
   getWebhookUrl,
+  cleanPhoneNumber,
 } from '../services/webhookService';
 
 interface CheckoutPageProps {
@@ -93,11 +94,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
    * Order ID will be assigned inside n8n workflow.
    */
   const buildWebhookPayload = (itemsToUse = cart, totalToUse = finalTotal): WebhookOrderPayload => {
-    const orderDate = new Date().toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-    });
+    const cleanPhone = cleanPhoneNumber(formData.phone);
+    const orderDateTimestamp = Date.now();
+    const priceString = (totalToUse || 89.99).toFixed(2);
 
     const productNamesSummary = itemsToUse
       .map((item) => {
@@ -113,56 +112,40 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
       })
       .join(', ');
 
-    const totalQuantity = itemsToUse.reduce((sum, item) => sum + item.quantity, 0);
+    const totalQuantity = itemsToUse.reduce((sum, item) => sum + item.quantity, 0) || 1;
 
     return {
-      // User required exact column fields (NO Order ID):
+      'Customer name': formData.fullName.trim(),
       'Customer Name': formData.fullName.trim(),
+      'Customer email': formData.email.trim(),
       'Customer Email': formData.email.trim(),
-      'Phone number': formData.phone.trim(),
-      'Street address': formData.address.trim(),
-      'City': formData.city.trim(),
-      'Postal zip code': formData.postalCode.trim(),
+      'Phone number': cleanPhone,
       'Country': formData.country.trim(),
-      'Product Name': productNamesSummary || 'AURA II ANC Wireless Earbuds (Ice Blue)',
-      'Quantity of the Product': totalQuantity || 1,
-      'Order Date': orderDate,
-      'Price': totalToUse || 89.99,
+      'City': formData.city.trim(),
+      'Street address': formData.address.trim(),
+      'Postal zip code': formData.postalCode.trim(),
+      'Product name': productNamesSummary || 'Aura 2 ANC Wireless Earbuds (Ice Blue)',
+      'Product Name': productNamesSummary || 'Aura 2 ANC Wireless Earbuds (Ice Blue)',
+      'Quantity of the products': totalQuantity,
+      'Quantity of the Product': totalQuantity,
+      'Price of the product': priceString,
+      'Price': priceString,
+      'Order date': orderDateTimestamp,
+      'Order Date': orderDateTimestamp,
+      'Payment method': 'Cash on Delivery',
 
-      // Clean structured fields for n8n processing (NO Order ID):
       customerName: formData.fullName.trim(),
       customerEmail: formData.email.trim(),
-      phoneNumber: formData.phone.trim(),
-      streetAddress: formData.address.trim(),
-      city: formData.city.trim(),
-      postalZipCode: formData.postalCode.trim(),
+      phoneNumber: cleanPhone,
       country: formData.country.trim(),
-      productName: productNamesSummary || 'AURA II ANC Wireless Earbuds (Ice Blue)',
-      quantity: totalQuantity || 1,
-      orderDate,
-      price: totalToUse || 89.99,
+      city: formData.city.trim(),
+      streetAddress: formData.address.trim(),
+      postalZipCode: formData.postalCode.trim(),
+      productName: productNamesSummary || 'Aura 2 ANC Wireless Earbuds (Ice Blue)',
+      quantity: totalQuantity,
+      price: priceString,
+      orderDate: orderDateTimestamp,
       paymentMethod: 'Cash on Delivery',
-      subtotal: cartSubtotal,
-      shipping: shippingFee,
-      tax: estimatedTax,
-      items: itemsToUse.map((it) => {
-        const edition =
-          it.selectedOptions?.Edition ||
-          it.selectedOptions?.Color ||
-          it.selectedOptions?.Weave ||
-          (it.product.options?.find((o) => o.name === 'Edition')?.values[0] ??
-            Object.values(it.selectedOptions || {})[0] ??
-            '');
-        const nameWithEdition = edition ? `${it.product.name} (${edition})` : it.product.name;
-        return {
-          productName: nameWithEdition,
-          edition: edition || '',
-          quantity: it.quantity,
-          unitPrice: it.product.price,
-          totalPrice: it.product.price * it.quantity,
-          selectedOptions: it.selectedOptions || {},
-        };
-      }),
     };
   };
 

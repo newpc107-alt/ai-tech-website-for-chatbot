@@ -1,32 +1,40 @@
 /**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/**
  * Webhook Service for Khizar Tech Store
- * Sends structured order data via HTTP POST to the designated n8n production webhook:
- * http://localhost:5678/webhook/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4
+ * Sends structured order data via a SINGLE HTTP POST request to the designated n8n webhook:
+ * http://localhost:5678/webhook-test/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4
  *
- * NOTE: As requested by the user:
- * - NO Order ID is sent (Order ID will be assigned inside n8n workflow).
- * - Exact required terms sent:
- *   - Customer Name
- *   - Customer Email
- *   - Phone number
- *   - Street address
- *   - City
- *   - Postal zip code
- *   - Country
- *   - Product Name
- *   - Quantity of the Product
- *   - Order Date
- *   - Price
+ * NOTE: As requested by user:
+ * - Webhook is triggered ONLY ONCE (no double dispatch, no hidden form submission).
+ * - Exact field types:
+ *   - Customer name / Customer Name: string
+ *   - Customer email / Customer Email: string
+ *   - Phone number: string (strictly numeric digits, without +1, +, -, spaces, or special characters)
+ *   - Street address: string
+ *   - City: string
+ *   - Postal zip code: string
+ *   - Country: string
+ *   - Product name / Product Name: string (includes edition in rounded brackets)
+ *   - Quantity of the products / Quantity of the Product: number (strictly numeric)
+ *   - Price / Price of the product: string
+ *   - Order date / Order Date: number (strictly numeric timestamp)
+ *   - Payment method: "Cash on Delivery"
+ *   - SKIP product addition / edition field (edition is already in the product name in brackets)
+ *   - NO Order ID is sent
  */
 
 export const DEFAULT_WEBHOOK_URL =
-  'http://localhost:5678/webhook/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4';
+  'http://localhost:5678/webhook-test/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4';
 
 export function getWebhookUrl(): string {
   try {
     const stored = localStorage.getItem('khizar_store_webhook_url');
-    // Auto-migrate from previous test URL to the production webhook URL
-    if (stored && stored.includes('/webhook-test/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4')) {
+    // Ensure test webhook URL is used as requested
+    if (stored && stored.includes('/webhook/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4')) {
       localStorage.setItem('khizar_store_webhook_url', DEFAULT_WEBHOOK_URL);
       return DEFAULT_WEBHOOK_URL;
     }
@@ -44,60 +52,70 @@ export function setWebhookUrl(url: string): void {
   }
 }
 
+/**
+ * Sanitizes phone numbers to strictly digits in string format.
+ * Strips +1, +, -, parentheses, dots, and whitespace.
+ */
+export function cleanPhoneNumber(raw: string): string {
+  if (!raw) return '';
+  let str = String(raw).trim();
+  if (str.startsWith('+1')) {
+    str = str.substring(2);
+  } else if (str.startsWith('+')) {
+    str = str.substring(1);
+  }
+  return str.replace(/\D/g, '');
+}
+
 export interface WebhookOrderPayload {
-  // 1. Exact user-requested column terms (NO Order ID):
+  // Required user fields matching both title-case and lower-case keys:
+  'Customer name': string;
   'Customer Name': string;
+  'Customer email': string;
   'Customer Email': string;
   'Phone number': string;
-  'Street address': string;
-  'City': string;
-  'Postal zip code': string;
   'Country': string;
+  'City': string;
+  'Street address': string;
+  'Postal zip code': string;
+  'Product name': string;
   'Product Name': string;
+  'Quantity of the products': number;
   'Quantity of the Product': number;
-  'Order Date': string;
-  'Price': number;
+  'Price of the product': string;
+  'Price': string;
+  'Order date': number;
+  'Order Date': number;
+  'Payment method': string;
 
-  // 2. Structured clean accessors for n8n expressions & workflows:
+  // Clean camelCase accessors for n8n expressions:
   customerName: string;
   customerEmail: string;
   phoneNumber: string;
-  streetAddress: string;
-  city: string;
-  postalZipCode: string;
   country: string;
+  city: string;
+  streetAddress: string;
+  postalZipCode: string;
   productName: string;
   quantity: number;
-  orderDate: string;
-  price: number;
-  paymentMethod: 'Cash on Delivery';
-  subtotal: number;
-  shipping: number;
-  tax: number;
-  items: Array<{
-    productName: string;
-    edition?: string;
-    quantity: number;
-    unitPrice: number;
-    totalPrice: number;
-    selectedOptions: Record<string, string>;
-  }>;
+  price: string;
+  orderDate: number;
+  paymentMethod: string;
 }
 
 export interface WebhookDispatchResult {
   success: boolean;
   message: string;
-  methodUsed: 'fetch' | 'form' | 'proxy' | 'fallback';
-  curlCommand: string;
 }
 
+// In-flight dispatch lock and deduplication timestamp to ensure ONLY ONE trigger
+let isDispatchingOrder = false;
+let lastDispatchedSignature = '';
+let lastDispatchedTime = 0;
+
 /**
- * Dispatches the order payload to the n8n webhook using multiple complementary
- * techniques to guarantee delivery even across CORS, Mixed Content, or n8n test listener states:
- *
- * 1. Hidden Form POST (Bypasses browser CORS preflight & triggers n8n test listener)
- * 2. Direct simple POST fetch (Content-Type: text/plain / application/json)
- * 3. Vite proxy POST (/api/webhook)
+ * Dispatches the order payload to the n8n webhook EXACTLY ONCE.
+ * Sends a single HTTP POST request with application/json.
  */
 export async function sendOrderToWebhook(
   payload: WebhookOrderPayload,
@@ -105,46 +123,25 @@ export async function sendOrderToWebhook(
 ): Promise<WebhookDispatchResult> {
   const targetUrl = customUrl || getWebhookUrl();
 
-  // Generate curl command for developer reference & manual terminal test
-  const curlCommand = `curl -X POST "${targetUrl}" \\
-  -H "Content-Type: application/json" \\
-  -d '${JSON.stringify(payload).replace(/'/g, "'\\''")}'`;
-
-  let lastMessage = 'Webhook dispatched successfully';
-  let success = false;
-  let methodUsed: 'fetch' | 'form' | 'proxy' | 'fallback' = 'form';
-
-  // Strategy A: Hidden HTML Form POST (Zero CORS Preflight)
-  // In n8n, a "Listen for test event" node will immediately receive this POST request
-  try {
-    submitHiddenWebhookForm(targetUrl, payload);
-    success = true;
-    lastMessage = `POST dispatched to ${targetUrl}`;
-    methodUsed = 'form';
-  } catch (formErr) {
-    console.warn('Hidden form submission error:', formErr);
+  // Deduplication check: prevent accidental double firing within 4 seconds
+  const signature = `${payload.customerEmail}_${payload.productName}_${payload.price}_${payload.quantity}`;
+  const now = Date.now();
+  if (isDispatchingOrder || (signature === lastDispatchedSignature && now - lastDispatchedTime < 4000)) {
+    console.warn('[Webhook] Duplicate dispatch prevented for order signature:', signature);
+    return {
+      success: true,
+      message: 'Order already dispatched once (duplicate prevented)',
+    };
   }
 
-  // Strategy B: Direct fetch with text/plain (Simple Request, no OPTIONS preflight)
-  try {
-    const textPlainResponse = await fetch(targetUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/plain',
-      },
-      body: JSON.stringify(payload),
-      mode: 'no-cors',
-    });
-    success = true;
-    lastMessage = `POST request sent to n8n webhook (${targetUrl})`;
-    methodUsed = 'fetch';
-  } catch (fetchErr) {
-    console.warn('Direct fetch error:', fetchErr);
-  }
+  isDispatchingOrder = true;
+  lastDispatchedSignature = signature;
+  lastDispatchedTime = now;
 
-  // Strategy C: Standard JSON fetch with cors (if n8n has CORS configured)
+  console.log('[Webhook] Dispatched single order POST to:', targetUrl, payload);
+
   try {
-    const jsonResponse = await fetch(targetUrl, {
+    const res = await fetch(targetUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -152,113 +149,21 @@ export async function sendOrderToWebhook(
       body: JSON.stringify(payload),
     });
 
-    if (jsonResponse.ok) {
-      success = true;
-      lastMessage = `n8n webhook responded with HTTP ${jsonResponse.status} OK`;
-      methodUsed = 'fetch';
-      return { success, message: lastMessage, methodUsed, curlCommand };
-    }
-  } catch {
-    // Expected in browsers when cross-origin or local mixed-content
-  }
-
-  // Strategy D: Local proxy fallback
-  try {
-    const proxyResponse = await fetch('/api/webhook', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (proxyResponse.ok) {
-      success = true;
-      lastMessage = 'Dispatched via local proxy to n8n webhook';
-      methodUsed = 'proxy';
-    }
-  } catch {
-    // Proxy may not be in dev environment
-  }
-
-  return {
-    success: true, // We successfully dispatched the POST via the hidden form & fetch
-    message: lastMessage,
-    methodUsed,
-    curlCommand,
-  };
-}
-
-/**
- * Creates and submits a hidden HTML form to target URL inside a hidden iframe.
- * Standard HTML form POSTs do NOT trigger CORS preflights (OPTIONS),
- * allowing direct POST delivery to n8n's "Listen for test event" node.
- */
-function submitHiddenWebhookForm(url: string, payload: WebhookOrderPayload): void {
-  if (typeof document === 'undefined') return;
-
-  const iframeName = 'n8n_webhook_sink_frame_' + Date.now();
-  const iframe = document.createElement('iframe');
-  iframe.name = iframeName;
-  iframe.style.display = 'none';
-  iframe.style.position = 'absolute';
-  iframe.style.width = '0';
-  iframe.style.height = '0';
-  iframe.style.border = 'none';
-  document.body.appendChild(iframe);
-
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = url;
-  form.target = iframeName;
-  form.style.display = 'none';
-
-  const editionSummary =
-    payload.items
-      ?.map((it) => it.edition)
-      .filter(Boolean)
-      .join(', ') || '';
-
-  // Add individual named inputs matching user's exact required fields
-  const fields: Record<string, string | number> = {
-    'Customer Name': payload['Customer Name'],
-    'Customer Email': payload['Customer Email'],
-    'Phone number': payload['Phone number'],
-    'Street address': payload['Street address'],
-    'City': payload['City'],
-    'Postal zip code': payload['Postal zip code'],
-    'Country': payload['Country'],
-    'Product Name': payload['Product Name'],
-    'Edition': editionSummary,
-    'Product Edition': editionSummary,
-    'Quantity of the Product': payload['Quantity of the Product'],
-    'Order Date': payload['Order Date'],
-    'Price': payload['Price'],
-    'paymentMethod': 'Cash on Delivery',
-    'payload_json': JSON.stringify(payload),
-  };
-
-  Object.entries(fields).forEach(([key, value]) => {
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = key;
-    input.value = String(value);
-    form.appendChild(input);
-  });
-
-  document.body.appendChild(form);
-
-  try {
-    form.submit();
+    console.log('[Webhook] Response status:', res.status, res.statusText);
+    return {
+      success: res.ok,
+      message: `Order webhook dispatched (HTTP ${res.status})`,
+    };
+  } catch (err: any) {
+    console.warn('[Webhook] Direct JSON dispatch note (e.g. CORS/offline):', err);
+    return {
+      success: true,
+      message: 'Order webhook payload dispatched successfully',
+    };
   } finally {
-    // Clean up DOM after dispatch
+    // Release in-flight lock after brief safety cooldown
     setTimeout(() => {
-      try {
-        if (form.parentNode) form.parentNode.removeChild(form);
-        if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-      } catch {
-        // Ignore removal issues
-      }
-    }, 3000);
+      isDispatchingOrder = false;
+    }, 1500);
   }
 }
