@@ -95,7 +95,11 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
    */
   const buildWebhookPayload = (itemsToUse = cart, totalToUse = finalTotal): WebhookOrderPayload => {
     const cleanPhone = cleanPhoneNumber(formData.phone);
-    const orderDateTimestamp = Date.now();
+    const now = new Date();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const year = now.getFullYear();
+    const orderDateString = `${month}/${day}/${year}`;
     const priceNumber = Number((totalToUse || 89.99).toFixed(2));
 
     const productNamesSummary = itemsToUse
@@ -125,7 +129,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
       product_name: productNamesSummary || 'Aura 2 ANC Wireless Earbuds (Ice Blue)',
       quantity_of_products: totalQuantity,
       price: priceNumber,
-      order_date: orderDateTimestamp,
+      order_date: orderDateString,
       payment_method: 'Cash on Delivery',
       order_status: 'new order',
     };

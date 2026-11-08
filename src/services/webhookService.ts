@@ -19,7 +19,7 @@
  * - product_name: string (includes edition in rounded brackets)
  * - quantity_of_products: number (strictly numeric)
  * - price: number (strictly numeric e.g. 89.99)
- * - order_date: number (strictly numeric timestamp)
+ * - order_date: string (e.g. "10/29/2026")
  * - payment_method: "Cash on Delivery"
  * - order_status: "new order" (string)
  */
@@ -73,7 +73,7 @@ export interface WebhookOrderPayload {
   product_name: string;
   quantity_of_products: number;
   price: number;
-  order_date: number;
+  order_date: string;
   payment_method: string;
   order_status: string;
 }
