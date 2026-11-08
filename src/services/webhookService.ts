@@ -18,7 +18,7 @@
  * - postal_zip_code: string
  * - product_name: string (includes edition in rounded brackets)
  * - quantity_of_products: number (strictly numeric)
- * - price: string (e.g. "89.99")
+ * - price: number (strictly numeric e.g. 89.99)
  * - order_date: number (strictly numeric timestamp)
  * - payment_method: "Cash on Delivery"
  * - order_status: "new order" (string)
@@ -72,7 +72,7 @@ export interface WebhookOrderPayload {
   postal_zip_code: string;
   product_name: string;
   quantity_of_products: number;
-  price: string;
+  price: number;
   order_date: number;
   payment_method: string;
   order_status: string;
