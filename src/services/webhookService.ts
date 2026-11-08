@@ -21,6 +21,7 @@
  * - price: string (e.g. "89.99")
  * - order_date: number (strictly numeric timestamp)
  * - payment_method: "Cash on Delivery"
+ * - order_status: "new order" (string)
  */
 
 export const DEFAULT_WEBHOOK_URL =
@@ -74,6 +75,7 @@ export interface WebhookOrderPayload {
   price: string;
   order_date: number;
   payment_method: string;
+  order_status: string;
 }
 
 export interface WebhookDispatchResult {

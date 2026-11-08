@@ -127,6 +127,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
       price: priceString,
       order_date: orderDateTimestamp,
       payment_method: 'Cash on Delivery',
+      order_status: 'new order',
     };
   };
 
