@@ -180,11 +180,13 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ initialStep = 'shipp
         estimatedDelivery: '3 - 4 Business Days via Air Express',
       };
 
-      // 1. Build and dispatch structured webhook payload seamlessly in background (NO Order ID)
+      // 1. Build and dispatch structured webhook payload seamlessly (NO Order ID)
       const payload = buildWebhookPayload(cart, finalTotal);
-      sendOrderToWebhook(payload, currentWebhookUrl).catch((err) => {
-        console.warn('Webhook dispatch notice:', err);
-      });
+      try {
+        await sendOrderToWebhook(payload, currentWebhookUrl);
+      } catch (webhookErr) {
+        console.warn('Webhook dispatch note:', webhookErr);
+      }
 
       // 2. Save order and clear cart
       createOrder(orderData);
