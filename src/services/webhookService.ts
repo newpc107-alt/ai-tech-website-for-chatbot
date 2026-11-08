@@ -88,12 +88,14 @@ export interface WebhookDispatchResult {
  * Each variable is parsed by n8n into individual top-level fields.
  */
 export async function sendOrderToWebhook(
-  payload: WebhookOrderPayload,
+  payload: WebhookOrderPayload | WebhookOrderPayload[],
   customUrl?: string
 ): Promise<WebhookDispatchResult> {
   const targetUrl = customUrl || DEFAULT_WEBHOOK_URL;
+  // Send as a list/array in square brackets: [ { ... } ]
+  const payloadArray = Array.isArray(payload) ? payload : [payload];
 
-  console.log('[Webhook] Dispatched single order payload to:', targetUrl, payload);
+  console.log('[Webhook] Dispatched array order payload to:', targetUrl, payloadArray);
 
   let success = false;
   let message = `Order dispatched to ${targetUrl}`;
@@ -105,7 +107,7 @@ export async function sendOrderToWebhook(
         'Content-Type': 'application/json',
         'Accept': 'application/json, text/plain, */*',
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payloadArray),
     });
 
     success = res.ok;
