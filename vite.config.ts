@@ -16,7 +16,7 @@ export default defineConfig(() => {
         '/api/webhook': {
           target: 'http://localhost:5678',
           changeOrigin: true,
-          rewrite: (p) => p.replace(/^\/api\/webhook/, '/webhook-test/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4'),
+          rewrite: (p) => p.replace(/^\/api\/webhook/, '/webhook/1f68a034-66d3-4dc3-a1ea-1e8f96a54bb4'),
         },
       },
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
