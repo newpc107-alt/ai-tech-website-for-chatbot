@@ -84,18 +84,35 @@ export interface WebhookDispatchResult {
 }
 
 /**
- * Dispatches the order payload to the n8n production webhook as a clean JSON object.
- * Each variable is parsed by n8n into individual top-level fields.
+ * Dispatches the order payload to the n8n production webhook as the exact JSON format:
+ * An array in square brackets containing the order object:
+ * [
+ *   {
+ *     "customer_name": "...",
+ *     "customer_email": "...",
+ *     "phone_number": "...",
+ *     "country": "...",
+ *     "city": "...",
+ *     "street_address": "...",
+ *     "postal_zip_code": "...",
+ *     "product_name": "...",
+ *     "quantity_of_products": 1,
+ *     "price": 214.92,
+ *     "order_date": 1794159829442,
+ *     "payment_method": "Cash on Delivery",
+ *     "order_status": "new order"
+ *   }
+ * ]
  */
 export async function sendOrderToWebhook(
-  payload: WebhookOrderPayload | WebhookOrderPayload[],
+  payload: WebhookOrderPayload,
   customUrl?: string
 ): Promise<WebhookDispatchResult> {
   const targetUrl = customUrl || DEFAULT_WEBHOOK_URL;
-  // Send as a list/array in square brackets: [ { ... } ]
-  const payloadArray = Array.isArray(payload) ? payload : [payload];
+  // Send as JSON array: [ { ... } ]
+  const payloadArray = [payload];
 
-  console.log('[Webhook] Dispatched array order payload to:', targetUrl, payloadArray);
+  console.log('[Webhook] Dispatched JSON array order payload to:', targetUrl, payloadArray);
 
   let success = false;
   let message = `Order dispatched to ${targetUrl}`;
@@ -115,7 +132,6 @@ export async function sendOrderToWebhook(
     console.log('[Webhook] Response status:', res.status, res.statusText);
   } catch (err: any) {
     console.warn('[Webhook] Direct application/json dispatch note:', err);
-    // Even if cross-origin response reading is restricted by the browser, the POST payload reached the webhook
     success = true;
   }
 
